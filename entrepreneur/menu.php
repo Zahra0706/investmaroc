@@ -37,7 +37,7 @@
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="../deconnexion.php">
           <i class="fas fa-sign-out-alt"></i> Déconnexion
         </a>
       </li>

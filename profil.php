@@ -123,7 +123,7 @@ if (!$user) {
                 </a>
             </li>
             <li>
-                <a href="#projets">
+                <a href="admin/projets.php">
                     <i class="fas fa-list"></i> Projets
                 </a>
             </li>
@@ -133,7 +133,7 @@ if (!$user) {
                 </a>
             </li>
             <li>
-                <a href="#logout">
+                <a href="../deconnexion.php">
                     <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </a>
             </li>
