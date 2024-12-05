@@ -21,7 +21,7 @@
       </li>
       
       <li>
-        <a href="create_project.html">
+        <a href="create_project.php">
           <i class="fas fa-plus-circle"></i> Créer un Projet
         </a>
       </li>
