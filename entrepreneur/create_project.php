@@ -1,36 +1,42 @@
-<?php
-include 'db.php';
+<?php include 'menu.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Latéral</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="content">
+    
+        <h1>Créer un Projet</h1>
+        <form action="create_project.php" method="POST" enctype="multipart/form-data">
+          <label for="title">Titre du projet :</label>
+          <input type="text" id="title" name="title" placeholder="Titre" required>
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $budget = $_POST['budget'];
-    $category = $_POST['category'];
+          <label for="description">Description :</label>
+          <textarea id="description" name="description" rows="5" placeholder="Décrivez votre projet" required></textarea>
 
-    // Gestion des fichiers média
-    $media_path = null;
-    if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["media"]["name"]);
-        if (move_uploaded_file($_FILES["media"]["tmp_name"], $target_file)) {
-            $media_path = $target_file;
-        }
-    }
+          <label for="budget">Budget nécessaire (€) :</label>
+          <input type="number" id="budget" name="budget" placeholder="Montant recherché" required>
 
-    // Insertion dans la base de données
-    $sql = "INSERT INTO projects (title, description, budget, category, media_path) 
-            VALUES (:title, :description, :budget, :category, :media_path)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':budget', $budget);
-    $stmt->bindParam(':category', $category);
-    $stmt->bindParam(':media_path', $media_path);
+          <label for="category">Catégorie :</label>
+          <select id="category" name="category" required>
+            <option value="technologie">Technologie</option>
+            <option value="santé">Santé</option>
+            <option value="éducation">Éducation</option>
+            <option value="autre">Autre</option>
+          </select>
 
-    if ($stmt->execute()) {
-        echo "Projet créé avec succès!";
-    } else {
-        echo "Erreur lors de la création du projet.";
-    }
-}
-?>
+          <label for="media">Ajouter des médias (images/vidéos) :</label>
+          <input type="file" id="media" name="media" accept="image/*,video/*" multiple>
+
+          <button type="submit" class="btn-submit">Publier</button>
+          <button type="button" class="btn-draft">Enregistrer en Brouillon</button>
+        </form>
+   
+  </div>
+</body>
+</html>
