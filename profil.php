@@ -34,7 +34,6 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
     die("Utilisateur introuvable.");
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -42,19 +41,113 @@ if (!$user) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Utilisateur</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+/* Container pour le contenu */
+.container {
+    margin-left: 250px; /* Laisse de l'espace pour la barre latérale */
+    width: calc(100% - 250px); /* Prend toute la largeur sauf celle de la barre latérale */
+    height: 100vh; /* Prend toute la hauteur de l'écran */
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    background: #f9f9f9; /* Couleur d'arrière-plan */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Si vous voulez forcer l'élément de profil à être au centre, vous pouvez ajouter un conteneur supplémentaire */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer les éléments à l'intérieur */
+    text-align: center; /* Centre le texte */
+    background: #fff; /* Couleur de fond du profil */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Ombre douce autour du profil */
+    width: 100%;
+    max-width: 600px; /* Limite la largeur pour que le profil ne soit pas trop large */
+}
+
+
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            color: white;
+            padding-top: 20px;
+        }
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .sidebar .logo h2 {
+            color: #fff;
+            text-align:center ;
+        }
+       
+        .profile-photo img {
+            border-radius: 50%;
+            border: 2px solid #4CAF50;
+        }
+        .profile-info p {
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
+    <!-- Barre latérale -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>Admin Dashboard</h2>
+        </div>
+        <ul class="menu">
+            <li>
+                <a href="../profil.php">
+                    <i class="fas fa-user-circle"></i> Profil
+                </a>
+            </li>
+            <li>
+                <a href="#investisseurs">
+                    <i class="fas fa-handshake"></i> Investisseurs
+                </a>
+            </li>
+            <li>
+                <a href="#entrepreneurs">
+                    <i class="fas fa-briefcase"></i> Entrepreneurs
+                </a>
+            </li>
+            <li>
+                <a href="#projets">
+                    <i class="fas fa-list"></i> Projets
+                </a>
+            </li>
+            <li>
+                <a href="#collaborations">
+                    <i class="fas fa-users"></i> Collaborations
+                </a>
+            </li>
+            <li>
+                <a href="#logout">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Contenu principal -->
     <div class="container">
+    <div class="profile-container">
         <h1>Bienvenue, <?php echo htmlspecialchars($user['name']); ?> !</h1>
 
         <!-- Photo de profil -->
         <div class="profile-photo">
-            <?php if (!empty($user['photo'])): ?>
-                <img src="uploads/<?php echo htmlspecialchars($user['photo']); ?>" alt="Photo de profil" width="150" height="150">
-            <?php else: ?>
-                <img src="default-profile.png" alt="Photo de profil par défaut" width="150" height="150">
-            <?php endif; ?>
+            <img src="<?php echo !empty($user['image']) ? htmlspecialchars($user['image']) : 'default-profile.png'; ?>" alt="Photo de profil" width="150" height="150">
         </div>
 
         <!-- Informations de l'utilisateur -->
@@ -65,10 +158,20 @@ if (!$user) {
             <p><strong>Rôle :</strong> <?php echo htmlspecialchars($user['role']); ?></p>
         </div>
 
-        <!-- Option pour modifier le profil -->
-        <div class="edit-profile">
-            <a href="edit_profile.php">Modifier le profil</a>
+        <!-- Formulaire pour modifier l'image -->
+        <div class="upload-section">
+            <h3>Modifier votre photo de profil</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="profile_image" accept="image/*" required>
+                <button type="submit">Mettre à jour</button>
+            </form>
+            <?php if (isset($error)) : ?>
+                <p style="color: red;"><?php echo $error; ?></p>
+            <?php endif; ?>
         </div>
     </div>
+</div>
+
+
 </body>
 </html>

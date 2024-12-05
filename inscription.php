@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephone = htmlspecialchars($_POST['telephone']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hachage du mot de passe
     $role = htmlspecialchars($_POST['role']);
+    $defaultImage = 'images/profil.jpg'; // Chemin par défaut pour l'image
 
     // Vérifier si l'email existe déjà
     $checkEmail = $pdo->prepare("SELECT * FROM users WHERE email = :email");
@@ -30,13 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Cet email est déjà utilisé. Veuillez en essayer un autre.");
     }
 
-    // Insérer dans la base de données
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, telephone, password, role) VALUES (:name, :email, :telephone, :password, :role)");
+    // Insérer dans la base de données avec une image par défaut
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, telephone, password, role, image) VALUES (:name, :email, :telephone, :password, :role, :image)");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':telephone', $telephone);
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':role', $role);
+    $stmt->bindParam(':image', $defaultImage);
 
     if ($stmt->execute()) {
         echo "Inscription réussie. Vous pouvez maintenant vous connecter.";

@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Redirection selon le rôle
                 if ($role === "admin") {
-                    header("Location: admin-dashboard.php");
+                    header("Location: admin/admin.html");
                 } elseif ($role === "entrepreneur") {
                     header("Location: entrepreneur-dashboard.php");
                 } else {
