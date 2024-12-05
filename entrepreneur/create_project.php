@@ -19,7 +19,7 @@
           <label for="description">Description :</label>
           <textarea id="description" name="description" rows="5" placeholder="Décrivez votre projet" required></textarea>
 
-          <label for="budget">Budget nécessaire (€) :</label>
+          <label for="budget">Budget nécessaire (dh) :</label>
           <input type="number" id="budget" name="budget" placeholder="Montant recherché" required>
 
           <label for="category">Catégorie :</label>

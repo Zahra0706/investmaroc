@@ -15,7 +15,7 @@
     </div>
     <ul class="menu">
     <li>
-        <a href="#">
+        <a href="profil.php">
           <i class="fas fa-user"></i> Mon Profil
         </a>
       </li>
@@ -43,9 +43,6 @@
       </li>
     </ul>
   </div>
-  <div class="content">
-    <h1>Bienvenue dans votre tableau de bord</h1>
-    <p>Sélectionnez une fonctionnalité dans le menu pour commencer.</p>
-  </div>
+
 </body>
 </html>
