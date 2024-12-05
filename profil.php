@@ -113,7 +113,7 @@ if (!$user) {
                 </a>
             </li>
             <li>
-                <a href="#investisseurs">
+                <a href="admin/investisseurs.php">
                     <i class="fas fa-handshake"></i> Investisseurs
                 </a>
             </li>

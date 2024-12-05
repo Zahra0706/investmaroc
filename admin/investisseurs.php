@@ -19,32 +19,17 @@ try {
     die("Connexion à la base de données échouée : " . $e->getMessage());
 }
 
-// Gérer la mise à jour du statut
-if (isset($_GET['action']) && $_GET['action'] == 'change_status' && isset($_GET['id'])) {
-    $projectId = $_GET['id'];
-    $stmt = $pdo->prepare("UPDATE projects SET status = 'validé' WHERE id = :id");
-    $stmt->bindParam(':id', $projectId);
-    $stmt->execute();
-}
-
-// Gérer la suppression d'un projet
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
-    $projectId = $_GET['id'];
-    $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
-    $stmt->bindParam(':id', $projectId);
-    $stmt->execute();
-}
-
-// Récupérer les projets
-$stmt = $pdo->query("SELECT * FROM projects");
-$projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Récupérer les investisseurs
+$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'investor'");
+$stmt->execute();
+$investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Projets</title>
+    <title>Liste des Investisseurs</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -107,6 +92,10 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background-color: #072A40;
             color: white;
         }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
         .btn {
             padding: 8px 15px;
             background-color: #18B7BE;
@@ -119,16 +108,11 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .btn:hover {
             background-color: #16a7b8;
         }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
     </style>
 </head>
 <body>
-<!-- Barre latérale -->
-<div class="sidebar">
+  <!-- Barre latérale -->
+  <div class="sidebar">
         <div class="logo">
             <h2>Admin Dashboard</h2>
         </div>
@@ -169,32 +153,23 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Contenu principal -->
     <div class="container">
-        <h1>Gestion des Projets</h1>
+        <h1>Liste des Investisseurs</h1>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Titre</th>
-                        <th>Description</th>
-                        <th>Capital Nécessaire</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>Nom</th>
+                        <th>E-mail</th>
+                        <th>Téléphone</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($projects as $project): ?>
+                    <?php foreach ($investors as $investor): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($project['title']); ?></td>
-                            <td><?php echo htmlspecialchars($project['description']); ?></td>
-                            <td><?php echo htmlspecialchars($project['capital_needed']); ?> €</td>
-                            <td><?php echo htmlspecialchars($project['status']); ?></td>
-                            <td class="action-buttons">
-                                <?php if ($project['status'] == 'en attent'): ?>
-                                    <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn">Valider</a>
-                                <?php endif; ?>
-                                <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn">Supprimer</a>
-                            </td>
+                            <td><?php echo htmlspecialchars($investor['name']); ?></td>
+                            <td><?php echo htmlspecialchars($investor['email']); ?></td>
+                            <td><?php echo htmlspecialchars($investor['telephone']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
