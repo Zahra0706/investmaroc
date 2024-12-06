@@ -19,17 +19,17 @@ try {
     die("Connexion à la base de données échouée : " . $e->getMessage());
 }
 
-// Récupérer les investisseurs
-$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'investor'");
+// Récupérer les entrepreneurs
+$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'entrepreneur'");
 $stmt->execute();
-$investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Investisseurs</title>
+    <title>Liste des Entrepreneurs</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -150,10 +150,9 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </ul>
     </div>
 
-
     <!-- Contenu principal -->
     <div class="container">
-        <h1>Liste des Investisseurs</h1>
+        <h1>Liste des Entrepreneurs</h1>
 
         <div class="table-container">
             <table>
@@ -165,11 +164,11 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($investors as $investor): ?>
+                    <?php foreach ($entrepreneurs as $entrepreneur): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($investor['name']); ?></td>
-                            <td><?php echo htmlspecialchars($investor['email']); ?></td>
-                            <td><?php echo htmlspecialchars($investor['telephone']); ?></td>
+                            <td><?php echo htmlspecialchars($entrepreneur['name']); ?></td>
+                            <td><?php echo htmlspecialchars($entrepreneur['email']); ?></td>
+                            <td><?php echo htmlspecialchars($entrepreneur['telephone']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

@@ -144,12 +144,12 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </a>
             </li>
             <li>
-                <a href="#entrepreneurs">
+                <a href="entrepreneurs.php">
                     <i class="fas fa-briefcase"></i> Entrepreneurs
                 </a>
             </li>
             <li>
-                <a href="admin/projets.php">
+                <a href="projets.php">
                     <i class="fas fa-list"></i> Projets
                 </a>
             </li>
