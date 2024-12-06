@@ -15,7 +15,7 @@
     </div>
     <ul class="menu">
     <li>
-        <a href="profil.php">
+        <a href="../profil.php">
           <i class="fas fa-user"></i> Mon Profil
         </a>
       </li>
@@ -27,7 +27,7 @@
       </li>
      
       <li>
-        <a href="#">
+        <a href="list_projects.php">
           <i class="fas fa-list"></i> Mes Projets
         </a>
       </li>

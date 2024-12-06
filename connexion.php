@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($role === "admin") {
                     header("Location: admin/admin.html");
                 } elseif ($role === "entrepreneur") {
-                    header("Location: entrepreneur-dashboard.php");
+                    header("Location: entrepreneur\menu.php");
                 } else {
                     header("Location: investor-dashboard.php");
                 }
