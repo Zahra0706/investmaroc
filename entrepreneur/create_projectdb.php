@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+session_start(); // Démarrage de la session pour récupérer l'utilisateur connecté
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
@@ -17,15 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    // Récupérer l'ID de l'utilisateur connecté
+    $user_id = $_SESSION['user_id'];
+
     // Insertion dans la base de données
-    $sql = "INSERT INTO projects (title, description, budget, category, media_path) 
-            VALUES (:title, :description, :budget, :category, :media_path)";
+    $sql = "INSERT INTO projects (title, description, budget, category, media_path, user_id) 
+            VALUES (:title, :description, :budget, :category, :media_path, :user_id)";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':budget', $budget);
     $stmt->bindParam(':category', $category);
     $stmt->bindParam(':media_path', $media_path);
+    $stmt->bindParam(':user_id', $user_id);
 
     if ($stmt->execute()) {
         echo "Projet créé avec succès!";

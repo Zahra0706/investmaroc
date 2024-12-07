@@ -13,7 +13,7 @@
   <div class="content">
     
         <h1>Créer un Projet</h1>
-        <form action="create_project.php" method="POST" enctype="multipart/form-data">
+        <form action="create_projectdb.php" method="POST" enctype="multipart/form-data">
           <label for="title">Titre du projet :</label>
           <input type="text" id="title" name="title" placeholder="Titre" required>
 
@@ -32,7 +32,7 @@
           </select>
 
           <label for="media">Ajouter des médias (images/vidéos) :</label>
-          <input type="file" id="media" name="media" accept="image/*,video/*" multiple>
+          <input type="file" id="media"  name="media[]" accept="image/*,video/*" multiple>
 
           <button type="submit" class="btn-submit">Publier</button>
           <button type="button" class="btn-draft">Enregistrer en Brouillon</button>
