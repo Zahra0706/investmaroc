@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invest Maroc - Accueil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #072A40;
+        }
+
+        .hero {
+            background-image: url("images/investissement_maroc.png");
+            color: white;
+            padding: 5rem 2rem;
+            border-bottom-left-radius: 50% 10%;
+            border-bottom-right-radius: 50% 10%;
+            background: linear-gradient(rgba(10, 53, 79, 0.938),rgba(7, 42, 64, 0.437)),url('images/investissement_maroc.png') no-repeat center center ; 
+            background-size: cover;
+
+        }
+
+        .features {
+            background-color: #f9f9f9;
+        }
+
+        .features h3 {
+            color: #072A40;
+        }
+
+        .features .border {
+            background-color: #ffffff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .features .border:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            background-color: #072A40;
+            color: white;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #072A40;
+            margin-bottom: 15px;
+        }
+        .highlight {
+    color: #66c6d3; /* Couleur dorée */
+    font-weight: bold; /* Texte en gras */
+    font-style: italic; /* Texte en italique */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre légère */
+    letter-spacing: 1px; /* Espacement des lettres */
+}
+
+    </style>
+</head>
+<body>
+    <header class="text-white py-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h3"><i class="fas fa-lightbulb me-2"></i>Invest Maroc</h1>
+            <div>
+                <a href="connexion.php" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt me-1"></i> Se connecter</a>
+                <a href="inscription.html" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> S'inscrire</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold"><i class="fas fa-handshake me-2"></i> Investissez dans l'avenir avec <span class="highlight">Invest Maroc</span> </h1>
+            <p class="lead mt-3">
+                Un espace qui connecte les investisseurs et les entrepreneurs pour collaborer sur des projets innovants.
+            </p>
+            <a href="inscription.html" class="btn btn-light btn-lg mt-4"><i class="fas fa-rocket me-1"></i> Commencer maintenant</a>
+        </div>
+    </section>
+
+    <section class="features py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="p-4 border rounded">
+                        <i class="fas fa-file-signature feature-icon"></i>
+                        <h3> <b>Publiez vos projets</b> </h3>
+                        <p>
+                            Les entrepreneurs peuvent ajouter des projets avec des informations détaillées et le capital nécessaire.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="p-4 border rounded">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h3> <b>Investissez intelligemment</b> </h3>
+                        <p>
+                            Les investisseurs peuvent explorer des projets, collaborer et investir dans les idées qui les passionnent.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="p-4 border rounded">
+                        <i class="fas fa-comments feature-icon"></i>
+                        <h3> <b>Communiquez facilement</b> </h3>
+                        <p>
+                            Notre plateforme inclut un système de chat pour une communication directe entre investisseurs et entrepreneurs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-white text-center py-3">
+        <p>© 2024 Invest Maroc. Tous droits réservés. <i class="fas fa-globe"></i></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

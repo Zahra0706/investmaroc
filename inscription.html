@@ -34,7 +34,7 @@
         }
 
         /* Style pour les champs de formulaire */
-        .form-control {
+        .form-control , .form-select{
             padding: 0.8rem;
             font-size: 1rem;
             border: 1px solid #3d4a76;
@@ -85,12 +85,12 @@
                             <div class="row mb-3">
                                 <!-- Nom -->
                                 <div class="col-md-6">
-                                    <label for="name" class="form-label">Nom complet</label>
+                                    <label for="name" class="form-label"> <b>Nom complet</b></label>
                                     <input type="text" id="name" name="name" class="form-control" placeholder="Entrez votre nom complet" required>
                                 </div>
                                 <!-- Email -->
                                 <div class="col-md-6">
-                                    <label for="email" class="form-label">Adresse email</label>
+                                    <label for="email" class="form-label"><b>Adresse email</b></label>
                                     <input type="email" id="email" name="email" class="form-control" placeholder="Entrez votre email" required>
                                 </div>
                             </div>
@@ -98,12 +98,12 @@
                             <div class="row mb-3">
                                 <!-- Téléphone -->
                                 <div class="col-md-6">
-                                    <label for="telephone" class="form-label">Numéro de téléphone</label>
+                                    <label for="telephone" class="form-label"><b>Numéro de téléphone</b></label>
                                     <input type="tel" id="telephone" name="telephone" class="form-control" placeholder="Entrez votre numéro de téléphone" required>
                                 </div>
                                 <!-- Rôle -->
                                 <div class="col-md-6">
-                                    <label for="role" class="form-label">Rôle</label>
+                                    <label for="role" class="form-label"><b>Rôle</b></label>
                                     <select id="role" name="role" class="form-select" required>
                                         <option value="entrepreneur">Entrepreneur</option>
                                         <option value="investor">Investisseur</option>
@@ -114,12 +114,12 @@
                             <div class="row mb-3">
                                 <!-- Mot de passe -->
                                 <div class="col-md-6">
-                                    <label for="password" class="form-label">Mot de passe</label>
+                                    <label for="password" class="form-label"><b>Mot de passe</b></label>
                                     <input type="password" id="password" name="password" class="form-control" placeholder="Entrez votre mot de passe" required>
                                 </div>
                                 <!-- Confirmer le mot de passe -->
                                 <div class="col-md-6">
-                                    <label for="confirmPassword" class="form-label">Confirmez le mot de passe</label>
+                                    <label for="confirmPassword" class="form-label"><b>Confirmez le mot de passe</b></label>
                                     <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirmez votre mot de passe" required>
                                 </div>
                             </div>
