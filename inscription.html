@@ -5,17 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Invest Maroc</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="scripts.js"></script>
- 
+    <style>
+        /* Style général pour le fond avec image floue */
+        body {
+            background-image: url('images/investissement_maroc.png'); /* Remplacez par le chemin de votre image */
+            background-size: cover; /* Ajuste l'image pour couvrir toute la page */
+            background-position: center; /* Centrer l'image */
+            position: relative;
+            height: 100vh; /* Assurez-vous que le body prend toute la hauteur */
+            overflow: hidden; /* Pour éviter les barres de défilement */
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);  /* Couleur sombre semi-transparente */
+            z-index: 1; /* Place la couleur au-dessus de l'image mais en dessous du contenu */
+            filter: blur(5px); /* Floute l'image en arrière-plan */
+        }
+
+        .container {
+            position: relative;
+            z-index: 2; /* Place le contenu par-dessus l'image floue */
+        }
+
+        /* Style pour les champs de formulaire */
+        .form-control {
+            padding: 0.8rem;
+            font-size: 1rem;
+            border: 1px solid #3d4a76;
+            border-radius: 20px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        /* Bouton modernisé avec animation */
+        button[type="submit"] {
+            background-color: #072A40; /* Couleur principale */
+            color: white;
+            border: none;
+            border-radius: 25px; /* Coins arrondis */
+            padding: 0.8rem 1.5rem; /* Espace intérieur */
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease; /* Transition pour les animations */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre */
+        }
+
+        /* Effet au survol */
+        button[type="submit"]:hover {
+            background-color: #073a50; /* Couleur plus claire au survol */
+            transform: translateY(-3px); /* Légère élévation */
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Accentuer l'ombre */
+        }
+
+        /* Effet d'appui */
+        button[type="submit"]:active {
+            background-color: #2b365e; /* Couleur plus foncée à l'appui */
+            transform: translateY(1px); /* Réduction d'élévation */
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
+        }
+
+    </style>
 </head>
-<body class="bg-light">
+<body>
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-sm-12">
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
-                        <h1 class="text-center  mb-4 "> <b>Créer un compte</b></h1>
+                        <h1 class="text-center mb-4"><b>Créer un compte</b></h1>
                         <form action="inscription.php" method="POST" id="signup-form" class="signup-form">
                             <div class="row mb-3">
                                 <!-- Nom -->
