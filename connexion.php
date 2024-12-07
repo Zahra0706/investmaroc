@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } elseif ($role === "entrepreneur") {
                     header("Location: entrepreneur/menu.php");
                 } else {
-                    header("Location: investor-dashboard.php");
+                    header("Location: investisseur/menu.html");
                 }
                 exit();
             } else {

@@ -1,0 +1,144 @@
+/* Styles de base */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .btn-submit {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .btn-submit:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-draft {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .btn-draft:hover {
+    background-color: #bbb;
+  }
+  /* Styles généraux */
+
+  
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #072A40;
+    color: #ecf0f1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .logo {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #072A40;
+  }
+  
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+  }
+  
+  .menu li {
+    border-bottom: 1px solid #072A40;
+  }
+  
+  .menu a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .menu a:hover {
+    background-color: #18B7BE;
+  }
+  
+  .menu a i {
+    margin-right: 15px;
+    font-size: 1.2rem;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  p {
+    color: #555;
+  }
+  
+  
+
+
+  
