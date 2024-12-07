@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 exit();
             } else {
-                $error_message = "Email ou mot de passe incorrect.";
+                $error_message = "Mot de passe incorrect.";
             }
         } else {
             $error_message = "Aucun compte trouvé avec cet email.";

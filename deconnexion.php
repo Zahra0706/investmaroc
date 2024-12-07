@@ -9,6 +9,6 @@ session_unset();
 session_destroy();
 
 // Rediriger l'utilisateur vers la page de connexion
-header("Location: connexion.html");
+header("Location: connexion.php");
 exit;
 ?>

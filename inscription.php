@@ -28,7 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkEmail->execute();
 
     if ($checkEmail->rowCount() > 0) {
-        die("Cet email est déjà utilisé. Veuillez en essayer un autre.");
+        // Redirection avec un message d'erreur
+        header("Location: inscription.html?error=email_taken");
+        exit();
     }
 
     // Insérer dans la base de données avec une image par défaut
@@ -41,9 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':image', $defaultImage);
 
     if ($stmt->execute()) {
-        echo "Inscription réussie. Vous pouvez maintenant vous connecter.";
+        // Redirection avec un message de succès
+        header("Location: inscription.html?success=registered");
+        exit();
     } else {
-        echo "Erreur : Impossible de s'inscrire. Veuillez réessayer.";
+        // Redirection avec un message d'erreur générique
+        header("Location: inscription.html?error=registration_failed");
+        exit();
     }
 }
 ?>
