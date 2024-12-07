@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Invest Maroc</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         /* Style général pour le fond avec image floue */
         body {
@@ -80,6 +81,7 @@
             <div class="col-lg-8 col-md-10 col-sm-12">
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
+                        
                         <h1 class="text-center mb-4"><b>Créer un compte</b></h1>
                         <!-- Message de confirmation -->
                         <div id="success-message" class="alert alert-success text-center" style="display: none;">
@@ -122,7 +124,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <!-- Mot de passe -->
+                                 <!-- Mot de passe -->
                                 <div class="col-md-6">
                                     <label for="password" class="form-label"><b>Mot de passe</b></label>
                                     <input type="password" id="password" name="password" class="form-control" placeholder="Entrez votre mot de passe" required>
@@ -174,7 +176,28 @@
             errorMessage.innerText = "Erreur : Impossible de s'inscrire. Veuillez réessayer.";
             errorMessage.style.display = 'block';
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+    // Références des éléments du formulaire
+    const form = document.getElementById("signup-form"); // Formulaire d'inscription
+    const password = document.getElementById("password"); // Champ mot de passe
+    const confirmPassword = document.getElementById("confirmPassword"); // Champ confirmation mot de passe
+    const errorMessage = document.getElementById("error-message"); // Message d'erreur
+
+    // Ajout d'un écouteur pour la soumission du formulaire
+    form.addEventListener("submit", function (event) {
+        // Vérifier si les mots de passe correspondent
+        if (password.value.trim() !== confirmPassword.value.trim()) {
+            errorMessage.textContent = "Les mots de passe ne correspondent pas."; // Message d'erreur clair
+            errorMessage.style.display = "block"; // Affiche le message d'erreur
+            event.preventDefault(); // Empêche l'envoi du formulaire
+        } else {
+            errorMessage.style.display = "none"; // Cache le message d'erreur
+        }
+    });
+});
+
     </script>
-    <script src="scripts.js"></script>
+
 </body>
 </html>
