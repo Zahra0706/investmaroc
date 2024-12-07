@@ -119,7 +119,7 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <ul class="menu">
             <li>
-                <a href="../profil.php">
+                <a href="profil.php">
                     <i class="fas fa-user-circle"></i> Profil
                 </a>
             </li>

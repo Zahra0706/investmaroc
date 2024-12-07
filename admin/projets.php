@@ -134,7 +134,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <ul class="menu">
             <li>
-                <a href="../profil.php">
+                <a href="profil.php">
                     <i class="fas fa-user-circle"></i> Profil
                 </a>
             </li>
@@ -154,7 +154,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </a>
             </li>
             <li>
-                <a href="#collaborations">
+                <a href="collaborations.php">
                     <i class="fas fa-users"></i> Collaborations
                 </a>
             </li>
