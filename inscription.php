@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephone = htmlspecialchars($_POST['telephone']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hachage du mot de passe
     $role = htmlspecialchars($_POST['role']);
-    $defaultImage = 'images/profil.jpg'; // Chemin par défaut pour l'image
+    $defaultImage = '../images/profil.jpg'; // Chemin par défaut pour l'image
 
     // Vérifier si l'email existe déjà
     $checkEmail = $pdo->prepare("SELECT * FROM users WHERE email = :email");
