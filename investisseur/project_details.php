@@ -70,7 +70,6 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détails du Projet</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
@@ -79,6 +78,7 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
             padding: 0;
             background-color: #f9f9f9;
         }
+
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -87,43 +87,68 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        .header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         h1 {
             color: #072A40;
-            text-align: center;
+            text-align: left;
+            flex-grow: 1;
         }
+
+        .save-icon-form {
+            position: absolute;
+            right: 40px;
+            top: 10px;
+            margin: 0;
+            padding: 0;
+        }
+
         .project-details {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
         }
+
         .project-details img {
             max-width: 500px;
             width: 100%;
             border-radius: 8px;
         }
+
         .project-info {
             flex: 1;
         }
+
         .project-info p {
             font-size: 1rem;
             color: #555;
             line-height: 1.6;
         }
+
         .project-info h3 {
             font-size: 1.5rem;
             color: #18B7BE;
         }
+
         .contact-section {
             margin-top: 30px;
             background-color: #e8f5f3;
             padding: 20px;
             border-radius: 8px;
         }
+
         .contact-section h3 {
             font-size: 1.2rem;
             color: #072A40;
         }
+
         .contact-btn {
             display: inline-block;
             background-color: #18B7BE;
@@ -134,49 +159,64 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
             font-size: 1rem;
             transition: background-color 0.3s ease;
         }
+
         .contact-btn:hover {
             background-color: #16a7b8;
         }
-        .saved-btn {
-            background-color: #ff9800;
+
+        .saved-btn, .unsaved-btn {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 10px;
+            display: inline-block;
         }
-        .saved-btn:hover {
-            background-color: #f57c00;
+
+        .saved-btn img, .unsaved-btn img {
+            width: 30px;
+            height: 30px;
+            transition: filter 0.3s ease;
         }
-        .unsaved-btn {
-            background-color: #e64a19;
+
+        .saved-btn:hover img {
+            filter: brightness(1.2);
         }
-        .unsaved-btn:hover {
-            background-color: #d84315;
+
+        .unsaved-btn:hover img {
+            filter: brightness(0.8);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+<div class="container">
+    <div class="header">
+        <!-- Bouton avec l'icône placé à gauche du titre -->
+        <form method="post" class="save-icon-form">
+            <button type="submit" class="<?php echo $isSaved ? 'unsaved-btn' : 'saved-btn'; ?>">
+                <img src="<?php echo $isSaved ? '../images/save-instagram (1).png' : '../images/save-instagram.png'; ?>" alt="Enregistrer" style="width: 30px; height: 30px;">
+            </button>
+        </form>
         <h1><?php echo htmlspecialchars($project['title']); ?></h1>
-        <div class="project-details">
-            <img src="images/<?php echo htmlspecialchars($project['image']); ?>" alt="Image du projet">
-            <div class="project-info">
-                <h3>Description</h3>
-                <p><?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
-                <h3>Capital Nécessaire</h3>
-                <p><?php echo htmlspecialchars($project['capital_needed']); ?> DH</p>
-                <form method="post">
-                    <button type="submit" class="<?php echo $isSaved ? 'unsaved-btn' : 'saved-btn'; ?>">
-                        <?php echo $isSaved ? '<i class="fas fa-trash"></i> Désenregistrer ce Projet' : '<i class="fas fa-save"></i> Enregistrer ce Projet'; ?>
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <div class="contact-section">
-            <h3>Contacter l'entrepreneur</h3>
-            <p><strong>Nom : </strong><?php echo htmlspecialchars($entrepreneur['name']); ?></p>
-            <p><strong>Email : </strong><a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>"><?php echo htmlspecialchars($entrepreneur['email']); ?></a></p>
-            <a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>" class="contact-btn">
-                <i class="fas fa-envelope"></i> Envoyer un message
-            </a>
+    </div>
+    <div class="project-details">
+        <img src="images/<?php echo htmlspecialchars($project['image']); ?>" alt="Image du projet">
+        <div class="project-info">
+            <h3>Description</h3>
+            <p><?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
+            <h3>Capital Nécessaire</h3>
+            <p><?php echo htmlspecialchars($project['capital_needed']); ?> DH</p>
         </div>
     </div>
+
+    <div class="contact-section">
+        <h3>Contacter l'entrepreneur</h3>
+        <p><strong>Nom : </strong><?php echo htmlspecialchars($entrepreneur['name']); ?></p>
+        <p><strong>Email : </strong><a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>"><?php echo htmlspecialchars($entrepreneur['email']); ?></a></p>
+        <a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>" class="contact-btn">
+            <i class="fas fa-envelope"></i> Envoyer un message
+        </a>
+    </div>
+</div>
 </body>
 </html>
