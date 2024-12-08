@@ -106,7 +106,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="project-item">
                         <h2 class="project-title"><?= htmlspecialchars($project['title']) ?></h2>
                         <p class="project-date"><?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
-                        <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
+                       <BR></BR> <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
                             <i class="fas fa-eye"></i> Afficher détails
                         </a>
                     </div>
