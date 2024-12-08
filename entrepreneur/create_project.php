@@ -13,7 +13,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $description = $_POST['description'];
-    $budget = $_POST['budget'];
+    $budget = $_POST['capital_needed'];
     $category = $_POST['category'];
 
     // Gestion des fichiers médias (plusieurs fichiers)
@@ -41,16 +41,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insertion dans la base de données
     try {
-        $sql = "INSERT INTO projects (title, description, budget, category, image, user_id) 
-                VALUES (:title, :description, :budget, :category, :image, :user_id)";
-                
+        $sql = "INSERT INTO projects (title, description, capital_needed, category, image, entrepreneur_id) 
+        VALUES (:title, :description, :capital_needed, :category, :image, :user_id)";
+
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':budget', $budget);
+        $stmt->bindParam(':capital_needed', $budget);
         $stmt->bindParam(':category', $category);
-        $stmt->bindParam(':image', $media_paths_json); // 🚀 On enregistre tous les chemins des images
-        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':image', $media_paths_json);
+        $stmt->bindParam(':user_id', $user_id); // Correction ici
+
 
         if ($stmt->execute()) {
             // Redirection pour éviter la resoumission du formulaire
@@ -113,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <textarea id="description" name="description" rows="5" placeholder="Décrivez votre projet" required></textarea>
 
           <label for="budget">Budget nécessaire (dh) :</label>
-          <input type="number" id="budget" name="budget" placeholder="Montant recherché" required>
+          <input type="number" id="budget" name="capital_needed" placeholder="Montant recherché" required>
 
           <label for="category">Catégorie :</label>
           <select id="category" name="category" required>
@@ -124,11 +125,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </select>
 
           <label for="media">Ajouter des médias (images/vidéos) :</label>
-          <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple> <!-- 🚀 Multiple fichiers -->
+          <input type="file" id="media" name="media[]" accept="image/,video/" multiple> <!-- 🚀 Multiple fichiers -->
 
           <button type="submit" class="btn-submit">Publier</button>
           <button type="button" class="btn-draft">Enregistrer en Brouillon</button>
       </form>
   </div>
 </body>
-</html>

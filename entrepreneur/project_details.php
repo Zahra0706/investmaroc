@@ -7,28 +7,26 @@ if (!isset($_SESSION['user_id'])) {
 // Inclure la connexion à la base de données
 include 'db.php';
 
-// Vérifie que l'ID a été transmis
-if (!isset($_GET['id'])) {
-    die("Aucun ID de projet fourni.");
+// Vérifier si l'ID du projet est passé dans l'URL
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die("ID du projet invalide.");
 }
 
 $project_id = $_GET['id'];
 
-// Récupération des détails du projet
-$stmt = $conn->prepare("SELECT title, description, budget, category, created_at FROM projects WHERE id = :id");
-$stmt->bindParam(':id', $project_id, PDO::PARAM_INT);
+// Récupérer les informations du projet
+$stmt = $conn->prepare("SELECT * FROM projects WHERE id = :project_id");
+$stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
 $stmt->execute();
 $project = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Récupérer les images du projet
-$imageStmt = $conn->prepare("SELECT image_path FROM project_images WHERE project_id = :id");
-$imageStmt->bindParam(':id', $project_id, PDO::PARAM_INT);
-$imageStmt->execute();
-$images = $imageStmt->fetchAll(PDO::FETCH_ASSOC);
-
+// Si le projet n'existe pas
 if (!$project) {
-    die("Le projet n'existe pas.");
+    die("Le projet demandé n'existe pas.");
 }
+
+// Décoder la chaîne JSON des images
+$images = json_decode($project['image'], true); // Convertir la chaîne JSON en tableau PHP
 ?>
 
 <!DOCTYPE html>
@@ -38,74 +36,37 @@ if (!$project) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détails du Projet</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .project-details-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
         .project-details {
-            background-color: #f4f4f4;
-            border-radius: 8px;
             padding: 20px;
-            width: 70%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .project-details h2 {
-            margin-bottom: 15px;
+        .project-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            margin-bottom: 20px;
         }
 
         .project-details p {
-            margin: 10px 0;
+            font-size: 16px;
         }
 
-        .images-gallery {
+        .project-images {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 20px;
         }
 
-        .images-gallery img {
-            width: 200px;
+        .project-images img {
+            width: 300px;
             height: 200px;
             object-fit: cover;
             border-radius: 8px;
         }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            background-color: #2c3e50;
-            color: white;
-            padding-top: 20px;
-        }
-
-        .menu li {
-            list-style: none;
-            padding: 10px 20px;
-        }
-
-        .menu li a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .menu li a:hover {
-            background-color: #34495e;
-        }
-
-        .main-content {
-            margin-left: 260px;
-            padding: 20px;
-        }
-
     </style>
 </head>
 <body>
@@ -125,23 +86,32 @@ if (!$project) {
     </div>
 
     <div class="main-content">
-        <h1>Détails du Projet</h1>
+        <div class="project-details">
+            <h1 class="project-title"><?= htmlspecialchars($project['title']) ?></h1>
+            <p><strong>Description:</strong></p>
+            <p class="project-description"><?= nl2br(htmlspecialchars($project['description'])) ?></p>
+            <p><strong>Budget:</strong> <?= htmlspecialchars($project['capital_needed']) ?> MAD</p> <!-- Affichage du budget -->
+            <p><strong>Catégorie:</strong> <?= htmlspecialchars($project['category']) ?></p> <!-- Affichage de la catégorie -->
+            <p><strong>Statut:</strong> <?= htmlspecialchars($project['status']) ?></p> <!-- Affichage du statut -->
 
-        <div class="project-details-container">
-            <div class="project-details">
-                <h2><?= htmlspecialchars($project['title']) ?></h2>
-                <p><strong>Description :</strong> <?= htmlspecialchars($project['description']) ?></p>
-                <p><strong>Budget :</strong> <?= htmlspecialchars($project['budget']) ?> DH</p>
-                <p><strong>Catégorie :</strong> <?= htmlspecialchars($project['category']) ?></p>
-                <p><strong>Date de création :</strong> <?= htmlspecialchars($project['created_at']) ?></p>
+            <p><strong>Date de création:</strong> <?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
+
+            <h2>Images du projet</h2>
+            <div class="project-images">
+                <?php if (isset($project['image']) && !empty($project['image'])): ?>
+                    <?php
+                    if (is_array($images)): ?>
+                        <?php foreach ($images as $image): ?>
+                            <img src="<?= htmlspecialchars($image) ?>" alt="Image du projet">
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>Aucune image disponible.</p>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <p>Aucune image disponible pour ce projet.</p>
+                <?php endif; ?>
             </div>
 
-            <!-- Galerie d'images -->
-            <div class="images-gallery">
-                <?php foreach ($images as $image): ?>
-                    <img src="<?= htmlspecialchars($image['image_path']) ?>" alt="Image du projet">
-                <?php endforeach; ?>
-            </div>
         </div>
     </div>
 
