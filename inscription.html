@@ -229,10 +229,28 @@
     const confirmPassword = document.getElementById("confirmPassword"); // Champ confirmation mot de passe
     const errorMessage = document.getElementById("error-message"); // Message d'erreur
 
+    // Fonction pour valider le mot de passe
+    function validatePassword(password) {
+        const minLength = 8;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (password.length < minLength) {
+            return "Le mot de passe doit contenir au moins 8 caractères.";
+        }
+        if (!regex.test(password)) {
+            return "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
+        }
+        return null; // Aucun problème
+    }
+
     // Ajout d'un écouteur pour la soumission du formulaire
     form.addEventListener("submit", function (event) {
-        // Vérifier si les mots de passe correspondent
-        if (password.value.trim() !== confirmPassword.value.trim()) {
+        const passwordError = validatePassword(password.value.trim());
+        if (passwordError) {
+            errorMessage.textContent = passwordError; // Affiche l'erreur de validation du mot de passe
+            errorMessage.style.display = "block";
+            event.preventDefault(); // Empêche l'envoi du formulaire
+        } else if (password.value.trim() !== confirmPassword.value.trim()) {
             errorMessage.textContent = "Les mots de passe ne correspondent pas."; // Message d'erreur clair
             errorMessage.style.display = "block"; // Affiche le message d'erreur
             event.preventDefault(); // Empêche l'envoi du formulaire
@@ -241,6 +259,7 @@
         }
     });
 });
+
 
     </script>
 
