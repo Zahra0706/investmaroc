@@ -201,7 +201,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td><?php echo htmlspecialchars($project['title']); ?></td>
                             <td><?php echo htmlspecialchars($project['description']); ?></td>
-                            <td><?php echo htmlspecialchars($project['budget']); ?> DH</td>
+                            <td><?php echo htmlspecialchars($project['capital_needed']); ?> DH</td>
                             <td><?php echo htmlspecialchars($project['status']); ?></td>
                             <td class="action-buttons">
                             <?php if ($project['status'] == 'en attent'): ?>

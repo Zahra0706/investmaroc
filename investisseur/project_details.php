@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Récupérer les informations de l'entrepreneur
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-$stmt->bindParam(':id', $project[' user_id']); // Utiliser 'id_entrepreneur' au lieu de 'user_id'
+$stmt->bindParam(':id', $project['entrepreneur_id']); // Utiliser 'entrepreneur_id' au lieu de 'user_id'
 
 $stmt->execute();
 $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -205,7 +205,7 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
             <h3>Description</h3>
             <p><?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
             <h3>Capital Nécessaire</h3>
-            <p><?php echo htmlspecialchars($project['budget']); ?> DH</p>
+            <p><?php echo htmlspecialchars($project['capital_needed']); ?> DH</p>
         </div>
     </div>
 
