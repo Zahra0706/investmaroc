@@ -128,6 +128,45 @@ body::before {
 }
 
 
+/* Pour les écrans de 768px (tablettes) ou moins */
+@media (max-width: 768px) {
+    button[type="submit"] {
+        font-size: 1rem; /* Réduction de la taille du texte */
+        padding: 0.6rem 1.2rem; /* Moins de padding pour les petits écrans */
+    }
+
+    div .form-control {
+        padding: 0.6rem;
+        font-size: 0.9rem; /* Réduction de la taille de la police */
+    }
+
+    body {
+        background-size: cover; 
+        background-position: center; 
+    }
+}
+
+/* Pour les écrans de 576px (mobiles) ou moins */
+@media (max-width: 576px) {
+    button[type="submit"] {
+        font-size: 0.9rem; /* Réduction de la taille du texte */
+        padding: 0.5rem 1rem; /* Réduction des marges intérieures */
+    }
+
+    div .form-control {
+        padding: 0.5rem;
+        font-size: 0.8rem; /* Police encore plus petite */
+    }
+
+    .container {
+        padding: 0.5rem; /* Plus d'espace autour du contenu */
+    }
+
+    body {
+        background-size: cover; 
+        background-position: center; 
+    }
+}
     </style>
 </head>
 <body class="bg-light">

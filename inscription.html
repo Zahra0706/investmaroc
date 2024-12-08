@@ -72,7 +72,51 @@
             transform: translateY(1px); /* Réduction d'élévation */
             box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
         }
+/* Pour les tablettes (écran max de 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem; /* Réduction du padding sur mobile */
+    }
 
+    .form-control, 
+    .form-select {
+        font-size: 0.9rem; /* Réduction de la taille de la police */
+        padding: 0.6rem; /* Moins de padding sur les champs */
+    }
+
+    button[type="submit"] {
+        font-size: 1rem; /* Réduction de la taille de la police */
+        padding: 0.7rem 1.2rem; /* Moins de padding interne */
+    }
+
+    body {
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+/* Pour les téléphones (écran max de 576px) */
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem; /* Réduction supplémentaire de l'espace autour */
+    }
+
+    .form-control, 
+    .form-select {
+        font-size: 0.85rem; /* Réduction de la taille de la police */
+        padding: 0.5rem; /* Réduction du padding */
+    }
+
+    button[type="submit"] {
+        font-size: 0.9rem; /* Réduction de la taille de la police */
+        padding: 0.6rem 1rem; /* Moins de padding sur le bouton */
+    }
+
+    body {
+        background-size: cover;
+        background-position: center;
+    }
+}
     </style>
 </head>
 <body>

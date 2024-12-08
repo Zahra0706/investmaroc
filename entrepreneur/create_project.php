@@ -1,10 +1,9 @@
 <?php 
+session_start();
 include 'menu.php'; 
 include 'db.php';
-session_start();
 
 $message = ""; // Variable pour afficher le message
-
 // Afficher un message basé sur le paramètre dans l'URL
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     $message = "Projet créé avec succès !";
@@ -55,7 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // Redirection pour éviter la resoumission du formulaire
-            header("Location: create_project.php?success=1");
             exit(); // Stopper l'exécution après redirection
         } else {
             $message = "Erreur lors de la création du projet.";
@@ -117,18 +115,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <input type="number" id="budget" name="capital_needed" placeholder="Montant recherché" required>
 
           <label for="category">Catégorie :</label>
-          <select id="category" name="category" required>
+          <select id="category" name="category" required onchange="showInputField(this)">
               <option value="technologie">Technologie</option>
               <option value="santé">Santé</option>
               <option value="éducation">Éducation</option>
               <option value="autre">Autre</option>
           </select>
+          <div id="custom-category-container" style="display: none; margin-top: 10px;">
+    <label for="custom-category">Veuillez préciser la catégorie :</label>
+    <input type="text" id="custom-category" name="custom_category" placeholder="Saisissez la catégorie ici">
+</div>
+
+
 
           <label for="media">Ajouter des médias (images/vidéos) :</label>
-          <input type="file" id="media" name="media[]" accept="image/,video/" multiple> <!-- 🚀 Multiple fichiers -->
+          <input type="file" id="media" name="media[]" accept="image" multiple> <!-- 🚀 Multiple fichiers -->
 
           <button type="submit" class="btn-submit">Publier</button>
-          <button type="button" class="btn-draft">Enregistrer en Brouillon</button>
       </form>
   </div>
+  <script>
+function showInputField(selectElement) {
+    const customCategoryContainer = document.getElementById('custom-category-container');
+    if (selectElement.value === 'autre') {
+        customCategoryContainer.style.display = 'block'; // Affiche le champ d'entrée
+    } else {
+        customCategoryContainer.style.display = 'none'; // Cache le champ d'entrée
+    }
+}
+</script>
 </body>

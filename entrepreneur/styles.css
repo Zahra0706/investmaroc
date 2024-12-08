@@ -141,6 +141,75 @@ body {
   
 
 
+/* Pour les tablettes et petits écrans (max 768px) */
+@media (max-width: 768px) {
+  .sidebar {
+      width: 200px; /* Réduction de la largeur */
+  }
+
+  .logo {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #072A40;
+  }
+
+  .logo img {
+    width: 50%; /* Largeur du logo */
+    height: 50%;
+  }
+  .menu a {
+      font-size: 0.9rem; /* Réduction de la taille de la police */
+      padding: 12px 15px; /* Moins de padding */
+  }
+
+  .menu a i {
+      font-size: 1rem; /* Réduction de la taille des icônes */
+      margin-right: 10px;
+  }
+}
+
+/* Pour les téléphones (max 576px) */
+@media (max-width: 576px) {
+  /* On cache la barre latérale par défaut */
+  .sidebar {
+      width: 0;
+      overflow: hidden; /* Évite le débordement */
+  }
+
+  .menu a {
+      font-size: 0.85rem;
+      padding: 10px 10px;
+  }
+
+  .menu a i {
+      font-size: 0.9rem;
+      margin-right: 8px;
+  }
+
+  /* Contenu principal prend tout l'écran */
+  .content {
+      flex-grow: 1;
+      padding: 10px; 
+  }
+
+  /* Bouton de menu (burger) */
+  .menu-toggle {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 2rem;
+      color: #072A40;
+      cursor: pointer;
+      z-index: 10;
+  }
+
+  /* Lorsqu'on affiche le menu */
+  .sidebar.active {
+      width: 200px; /* Largeur du menu ouvert */
+  }
+}
+
+
   /*liste projet*/
   .project-item {
     border: 1px solid #ddd;
