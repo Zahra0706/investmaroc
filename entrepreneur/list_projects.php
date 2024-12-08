@@ -4,17 +4,20 @@ if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
 }
 
+include 'menu.php';
 // Inclure la connexion à la base de données
 include 'db.php';
+
 
 // Récupération de tous les projets de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT id, title, image FROM projects WHERE user_id = :user_id ORDER BY created_at DESC");
+$stmt = $conn->prepare("SELECT id, title, image FROM projects WHERE entrepreneur_id = :user_id ORDER BY id DESC");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,7 +25,6 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Projets</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .project-list {
@@ -75,7 +77,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-    <!-- Menu latéral -->
+    <!-- Menu latéral 
     <div class="sidebar">
         <div class="logo">
             <h2>Entrepreneur</h2>
@@ -87,7 +89,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="#"><i class="fas fa-envelope"></i> Messagerie</a></li>
             <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
         </ul>
-    </div>
+    </div>-->
 
     <div class="main-content">
         <h1>Mes Projets</h1>

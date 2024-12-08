@@ -2,6 +2,8 @@
 // Démarrage de la session
 session_start();
 
+include 'menu.php';
+
 // Vérifier si l'utilisateur est connecté (par exemple, en vérifiant la session)
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
@@ -73,35 +75,10 @@ if (!$user) {
 
 
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            color: white;
-            padding-top: 20px;
-        }
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .sidebar .logo h2 {
-            color: #fff;
-            text-align:center ;
-        }
-       
-        .profile-photo img {
-            border-radius: 50%;
-            border: 2px solid #4CAF50;
-        }
-        .profile-info p {
-            font-size: 16px;
-        }
     </style>
 </head>
 <body>
-    <!-- Barre latérale -->
+    <!-- Barre latérale 
     <div class="sidebar">
     <div class="logo">
       <h2>Entrepreneur</h2>
@@ -135,7 +112,7 @@ if (!$user) {
         </a>
       </li>
     </ul>
-  </div>
+  </div>-->
 
     <!-- Contenu principal -->
     <div class="container">
