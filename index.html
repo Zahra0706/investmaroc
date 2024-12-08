@@ -17,7 +17,6 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             background-color: #072A40;
         }
-
         .hero {
             background-image: url("images/investissement_maroc.png");
             color: white;
@@ -79,19 +78,41 @@ footer p {
 .communication{
     padding-bottom: 20px ;
 }
+@media (max-width: 768px) {
+    header {
+        text-align: center; /* Centrer tout en mode mobile */
+    }
+
+    header .col-12 {
+        flex-direction: column; /* Empile le logo et les boutons */
+    }
+
+    header .btn {
+        margin-bottom: 10px; /* Ajouter un espace entre les boutons */
+    }
+}
     </style>
 </head>
 <body>
-    <header class="text-white py-4">
-        <div class="container d-flex justify-content-between align-items-center">
-            <h1 class="h3"><i class="fas fa-lightbulb me-2"></i>Invest Maroc</h1>
-            <div>
-                <a href="connexion.php" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt me-1"></i> Se connecter</a>
-                <a href="inscription.html" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> S'inscrire</a>
+    <header class="text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Logo -->
+                <div class="col-12 col-md-6 d-flex justify-content-between justify-content-md-start align-items-center">
+                    <h1 class="h3 mb-0">
+                        <img src="logo.png" alt="logo invest maroc" style="width: 65px;" class="me-2">
+                        Invest Maroc
+                    </h1>
+                </div>
+                <!-- Boutons -->
+                <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end mt-3 mt-md-0">
+                    <a href="connexion.php" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt me-1"></i> Se connecter</a>
+                    <a href="inscription.html" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> S'inscrire</a>
+                </div>
             </div>
         </div>
     </header>
-
+    
     <section class="hero text-white text-center py-5">
         <div class="container">
             <h1 class="display-4 fw-bold"><i class="fas fa-handshake me-2"></i> Investissez dans l'avenir avec <span class="highlight">Invest Maroc</span> </h1>
