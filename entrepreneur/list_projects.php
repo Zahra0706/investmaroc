@@ -10,7 +10,13 @@ include 'db.php';
 // Récupération de tous les projets de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT id, title, image FROM projects WHERE user_id = :user_id ORDER BY created_at DESC");
+// Requête SQL pour récupérer les projets et leurs dates de création
+$stmt = $conn->prepare("
+    SELECT p.id, p.title, p.created_at
+    FROM projects p
+    WHERE p.entrepreneur_id = :user_id
+    ORDER BY p.created_at DESC
+");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -28,16 +34,16 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .project-list {
             display: flex;
             flex-wrap: wrap;
+            gap: 20px;
         }
 
         .project-item {
-            width: 200px;
+            width: 250px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            margin: 10px;
             overflow: hidden;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease-in-out;
         }
 
@@ -45,16 +51,16 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             transform: translateY(-5px);
         }
 
-        .project-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-
         .project-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             margin: 10px 0;
+        }
+
+        .project-date {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 10px;
         }
 
         .btn-view-details {
@@ -98,8 +104,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="project-list">
                 <?php foreach ($projects as $project): ?>
                     <div class="project-item">
-                        <img src="<?= $project['image'] ?? 'placeholder.jpg' ?>" alt="Image du projet" class="project-image">
                         <h2 class="project-title"><?= htmlspecialchars($project['title']) ?></h2>
+                        <p class="project-date"><?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
                         <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
                             <i class="fas fa-eye"></i> Afficher détails
                         </a>
