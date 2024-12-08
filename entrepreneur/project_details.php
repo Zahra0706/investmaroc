@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'menu.php'; 
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
 }
@@ -71,19 +72,7 @@ $images = json_decode($project['image'], true); // Convertir la chaîne JSON en 
 </head>
 <body>
 
-    <!-- Menu latéral -->
-    <div class="sidebar">
-        <div class="logo">
-            <h2>Entrepreneur</h2>
-        </div>
-        <ul class="menu">
-            <li><a href="../profil.php"><i class="fas fa-user"></i> Mon Profil</a></li>
-            <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> Créer un Projet</a></li>
-            <li><a href="list_projects.php"><i class="fas fa-list"></i> Mes Projets</a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i> Messagerie</a></li>
-            <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-        </ul>
-    </div>
+   
 
     <div class="main-content">
         <div class="project-details">

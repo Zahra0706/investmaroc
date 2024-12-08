@@ -18,23 +18,27 @@
       background-color: #072A40;
       color: #ecf0f1;
       transition: width 0.3s ease;
+      position: relative;
     }
 
+    /* Réduit la largeur de la sidebar lorsqu'elle est réduite */
     .sidebar.collapsed {
-      width: 80px;
+      width: 60px;
     }
 
+    /* Styles de la logo */
     .logo {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #072A40;
-  }
+      text-align: center;
+      padding: 20px 0;
+      background-color: #072A40;
+    }
 
-  .logo img {
-    width: 100%; /* Largeur du logo */
-    height: 100%;
-  }
+    .logo img {
+      width: 100%;
+      height: 100%;
+    }
 
+    /* Styles du menu */
     .menu a {
       display: flex;
       align-items: center;
@@ -58,10 +62,9 @@
       transition: opacity 0.3s ease;
     }
 
+    /* Masquer les textes lorsque la sidebar est réduite */
     .sidebar.collapsed .menu span {
-      opacity: 0;
-      width: 0;
-      overflow: hidden;
+      display: none;
     }
 
     .sidebar.collapsed .menu a {
@@ -95,14 +98,56 @@
       flex-grow: 1;
     }
 
+    /* Styles pour mobile */
     @media (max-width: 768px) {
       .sidebar {
-        width: 100%; 
+        width: 100%;
         height: auto;
       }
 
       .sidebar.collapsed {
         width: 100%;
+      }
+
+      .content {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .toggle-btn {
+        top: 10px;
+        right: 10px;
+      }
+
+      /* Sur mobile, afficher les textes et les icônes par défaut */
+      .sidebar .menu span {
+        display: inline-block;
+      }
+
+      /* Masquer les textes et icônes lorsque la sidebar est réduite sur mobile */
+      .sidebar.collapsed .menu span,
+      .sidebar.collapsed .menu i {
+        display: none;
+      }
+
+      /* Masquer le logo lorsque la sidebar est réduite sur mobile */
+      .sidebar.collapsed .logo {
+        display: none;
+      }
+    }
+
+    /* Styles supplémentaires pour les éléments du menu sur petits écrans */
+    @media (max-width: 576px) {
+      .menu a i {
+        font-size: 1.5rem;
+      }
+
+      .menu a span {
+        display: none; /* Masque les textes sur très petit écran */
+      }
+
+      .sidebar.collapsed .menu a {
+        justify-content: center;
       }
     }
   </style>
@@ -157,7 +202,9 @@
     </div>
 
     <!-- Contenu principal -->
-   
+    <div class="content">
+      <!-- Ici tu peux ajouter ton contenu -->
+    </div>
   </div>
 
   <!-- Lien vers Bootstrap Bundle (inclut Popper.js) -->
@@ -170,6 +217,7 @@
     const icon = toggleBtn.querySelector('i');
 
     toggleBtn.addEventListener('click', () => {
+      // Basculer entre les classes collapsed et expanded
       sidebar.classList.toggle('collapsed');
       
       // Changer l'icône du bouton (flèche de gauche/droite)
