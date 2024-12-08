@@ -71,15 +71,6 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .btn-view-details:hover {
             background-color: #0056b3;
         }
-
-        .project-details {
-            display: none;
-            background-color: #f4f4f4;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 8px;
-        }
-
     </style>
 </head>
 <body>
@@ -109,46 +100,14 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="project-item">
                         <img src="<?= $project['image'] ?? 'placeholder.jpg' ?>" alt="Image du projet" class="project-image">
                         <h2 class="project-title"><?= htmlspecialchars($project['title']) ?></h2>
-                        <button class="btn-view-details" data-id="<?= $project['id'] ?>">
+                        <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
                             <i class="fas fa-eye"></i> Afficher détails
-                        </button>
-                        <div class="project-details" id="details-<?= $project['id'] ?>"></div>
+                        </a>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
     </div>
-
-    <script>
-        document.querySelectorAll('.btn-view-details').forEach(button => {
-            button.addEventListener('click', function() {
-                const projectId = this.getAttribute('data-id');
-                const detailsContainer = document.getElementById(`details-${projectId}`);
-                
-                // Si les détails sont déjà affichés, on les masque
-                if (detailsContainer.style.display === 'block') {
-                    detailsContainer.style.display = 'none';
-                    return;
-                }
-
-                // Requête AJAX pour récupérer les détails du projet
-                fetch(`get_project_details.php?id=${projectId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        detailsContainer.innerHTML = `
-                            <p><strong>Description :</strong> ${data.description}</p>
-                            <p><strong>Budget :</strong> ${data.budget} DH</p>
-                            <p><strong>Catégorie :</strong> ${data.category}</p>
-                            <p><strong>Date de création :</strong> ${data.created_at}</p>
-                        `;
-                        detailsContainer.style.display = 'block';
-                    })
-                    .catch(error => {
-                        console.error('Erreur:', error);
-                    });
-            });
-        });
-    </script>
 
 </body>
 </html>
