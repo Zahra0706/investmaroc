@@ -2,6 +2,12 @@
 include 'menu.html'; 
 session_start();
 
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php"); // Rediriger si l'utilisateur n'est pas connecté
+    exit();
+}
+
 // Configuration de la base de données
 $host = 'localhost';
 $dbname = 'investmaroc';
@@ -15,17 +21,20 @@ try {
     die("Connexion échouée : " . $e->getMessage());
 }
 
-// Récupérer les projets validés
-$stmt = $pdo->prepare("SELECT * FROM projects WHERE status = 'validé'");
-$stmt->execute();
-$projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Récupérer les projets enregistrés par l'utilisateur
+$userId = $_SESSION['user_id']; // L'ID de l'utilisateur connecté
+$stmt = $pdo->prepare("SELECT p.* FROM projects p
+                       JOIN saved_projects sp ON p.id = sp.project_id
+                       WHERE sp.investor_id = :user_id");
+$stmt->execute(['user_id' => $userId]);
+$savedProjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projets Disponibles</title>
+    <title>Projets Enregistrés</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -50,8 +59,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 5px;
             transition: background-color 0.3s;
             position: absolute;
-            right:0;
-            top : 30px;
+            right: 0;
+            top: 30px;
         }
         .header .btn:hover {
             background-color: #16a7b8;
@@ -95,23 +104,27 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1><b>Projets Disponibles</b></h1>
-            <a href="saved_projects.php" class="btn"><img src="../images/save-instagram.png" alt="" style="width: 20px; height: 20px; margin-right:10px"> Voir les projets enregistrés</a>
+            <h1><b>Projets Enregistrés</b></h1>
+            <a href="browse_projects.php" class="btn">Retour aux projets</a>
         </div>
 
-        <!-- Liste des projets -->
+        <!-- Liste des projets enregistrés -->
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php foreach ($projects as $project): ?>
-                <div class="col">
-                    <div class="project-card">
-                        <img src="images/<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>">
-                        <div class="p-3">
-                            <h3><?php echo htmlspecialchars($project['title']); ?></h3>
-                            <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn-project">Voir Détails</a>
+            <?php if (count($savedProjects) > 0): ?>
+                <?php foreach ($savedProjects as $project): ?>
+                    <div class="col">
+                        <div class="project-card">
+                            <img src="images/<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>">
+                            <div class="p-3">
+                                <h3><?php echo htmlspecialchars($project['title']); ?></h3>
+                                <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn-project">Voir Détails</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="text-align: center; padding: 20px;">Aucun projet enregistré.</p>
+            <?php endif; ?>
         </div>
     </div>
 
