@@ -16,32 +16,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $budget = $_POST['budget'];
     $category = $_POST['category'];
 
-    // Gestion des fichiers média
-    $media_path = null;
-    if (isset($_FILES['media']) && $_FILES['media']['error'] == 0) {
+    // Gestion des fichiers médias (plusieurs fichiers)
+    $media_paths = [];
+    if (isset($_FILES['media']) && count($_FILES['media']['name']) > 0) {
         $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["media"]["name"]);
-        if (move_uploaded_file($_FILES["media"]["tmp_name"], $target_file)) {
-            $media_path = $target_file;
-        } else {
-            $message = "Erreur lors du téléchargement du fichier.";
+        
+        foreach ($_FILES['media']['name'] as $key => $file_name) {
+            if ($_FILES['media']['error'][$key] == 0) {
+                $target_file = $target_dir . basename($file_name);
+                if (move_uploaded_file($_FILES['media']['tmp_name'][$key], $target_file)) {
+                    $media_paths[] = $target_file; // Ajoute le chemin au tableau
+                } else {
+                    $message = "Erreur lors du téléchargement du fichier : " . htmlspecialchars($file_name);
+                }
+            }
         }
     }
+
+    // Convertir les chemins des fichiers en format JSON (pour les enregistrer dans la base)
+    $media_paths_json = json_encode($media_paths);
 
     // Récupérer l'ID de l'utilisateur connecté
     $user_id = $_SESSION['user_id'];
 
     // Insertion dans la base de données
     try {
-        $sql = "INSERT INTO projects (title, description, capital_needed, category, image, entrepreneur_id) 
-                VALUES (:title, :description, :capital_needed, :category, :image, :entrepreneur_id)";
+        $sql = "INSERT INTO projects (title, description, budget, category, image, user_id) 
+                VALUES (:title, :description, :budget, :category, :image, :user_id)";
+                
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':capital_needed', $budget);
+        $stmt->bindParam(':budget', $budget);
         $stmt->bindParam(':category', $category);
-        $stmt->bindParam(':image', $media_path);
-        $stmt->bindParam(':entrepreneur_id', $user_id);
+        $stmt->bindParam(':image', $media_paths_json); // 🚀 On enregistre tous les chemins des images
+        $stmt->bindParam(':user_id', $user_id);
 
         if ($stmt->execute()) {
             // Redirection pour éviter la resoumission du formulaire
@@ -115,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </select>
 
           <label for="media">Ajouter des médias (images/vidéos) :</label>
-          <input type="file" id="media" name="media" accept="image/*,video/*">
+          <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple> <!-- 🚀 Multiple fichiers -->
 
           <button type="submit" class="btn-submit">Publier</button>
           <button type="button" class="btn-draft">Enregistrer en Brouillon</button>

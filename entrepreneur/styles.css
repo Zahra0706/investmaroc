@@ -141,4 +141,49 @@ body {
   
 
 
-  
+  /*liste projet*/
+  .project-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.project-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.btn-view-details {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-view-details i {
+    margin-right: 8px;
+}
+
+.btn-back {
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.image-gallery img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+}

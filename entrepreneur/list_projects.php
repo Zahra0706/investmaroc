@@ -10,7 +10,7 @@ include 'db.php';
 // Récupération de tous les projets de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT id, title FROM projects WHERE user_id = :user_id ORDER BY created_at DESC");
+$stmt = $conn->prepare("SELECT id, title, image FROM projects WHERE user_id = :user_id ORDER BY created_at DESC");
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,8 +23,64 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Projets</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Lien vers une bibliothèque d'icônes comme Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .project-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .project-item {
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .project-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .btn-view-details {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-view-details:hover {
+            background-color: #0056b3;
+        }
+
+        .project-details {
+            display: none;
+            background-color: #f4f4f4;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -51,36 +107,48 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="project-list">
                 <?php foreach ($projects as $project): ?>
                     <div class="project-item">
-                        <?php
-                        // Récupérer toutes les images du projet
-                        $stmt_images = $conn->prepare("SELECT image_path FROM project_images WHERE project_id = :project_id");
-                        $stmt_images->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
-                        $stmt_images->execute();
-                        $images = $stmt_images->fetchAll(PDO::FETCH_ASSOC);
-
-                        // Vérifier si des images existent pour ce projet
-                        if ($images):
-                            foreach ($images as $image):
-                                // Vérifier que le chemin de l'image est valide
-                                $image_path = htmlspecialchars($image['image_path']);
-                                if (file_exists($image_path)):
-                                    echo "<img src='" . $image_path . "' alt='Image du projet' class='project-image' style='width: 150px; height: 150px; object-fit: cover; margin-right: 10px;'>";
-                                else:
-                                    echo "<img src='placeholder.jpg' alt='Aucune image disponible' class='project-image' style='width: 150px; height: 150px; object-fit: cover; margin-right: 10px;'>";
-                                endif;
-                            endforeach;
-                        else:
-                            echo "<img src='placeholder.jpg' alt='Aucune image disponible' class='project-image' style='width: 150px; height: 150px; object-fit: cover; margin-right: 10px;'>";
-                        endif;
-                        ?>
-
-                        <h2><?= htmlspecialchars($project['title']) ?></h2>
-                        <a href="view_project.php?id=<?= $project['id'] ?>" class="btn-view-details">Voir les détails</a>
+                        <img src="<?= $project['image'] ?? 'placeholder.jpg' ?>" alt="Image du projet" class="project-image">
+                        <h2 class="project-title"><?= htmlspecialchars($project['title']) ?></h2>
+                        <button class="btn-view-details" data-id="<?= $project['id'] ?>">
+                            <i class="fas fa-eye"></i> Afficher détails
+                        </button>
+                        <div class="project-details" id="details-<?= $project['id'] ?>"></div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
     </div>
+
+    <script>
+        document.querySelectorAll('.btn-view-details').forEach(button => {
+            button.addEventListener('click', function() {
+                const projectId = this.getAttribute('data-id');
+                const detailsContainer = document.getElementById(`details-${projectId}`);
+                
+                // Si les détails sont déjà affichés, on les masque
+                if (detailsContainer.style.display === 'block') {
+                    detailsContainer.style.display = 'none';
+                    return;
+                }
+
+                // Requête AJAX pour récupérer les détails du projet
+                fetch(`get_project_details.php?id=${projectId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        detailsContainer.innerHTML = `
+                            <p><strong>Description :</strong> ${data.description}</p>
+                            <p><strong>Budget :</strong> ${data.budget} DH</p>
+                            <p><strong>Catégorie :</strong> ${data.category}</p>
+                            <p><strong>Date de création :</strong> ${data.created_at}</p>
+                        `;
+                        detailsContainer.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                    });
+            });
+        });
+    </script>
 
 </body>
 </html>
