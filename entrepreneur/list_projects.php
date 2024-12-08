@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'menu.php'; 
+include 'menu.php'; // Inclure le menu ici
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
 }
@@ -32,6 +32,80 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Styles de la sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            padding: 20px;
+            color: white;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        /* Styles pour les éléments du menu */
+        .menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu li {
+            padding: 10px 0;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu a i {
+            margin-right: 10px;
+        }
+
+        /* Bouton de bascule */
+        .toggle-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            display: block;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            font-size: 24px; /* Taille de l'icône du bouton */
+        }
+
+        /* Affichage du bouton de bascule sur mobile */
+        @media (max-width: 768px) {
+            .toggle-btn {
+                display: block;
+            }
+            /* Réduire la largeur du menu sur mobile */
+            .sidebar {
+                left: -250px; /* Menu caché au départ */
+            }
+            .sidebar.open {
+                left: 0;
+            }
+        }
+
+        /* Styles pour la page principale */
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+
         .project-list {
             display: flex;
             flex-wrap: wrap;
@@ -81,9 +155,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-
-    <!-- Menu latéral -->
-   
+    <!-- Le menu est inclus ici -->
+    <!-- Sidebar est inclus via 'menu.php' -->
 
     <div class="main-content">
         <h1>Mes Projets</h1>
@@ -96,7 +169,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="project-item">
                         <h2 class="project-title"><?= htmlspecialchars($project['title']) ?></h2>
                         <p class="project-date"><?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
-                       <BR></BR> <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
+                        <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
                             <i class="fas fa-eye"></i> Afficher détails
                         </a>
                     </div>
@@ -105,5 +178,13 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
     </div>
 
+    <script>
+        const toggleBtn = document.getElementById('toggle-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+    </script>
 </body>
 </html>
