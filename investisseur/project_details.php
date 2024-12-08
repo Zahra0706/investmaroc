@@ -103,7 +103,7 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
 
         .save-icon-form {
             position: absolute;
-            right: 40px;
+            right: 0px;
             top: 10px;
             margin: 0;
             padding: 0;
