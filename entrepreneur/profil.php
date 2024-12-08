@@ -41,7 +41,7 @@ if (!$user) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Utilisateur</title>
-    <link rel="stylesheet" href="admin/styles.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
 /* Container pour le contenu */
@@ -103,42 +103,39 @@ if (!$user) {
 <body>
     <!-- Barre latérale -->
     <div class="sidebar">
-        <div class="logo">
-            <h2>Admin Dashboard</h2>
-        </div>
-        <ul class="menu">
-            <li>
-                <a href="profil.php">
-                    <i class="fas fa-user-circle"></i> Profil
-                </a>
-            </li>
-            <li>
-                <a href="admin/investisseurs.php">
-                    <i class="fas fa-handshake"></i> Investisseurs
-                </a>
-            </li>
-            <li>
-                <a href="#entrepreneurs">
-                    <i class="fas fa-briefcase"></i> Entrepreneurs
-                </a>
-            </li>
-            <li>
-                <a href="admin/projets.php">
-                    <i class="fas fa-list"></i> Projets
-                </a>
-            </li>
-            <li>
-                <a href="#collaborations">
-                    <i class="fas fa-users"></i> Collaborations
-                </a>
-            </li>
-            <li>
-                <a href="../deconnexion.php">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-            </li>
-        </ul>
+    <div class="logo">
+      <h2>Entrepreneur</h2>
     </div>
+    <ul class="menu">
+    <li>
+        <a href="profil.php">
+          <i class="fas fa-user"></i> Mon Profil
+        </a>
+      </li>
+      
+      <li>
+        <a href="create_project.php">
+          <i class="fas fa-plus-circle"></i> Créer un Projet
+        </a>
+      </li>
+     
+      <li>
+        <a href="list_projects.php">
+          <i class="fas fa-list"></i> Mes Projets
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-envelope"></i> Messagerie
+        </a>
+      </li>
+      <li>
+        <a href="../deconnexion.php">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+      </li>
+    </ul>
+  </div>
 
     <!-- Contenu principal -->
     <div class="container">

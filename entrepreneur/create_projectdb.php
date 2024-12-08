@@ -22,15 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['user_id'];
 
     // Insertion dans la base de données
-    $sql = "INSERT INTO projects (title, description, budget, category, media_path, user_id) 
-            VALUES (:title, :description, :budget, :category, :media_path, :user_id)";
+    $sql = "INSERT INTO projects (title, description, capital_needed, category, image, entrepreneur_id) 
+            VALUES (:title, :description, :capital_needed, :category, :image, :entrepreneur_id)";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':budget', $budget);
+    $stmt->bindParam(':capital_needed', $budget);
     $stmt->bindParam(':category', $category);
-    $stmt->bindParam(':media_path', $media_path);
-    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':image', $media_path);
+    $stmt->bindParam(':entrepreneur_id', $user_id);
 
     if ($stmt->execute()) {
         echo "Projet créé avec succès!";

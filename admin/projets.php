@@ -123,7 +123,21 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             display: flex;
             gap: 10px;
         }
-        
+        .btn-danger {
+    padding: 8px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
     </style>
 </head>
 <body>
@@ -187,14 +201,19 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td><?php echo htmlspecialchars($project['title']); ?></td>
                             <td><?php echo htmlspecialchars($project['description']); ?></td>
-                            <td><?php echo htmlspecialchars($project['capital_needed']); ?> €</td>
+                            <td><?php echo htmlspecialchars($project['capital_needed']); ?> DH</td>
                             <td><?php echo htmlspecialchars($project['status']); ?></td>
                             <td class="action-buttons">
-                                <?php if ($project['status'] == 'en attent'): ?>
-                                    <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn">Valider</a>
-                                <?php endif; ?>
-                                <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn">Supprimer</a>
-                            </td>
+                            <?php if ($project['status'] == 'en attent'): ?>
+                                <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn">
+                                    <i class="fas fa-check-circle"></i> Valider
+                                </a>
+                            <?php endif; ?>
+                            <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Supprimer
+                            </a>
+                        </td>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
