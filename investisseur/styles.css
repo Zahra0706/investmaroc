@@ -84,6 +84,8 @@ body {
     color: #ecf0f1;
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Hauteur de 100% de la fenêtre du navigateur */
+
   }
   
   .logo {

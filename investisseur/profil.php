@@ -171,7 +171,7 @@ button:hover {
 
 .edit-form-container {
     display: none;
-    margin-top: -50px;
+    margin-top: -30px;
 }
 
 form input[type="text"],
