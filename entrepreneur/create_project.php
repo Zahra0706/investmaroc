@@ -1,4 +1,5 @@
 <?php 
+ob_start(); // Démarre la mise en mémoire tampon de sortie
 session_start();
 include 'menu.php'; 
 include 'db.php';
@@ -13,7 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $budget = $_POST['capital_needed'];
+   
+    // Récupérer la catégorie choisie
     $category = $_POST['category'];
+    // Si "autre" est sélectionné, récupérer la valeur du champ personnalisé
+    if ($category == 'autre' && !empty($_POST['custom_category'])) {
+        $category = $_POST['custom_category'];
+    }
 
     // Gestion des fichiers médias (plusieurs fichiers)
     $media_paths = [];
@@ -53,8 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         if ($stmt->execute()) {
-            // Redirection pour éviter la resoumission du formulaire
-            exit(); // Stopper l'exécution après redirection
+            // Redirection pour afficher le message de succès
+            header("Location: create_project.php?success=1");
+            exit(); // Assurez-vous de stopper l'exécution après la redirection
         } else {
             $message = "Erreur lors de la création du projet.";
         }
@@ -62,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Erreur : " . $e->getMessage();
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,18 +124,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <input type="number" id="budget" name="capital_needed" placeholder="Montant recherché" required>
 
           <label for="category">Catégorie :</label>
-          <select id="category" name="category" required onchange="showInputField(this)">
-              <option value="technologie">Technologie</option>
-              <option value="santé">Santé</option>
-              <option value="éducation">Éducation</option>
-              <option value="autre">Autre</option>
-          </select>
-          <div id="custom-category-container" style="display: none; margin-top: 10px;">
-    <label for="custom-category">Veuillez préciser la catégorie :</label>
-    <input type="text" id="custom-category" name="custom_category" placeholder="Saisissez la catégorie ici">
-</div>
+            <select id="category" name="category" required onchange="showInputField(this)">
+                <option value="technologie">Technologie</option>
+                <option value="santé">Santé</option>
+                <option value="éducation">Éducation</option>
+                <option value="autre">Autre</option>
+            </select>
 
-
+            <!-- Champ personnalisé pour la catégorie "autre" -->
+            <div id="custom-category-container" style="display: none; margin-top: 10px;">
+                <label for="custom-category">Veuillez préciser la catégorie :</label>
+                <input type="text" id="custom-category" name="custom_category" placeholder="Saisissez la catégorie ici">
+            </div>
 
           <label for="media">Ajouter des médias (images/vidéos) :</label>
           <input type="file" id="media" name="media[]" accept="image" multiple> <!-- 🚀 Multiple fichiers -->
@@ -144,4 +153,7 @@ function showInputField(selectElement) {
     }
 }
 </script>
+<?php ob_end_flush(); // Vide et arrête la mise en mémoire tampon de sortie
+?>
 </body>
+</html>
