@@ -95,33 +95,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
        .edit-form-container {
             display: none;
-        }
-/* Style global */
-/* Style global */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+       }
 
-    margin: 0;
-    padding: 0;
-}
+  
 
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 150vh;
+    min-height: 100vh;
     padding: 20px;
     margin-top: -150px;
-    margin-left: 230px; /* Ajoute cette ligne */
+    margin-left: 300px; /* Ajoute cette ligne */
 
 }
 
 .profile-container {
     border-radius: 12px;
     padding: 40px;
-    width: 900px; /* Fixer la largeur à 900px */
-    max-width: 900px; /* Limiter la largeur à 900px */
     transition: all 0.3s ease-in-out;
+    width: 1000px;
 }
 
 .profile-container h1 {

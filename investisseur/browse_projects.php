@@ -49,7 +49,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     justify-content: center;
     align-items: center;
     padding: 30px 0;
-}    .title {
+}  
+  .title {
             font-size: 2.5rem;
             color: #072A40;
             text-align: center;
