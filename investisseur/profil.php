@@ -112,6 +112,8 @@ body {
     min-height: 150vh;
     padding: 20px;
     margin-top: -150px;
+    margin-left: 230px; /* Ajoute cette ligne */
+
 }
 
 .profile-container {
