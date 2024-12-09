@@ -30,16 +30,11 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Style personnalisé -->
     <style>
        
-
-        /* ======== Style général de la page ======== */
-       
-
-      
-       /* ======== Style général de la page ======== */
 .container {
     display: block; /* Change de flex à block pour que les éléments soient empilés */
     justify-content: center;
@@ -48,40 +43,35 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     margin-left: 250px; /* Ajoute cette ligne */
 }
 
-/* ======== Style de l'en-tête ======== */
-/* ======== Style de l'en-tête ======== */
 .header {
     display: flex;
     flex-direction: column; /* Alignement vertical */
     justify-content: center;
     align-items: center;
     padding: 30px 0;
-}
+}    .title {
+            font-size: 2.5rem;
+            color: #072A40;
+            text-align: center;
+        }
 
-.title {
-    font-size: 2.5rem;
-    color: #072A40;
-    text-align: center; /* Centrer le titre */
-}
+        .left-align {
+            align-self: flex-end;
+            background-color: #072A40;
+            color: #fff;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-.left-align {
-    align-self: flex-end; /* Aligner le bouton à gauche */
-    background-color: #072A40;
-    color: white;
-    padding: 10px 25px;
-    font-size: 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+        .left-align i {
+            margin-right: 10px; /* Espace entre l'icône et le texte */
+        }
 
-.left-align img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    
-}
-
-
+        .left-align:hover {
+        border:1px solid #072A40;
+        }
 
 /* ======== Style des cartes des projets ======== */
 .project-card {
@@ -137,10 +127,10 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="header">
     <h1 class="title"><b>Projets Disponibles</b></h1>
     <a href="saved_projects.php" class="btn left-align">
-        <img src="../images/save-instagram.png" alt="Icone de sauvegarde">
-        Voir les projets enregistrés
+        <i class="fas fa-bookmark"></i> Voir les projets enregistrés
     </a>
 </div>
+
 
 
     <!-- Liste des projets -->
