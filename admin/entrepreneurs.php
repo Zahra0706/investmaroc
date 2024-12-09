@@ -92,6 +92,12 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background-color: #072A40;
             color: white;
         }
+        table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -111,8 +117,8 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-  <!-- Barre latérale -->
-  <div class="sidebar">
+    <!-- Barre latérale -->
+    <div class="sidebar">
         <div class="logo">
             <h2>Admin Dashboard</h2>
         </div>
@@ -158,6 +164,7 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <table>
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Nom</th>
                         <th>E-mail</th>
                         <th>Téléphone</th>
@@ -166,6 +173,9 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach ($entrepreneurs as $entrepreneur): ?>
                         <tr>
+                            <td>
+                                <img src="<?php echo htmlspecialchars($entrepreneur['image']); ?>" alt="Photo de l'entrepreneur">
+                            </td>
                             <td><?php echo htmlspecialchars($entrepreneur['name']); ?></td>
                             <td><?php echo htmlspecialchars($entrepreneur['email']); ?></td>
                             <td><?php echo htmlspecialchars($entrepreneur['telephone']); ?></td>

@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Traitement de l'image
     if ($profileImage['error'] === UPLOAD_ERR_OK) {
-        $targetDir = 'uploads/';
+        $targetDir = '../entrepreneur/uploads/';
         $targetFile = $targetDir . basename($profileImage['name']);
         move_uploaded_file($profileImage['tmp_name'], $targetFile);
     } else {

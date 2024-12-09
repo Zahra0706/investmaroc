@@ -92,6 +92,12 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background-color: #072A40;
             color: white;
         }
+        table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -159,6 +165,7 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <table>
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Nom</th>
                         <th>E-mail</th>
                         <th>Téléphone</th>
@@ -167,6 +174,13 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach ($investors as $investor): ?>
                         <tr>
+                            <td>
+                                <?php if (!empty($investor['image'])): ?>
+                                    <img src="<?php echo htmlspecialchars($investor['image']); ?>" alt="Image">
+                                <?php else: ?>
+                                    <img src="default-avatar.png" alt="Default Avatar">
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo htmlspecialchars($investor['name']); ?></td>
                             <td><?php echo htmlspecialchars($investor['email']); ?></td>
                             <td><?php echo htmlspecialchars($investor['telephone']); ?></td>
