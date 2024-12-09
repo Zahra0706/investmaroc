@@ -26,6 +26,8 @@
     /* Réduit la largeur de la sidebar lorsqu'elle est réduite */
     .sidebar.collapsed {
       width: 60px;
+      list-style-type: none; /* Supprime les puces des <li> */
+
     }
 
     /* Styles de la logo */
@@ -48,10 +50,14 @@
       text-decoration: none;
       color: #ecf0f1;
       transition: background-color 0.3s;
+      list-style-type: none; /* Supprime les puces des <li> */
+
     }
 
     .menu a:hover {
       background-color: #18B7BE;
+      list-style-type: none; /* Supprime les puces des <li> */
+
     }
 
     .menu a i {
@@ -168,12 +174,13 @@
         <img src="logo.png" alt="Logo">
       </div>
       
-      <ul class="menu">
-        <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
-        <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
-        <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
-        <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
-    </ul>
+      <ul class="menu" style="list-style-type: none; padding: 0; margin: 0;">
+    <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
+    <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
+    <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
+    <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
+</ul>
+
     </div>
 
     <!-- Contenu principal -->
