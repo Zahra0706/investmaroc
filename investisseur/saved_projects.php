@@ -97,6 +97,9 @@ $savedProjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .btn-project:hover {
             background-color: #16a7b8;
         }
+        .container{
+            margin-left:270px;
+        }
     </style>
 </head>
 <body>

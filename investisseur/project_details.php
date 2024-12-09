@@ -82,7 +82,9 @@ $entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
         .container {
             max-width: 1200px;
             margin: 20px auto;
+            margin-left:280px;
             padding: 20px;
+            height:650px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
