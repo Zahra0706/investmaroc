@@ -30,11 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Rediriger selon le rôle
                 if ($role === "admin") {
-                    header("Location: admin/admin.html");
+                    header("Location: admin/profil.php");
                 } elseif ($role === "entrepreneur") {
-                    header("Location: entrepreneur/menu.php");
+                    header("Location: entrepreneur/profil.php");
                 } else {
-                    header("Location: investisseur/menu.html");
+                    header("Location: investisseur/profil.php");
                 }
                 exit();
             } else {
