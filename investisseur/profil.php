@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 /* Style global */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f7f8fa;
+
     margin: 0;
     padding: 0;
 }
@@ -109,8 +109,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 150vh;
     padding: 20px;
+    margin-top: -150px;
 }
 
 .profile-container {
@@ -280,6 +281,7 @@ form button:hover {
 
         <!-- Formulaire de modification -->
         <div class="edit-form-container" id="edit-form-container">
+       
             <form id="edit-form" method="POST" enctype="multipart/form-data">
                 <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
                 <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>

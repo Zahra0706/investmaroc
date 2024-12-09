@@ -1,7 +1,7 @@
 <?php
-include 'menu.html'; 
-session_start();
 
+session_start();
+include 'menu.html'; 
 // Configuration de la base de données
 $host = 'localhost';
 $dbname = 'investmaroc';

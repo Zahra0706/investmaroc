@@ -1,7 +1,6 @@
 <?php
-include 'menu.html'; 
 session_start();
-
+include 'menu.html'; 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php"); // Rediriger si l'utilisateur n'est pas connecté
