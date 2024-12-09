@@ -170,7 +170,6 @@
         <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
         <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
         <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
-        <li><a href="#"><i class="fas fa-envelope"></i> <span>Messagerie</span></a></li>
         <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
     </ul>
     </div>
