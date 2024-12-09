@@ -1,12 +1,10 @@
 <?php
 session_start();
-include 'menu.php'; // Inclure le menu ici
+include 'menu.php'; // Inclure le menu
+include 'db.php';
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
 }
-
-// Inclure la connexion à la base de données
-include 'db.php';
 
 // Récupération de tous les projets de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
@@ -30,145 +28,113 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Projets</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Lien vers Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Styles de la sidebar */
-        .sidebar {
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            padding: 20px;
-            color: white;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        /* Styles pour les éléments du menu */
-        .menu {
-            list-style: none;
-            padding: 0;
-        }
-
-        .menu li {
-            padding: 10px 0;
-        }
-
-        .menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-        }
-
-        .menu a i {
-            margin-right: 10px;
-        }
-
-        /* Bouton de bascule */
-        .toggle-btn {
-            background-color: #333;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            display: block;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            font-size: 24px; /* Taille de l'icône du bouton */
-        }
-
-        /* Affichage du bouton de bascule sur mobile */
-        @media (max-width: 768px) {
-            .toggle-btn {
-                display: block;
-            }
-            /* Réduire la largeur du menu sur mobile */
-            .sidebar {
-                left: -250px; /* Menu caché au départ */
-            }
-            .sidebar.open {
-                left: 0;
-            }
-        }
-
-        /* Styles pour la page principale */
+        /* Conteneur principal */
         .main-content {
-            margin-left: 260px;
-            padding: 20px;
+            margin-left: 260px; /* Ajusté pour laisser de la place à la sidebar */
+            padding: 30px;
+            background-color: #f8f9fa; /* Fond clair */
+            min-height: 100vh;
         }
 
+        /* Titre principal */
+        .main-content h1 {
+            font-size: 2.5rem;
+            color: #072A40;
+            margin-bottom: 20px;
+        }
+
+        /* Liste des projets */
         .project-list {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
 
+        /* Carte individuelle pour chaque projet */
         .project-item {
-            width: 250px;
-            border: 1px solid #ddd;
+            background-color: #ffffff;
             border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease-in-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .project-item:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
+        /* Titre des projets */
         .project-title {
-            font-size: 18px;
+            font-size: 1.25rem;
             font-weight: bold;
-            margin: 10px 0;
+            margin-top: 15px;
+            color: #072A40;
         }
 
+        /* Date de création */
         .project-date {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 15px;
         }
 
+        /* Bouton pour afficher les détails */
         .btn-view-details {
             display: inline-block;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #18B7BE;
+            color: white;
             padding: 10px 20px;
             border-radius: 5px;
             text-decoration: none;
-            margin-bottom: 10px;
-            transition: background-color 0.3s;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            transition: background-color 0.3s ease;
         }
 
         .btn-view-details:hover {
-            background-color: #0056b3;
+            background-color: #0d6efd; /* Couleur bleue au survol */
+        }
+
+        /* Message lorsqu'il n'y a pas de projets */
+        .no-projects {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #777;
+            margin-top: 50px;
+        }
+
+        /* Responsivité */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Le menu est inclus ici -->
-    <!-- Sidebar est inclus via 'menu.php' -->
+    <!-- Sidebar incluse via menu.php -->
 
+    <!-- Contenu principal -->
     <div class="main-content">
         <h1>Mes Projets</h1>
 
         <?php if (empty($projects)): ?>
-            <p>Aucun projet publié pour le moment.</p>
+            <p class="no-projects">Aucun projet publié pour le moment.</p>
         <?php else: ?>
             <div class="project-list">
                 <?php foreach ($projects as $project): ?>
                     <div class="project-item">
                         <h2 class="project-title"><?= htmlspecialchars($project['title']) ?></h2>
-                        <p class="project-date"><?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
+                        <p class="project-date">Créé le : <?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
                         <a href="project_details.php?id=<?= $project['id'] ?>" class="btn-view-details">
                             <i class="fas fa-eye"></i> Afficher détails
                         </a>
@@ -178,7 +144,10 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Gestion de la sidebar toggle
         const toggleBtn = document.getElementById('toggle-btn');
         const sidebar = document.getElementById('sidebar');
 

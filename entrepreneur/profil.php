@@ -3,7 +3,7 @@
 session_start();
 include 'menu.php'; 
 
-// Vérifier si l'utilisateur est connecté (par exemple, en vérifiant la session)
+// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
 }
@@ -35,6 +35,42 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
     die("Utilisateur introuvable.");
 }
+
+// Traiter la soumission du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $profileImage = $_FILES['profile_image'];
+
+    // Traitement de l'image
+    if ($profileImage['error'] === UPLOAD_ERR_OK) {
+        $targetDir = 'uploads/';
+        $targetFile = $targetDir . basename($profileImage['name']);
+        move_uploaded_file($profileImage['tmp_name'], $targetFile);
+    } else {
+        $targetFile = $user['image']; // Conserver l'ancienne image si aucune nouvelle n'est téléchargée
+    }
+
+    // Mettre à jour les informations de l'utilisateur
+    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, telephone = :telephone, image = :image WHERE id = :id");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':telephone', $telephone);
+    $stmt->bindParam(':image', $targetFile);
+    $stmt->bindParam(':id', $userId);
+    
+    if ($stmt->execute()) {
+        echo "<p style='color: green;'>Profil mis à jour avec succès.</p>";
+        // Récupérer à nouveau les informations mises à jour
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+        echo "<p style='color: red;'>Erreur lors de la mise à jour.</p>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -45,95 +81,51 @@ if (!$user) {
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-/* Container pour le contenu */
-.container {
-    margin-left: 250px; /* Laisse de l'espace pour la barre latérale */
-    width: calc(100% - 250px); /* Prend toute la largeur sauf celle de la barre latérale */
-    height: 100vh; /* Prend toute la hauteur de l'écran */
-    display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    background: #f9f9f9; /* Couleur d'arrière-plan */
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* Si vous voulez forcer l'élément de profil à être au centre, vous pouvez ajouter un conteneur supplémentaire */
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centrer les éléments à l'intérieur */
-    text-align: center; /* Centre le texte */
-    background: #fff; /* Couleur de fond du profil */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Ombre douce autour du profil */
-    width: 100%;
-    max-width: 600px; /* Limite la largeur pour que le profil ne soit pas trop large */
-}
-
-
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            color: white;
-            padding-top: 20px;
-        }
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .sidebar .logo h2 {
-            color: #fff;
-            text-align:center ;
-        }
-       
-        .profile-photo img {
-            border-radius: 50%;
-            border: 2px solid #4CAF50;
-        }
-        .profile-info p {
-            font-size: 16px;
-        }
+        /* Styles ici... */
     </style>
 </head>
 <body>
-    <!-- Contenu principal -->
     <div class="container">
-    <div class="profile-container">
-        <h1>Bienvenue, <?php echo htmlspecialchars($user['name']); ?> !</h1>
+        <div class="profile-container">
+            <h1>Bienvenue, <?php echo htmlspecialchars($user['name']); ?> !</h1>
 
-        <!-- Photo de profil -->
-        <div class="profile-photo">
-            <img src="<?php echo !empty($user['image']) ? htmlspecialchars($user['image']) : 'default-profile.png'; ?>" alt="Photo de profil" width="150" height="150">
-        </div>
+            <div class="profile-info" id="profileInfo">
+                <div class="profile-photo">
+                    <img src="<?php echo !empty($user['image']) ? htmlspecialchars($user['image']) : 'default-profile.png'; ?>" alt="Photo de profil" width="150" height="150">
+                </div>
+                <p><strong>Nom :</strong> <?php echo htmlspecialchars($user['name']); ?></p>
+                <p><strong>Email :</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                <p><strong>Téléphone :</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
+            </div>
 
-        <!-- Informations de l'utilisateur -->
-        <div class="profile-info">
-            <p><strong>Nom :</strong> <?php echo htmlspecialchars($user['name']); ?></p>
-            <p><strong>Email :</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Téléphone :</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
-            <p><strong>Rôle :</strong> <?php echo htmlspecialchars($user['role']); ?></p>
-        </div>
+            <button id="editProfileBtn">Modifier</button>
 
-        <!-- Formulaire pour modifier l'image -->
-        <div class="upload-section">
-            <h3>Modifier votre photo de profil</h3>
-            <form method="POST" enctype="multipart/form-data">
-                <input type="file" name="profile_image" accept="image/*" required>
-                <button type="submit">Mettre à jour</button>
-            </form>
-            <?php if (isset($error)) : ?>
-                <p style="color: red;"><?php echo $error; ?></p>
-            <?php endif; ?>
+            <div class="upload-section" id="uploadSection" style="display:none;">
+                <h3>Modifier votre profil</h3>
+                <form id="editProfileForm" method="POST" enctype="multipart/form-data">
+                    <label for="name">Nom :</label>
+                    <input type="text" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required><br>
+                    <label for="email">Email :</label>
+                    <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required><br>
+                    <label for="telephone">Téléphone :</label>
+                    <input type="text" name="telephone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required><br>
+                    <label for="profile_image">Photo de profil :</label>
+                    <input type="file" name="profile_image" accept="image/*"><br>
+                    <button type="submit">Mettre à jour</button>
+                </form>
+            </div>
+
+            <script>
+                const editProfileBtn = document.getElementById('editProfileBtn');
+                const profileInfo = document.getElementById('profileInfo');
+                const uploadSection = document.getElementById('uploadSection');
+
+                editProfileBtn.addEventListener('click', () => {
+                    profileInfo.style.display = 'none'; // Masquer les informations de profil
+                    uploadSection.style.display = 'block'; // Afficher le formulaire de modification
+                });
+            </script>
         </div>
     </div>
-</div>
-
-
 </body>
 </html>

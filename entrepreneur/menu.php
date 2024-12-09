@@ -13,51 +13,49 @@
   <style>
     /* Styles de la sidebar */
     .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
       width: 250px;
-      height: 100vh;
       background-color: #072A40;
       color: #ecf0f1;
+      overflow-y: auto;
       transition: width 0.3s ease;
-      position: relative;
-      list-style-type: none; /* Supprime les puces des <li> */
-
+      z-index: 1000; /* Toujours au-dessus du contenu principal */
     }
 
-    /* Réduit la largeur de la sidebar lorsqu'elle est réduite */
     .sidebar.collapsed {
       width: 60px;
-      list-style-type: none; /* Supprime les puces des <li> */
-
     }
 
-    /* Styles de la logo */
-    .logo {
+    .sidebar .logo {
       text-align: center;
       padding: 20px 0;
-      background-color: #072A40;
     }
 
-    .logo img {
-      width: 100%;
-      height: 100%;
+    .sidebar .logo img {
+      width: 80%;
+      max-width: 100px;
     }
 
-    /* Styles du menu */
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
     .menu a {
       display: flex;
       align-items: center;
       padding: 15px 20px;
       text-decoration: none;
       color: #ecf0f1;
-      transition: background-color 0.3s;
-      list-style-type: none; /* Supprime les puces des <li> */
-
+      transition: background-color 0.3s ease;
     }
 
     .menu a:hover {
       background-color: #18B7BE;
-      list-style-type: none; /* Supprime les puces des <li> */
-
     }
 
     .menu a i {
@@ -66,7 +64,6 @@
     }
 
     .menu span {
-      display: inline-block;
       transition: opacity 0.3s ease;
     }
 
@@ -75,15 +72,17 @@
       display: none;
     }
 
+    /* Centrer les icônes lorsque la sidebar est réduite */
     .sidebar.collapsed .menu a {
       justify-content: center;
     }
 
     /* Bouton de bascule (toggle) */
     .toggle-btn {
-      position: absolute;
-      top: 10px;
-      right: -20px;
+      position: fixed;
+      top: 20px;
+      left: 230px;
+      z-index: 1100;
       background-color: #18B7BE;
       color: white;
       width: 40px;
@@ -93,17 +92,15 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: left 0.3s ease;
+    }
+
+    .sidebar.collapsed + .toggle-btn {
+      left: 70px;
     }
 
     .toggle-btn:hover {
       transform: rotate(180deg);
-    }
-
-    .content {
-      padding: 20px;
-      background-color: #f9f9f9;
-      flex-grow: 1;
     }
 
     /* Styles pour mobile */
@@ -111,107 +108,76 @@
       .sidebar {
         width: 100%;
         height: auto;
+        position: relative;
       }
 
       .sidebar.collapsed {
         width: 100%;
       }
 
-      .content {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-
       .toggle-btn {
         top: 10px;
+        left: auto;
         right: 10px;
       }
 
-      /* Sur mobile, afficher les textes et les icônes par défaut */
-      .sidebar .menu span {
+      .menu a {
+        justify-content: flex-start;
+      }
+
+      .menu span {
         display: inline-block;
       }
 
-      /* Masquer les textes et icônes lorsque la sidebar est réduite sur mobile */
-      .sidebar.collapsed .menu span,
-      .sidebar.collapsed .menu i {
+      .sidebar.collapsed .menu span {
         display: none;
-      }
-
-      /* Masquer le logo lorsque la sidebar est réduite sur mobile */
-      .sidebar.collapsed .logo {
-        display: none;
-      }
-    }
-
-    /* Styles supplémentaires pour les éléments du menu sur petits écrans */
-    @media (max-width: 576px) {
-      .menu a i {
-        font-size: 1.5rem;
-      }
-
-      .menu a span {
-        display: none; /* Masque les textes sur très petit écran */
-      }
-
-      .sidebar.collapsed .menu a {
-        justify-content: center;
       }
     }
   </style>
 </head>
 <body>
-
-  <!-- Sidebar -->
   <div class="d-flex">
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-      <!-- Bouton de bascule (toggle) -->
-    
-      <button class="toggle-btn" id="toggle-btn"><i class="fas fa-bars"></i></button>
-
       <div class="logo">
-        <!-- Remplace l'URL de l'image par le chemin de ton logo -->
         <img src="logo.png" alt="Logo">
       </div>
-      
-      <ul class="menu" style="list-style-type: none; padding: 0; margin: 0;">
-    <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
-    <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
-    <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
-    <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
-</ul>
-
+      <ul class="menu">
+        <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
+        <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
+        <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
+        <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
+      </ul>
     </div>
 
-    <!-- Contenu principal -->
-    <div class="content">
-      <!-- Ici tu peux ajouter ton contenu -->
-    </div>
+    <!-- Bouton de bascule (toggle) -->
+    <button class="toggle-btn" id="toggle-btn"><i class="fas fa-bars"></i></button>
+
+    
   </div>
 
   <!-- Lien vers Bootstrap Bundle (inclut Popper.js) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // Récupérer les éléments de la page
+    // Récupérer les éléments
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggle-btn');
     const icon = toggleBtn.querySelector('i');
 
+    // Ajouter un événement au bouton
     toggleBtn.addEventListener('click', () => {
-      // Basculer entre les classes collapsed et expanded
       sidebar.classList.toggle('collapsed');
       
-      // Changer l'icône du bouton (flèche de gauche/droite)
+      // Basculer l'icône entre "bars" et "arrow-right"
       if (sidebar.classList.contains('collapsed')) {
-        icon.classList.remove('fa-arrow-left');
+        icon.classList.remove('fa-bars');
         icon.classList.add('fa-arrow-right');
       } else {
         icon.classList.remove('fa-arrow-right');
-        icon.classList.add('fa-arrow-left');
+        icon.classList.add('fa-bars');
       }
     });
   </script>
-
 </body>
 </html>

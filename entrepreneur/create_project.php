@@ -99,6 +99,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         border: 1px solid #e74c3c;
         color: #e74c3c;
     }
+    .btn-submit{
+        margin-bottom: 20px;
+    }
+    .content {
+    max-width: 800px;
+    height: 830px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #072A40;
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+    color: #072A40;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select,
+  input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    background-color: #18B7BE;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #149DA1;
+  }
+
+  .btn-submit {
+    display: block;
+    margin: 0 auto;
+  }
   </style>
 </head>
 <body>
@@ -140,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <label for="media">Ajouter des médias (images/vidéos) :</label>
           <input type="file" id="media" name="media[]" accept="image" multiple> <!-- 🚀 Multiple fichiers -->
 
-          <button type="submit" class="btn-submit">Publier</button>
+          <button type="submit" class="btn-submit" >Publier</button>
       </form>
   </div>
   <script>

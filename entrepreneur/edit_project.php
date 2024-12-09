@@ -86,6 +86,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier Projet</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+         /* Conteneur principal */
+         .main-content {
+            margin-left: 260px; /* Ajusté pour laisser de la place à la sidebar */
+            padding: 30px;
+            background-color: #f8f9fa; /* Fond clair */
+            min-height: 100vh;
+        }
+
+        /* Titre principal */
+        .main-content h1 {
+            font-size: 2.5rem;
+            color: #072A40;
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-bottom:20px ;
+            padding: 10px 15px;
+            background-color: #072A40;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #073a50;
+        }
+        @media screen and (max-width: 768px) {
+    .main-content {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
+        width: 100%; /* Assurez-vous que l'élément utilise toute la largeur de l'écran */
+        box-sizing: border-box; /* Inclure le padding dans la largeur totale */
+    }
+
+    form {
+        max-width: 100%; /* Ajustez pour s'adapter à des écrans étroits */
+    }
+
+    button {
+        font-size: 1rem; /* Réduire légèrement la taille de police si nécessaire */
+    }
+}
+    </style>
     <script>
         function showInputField(select) {
             const customCategoryContainer = document.getElementById('custom-category-container');
