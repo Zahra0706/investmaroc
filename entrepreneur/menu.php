@@ -19,6 +19,8 @@
       color: #ecf0f1;
       transition: width 0.3s ease;
       position: relative;
+      list-style-type: none; /* Supprime les puces des <li> */
+
     }
 
     /* Réduit la largeur de la sidebar lorsqu'elle est réduite */
