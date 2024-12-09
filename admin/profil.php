@@ -1,8 +1,12 @@
 <?php
+// Activer l'affichage des erreurs (important pour voir les erreurs de chemin ou de téléchargement)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Démarrage de la session
 session_start();
 
-// Vérifier si l'utilisateur est connecté (par exemple, en vérifiant la session)
+// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour accéder à cette page.");
 }
@@ -24,15 +28,61 @@ try {
 // Récupérer l'ID de l'utilisateur connecté
 $userId = $_SESSION['user_id'];
 
-// Récupérer les informations de l'utilisateur depuis la base de données
+// Récupérer les informations de l'utilisateur
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-$stmt->bindParam(':id', $userId);
+$stmt->bindParam(':id', $userId, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Vérifier si l'utilisateur existe
 if (!$user) {
     die("Utilisateur introuvable.");
+}
+
+// Gestion de la mise à jour des informations de l'utilisateur
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $telephone = $_POST['telephone'] ?? '';
+    $imagePath = $user['image']; // Par défaut, garder l'image actuelle
+
+    // Vérification et validation des champs
+    if (!empty($_FILES['profile_image']['name'])) {
+        // Nom unique pour l'image (pour éviter les conflits de noms)
+        $imageName = time() . '_' . basename($_FILES['profile_image']['name']);
+        $targetDirectory = '../entrepreneur/uploads/';
+        $targetFilePath = $targetDirectory . $imageName;
+
+        // Vérifie que le fichier est une image
+        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array(strtolower($fileType), $allowedTypes)) {
+            // Déplacer l'image dans le dossier "uploads"
+            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFilePath)) {
+                // Enregistrer uniquement le chemin relatif à la base de données
+                $imagePath = 'entrepreneur/uploads/' . $imageName;
+            } else {
+                $error = "Erreur lors du téléchargement de l'image.";
+            }
+        } else {
+            $error = "Format de fichier non pris en charge (uniquement jpg, jpeg, png, gif).";
+        }
+    }
+
+    // Mettre à jour les informations dans la base de données
+    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, telephone = :telephone, image = :image WHERE id = :id");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':telephone', $telephone);
+    $stmt->bindParam(':image', $imagePath);
+    $stmt->bindParam(':id', $userId);
+
+    if ($stmt->execute()) {
+        header("Location: profil.php");
+        exit;
+    } else {
+        $error = "Une erreur est survenue lors de la mise à jour de votre profil.";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -91,13 +141,7 @@ if (!$user) {
             text-align:center ;
         }
        
-        .profile-photo img {
-            border-radius: 50%;
-            border: 2px solid #4CAF50;
-        }
-        .profile-info p {
-            font-size: 16px;
-        }
+       
 
 
         .edit-form-container {
@@ -112,7 +156,7 @@ if (!$user) {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    margin-top: -150px;
+    margin-top: -70px;
     margin-left: 300px; /* Ajoute cette ligne */
 
 }
@@ -254,6 +298,7 @@ form button:hover {
         font-size: 14px;
     }
 }
+
 
     </style>
 </head>
