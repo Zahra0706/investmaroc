@@ -21,6 +21,13 @@ $stmt->bindParam(':investor_id', $investor_id, PDO::PARAM_INT);
 $stmt->execute();
 
 $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Mapping des statuts en français
+$status_mapping = [
+    'accepted' => 'Accepté',
+    'pending' => 'En attente',
+    'rejected' => 'Rejeté'
+];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -51,7 +58,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: white;
         }
 
-        .status-approved {
+        .status-accepted {
             color: #28a745;
             font-weight: bold;
         }
@@ -78,7 +85,6 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th>Projet</th>
                             <th>Catégorie</th>
                             <th>Budget Nécessaire</th>
-                            
                             <th>Statut</th>
                             <th>Date</th>
                         </tr>
@@ -90,7 +96,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?= htmlspecialchars($request['category']) ?></td>
                                 <td><?= htmlspecialchars($request['capital_needed']) ?> MAD</td>
                                 <td class="<?= 'status-' . strtolower($request['status']) ?>">
-                                    <?= ucfirst($request['status']) ?>
+                                    <?= htmlspecialchars($status_mapping[strtolower($request['status'])]) ?>
                                 </td>
                                 <td><?= date('d/m/Y', strtotime($request['created_at'])) ?></td>
                             </tr>
