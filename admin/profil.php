@@ -92,9 +92,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Utilisateur</title>
     <link rel="stylesheet" href="styles.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
 /* Container pour le contenu */
+
+     
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #072A40;
+            color: #fff;
+            padding-top: 20px;
+            position: fixed;
+        }
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .menu li {
+            border-bottom: 1px solid #073a50;
+        }
+        .menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .menu a:hover {
+            background-color: #18B7BE;
+        }
+
+        
 .container {
     margin-left: 250px; /* Laisse de l'espace pour la barre latérale */
     width: calc(100% - 250px); /* Prend toute la largeur sauf celle de la barre latérale */
@@ -106,6 +145,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     padding: 20px;
     box-sizing: border-box;
 }
+
+
+
 
 /* Si vous voulez forcer l'élément de profil à être au centre, vous pouvez ajouter un conteneur supplémentaire */
 .profile-container {
@@ -123,31 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            color: white;
-            padding-top: 20px;
-        }
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .sidebar .logo h2 {
-            color: #fff;
-            text-align:center ;
-        }
        
-       
-
-
-        .edit-form-container {
-            display: none;
-       }
-
   
 
 .container {
@@ -305,9 +323,9 @@ form button:hover {
 <body>
     <!-- Barre latérale -->
     <div class="sidebar">
-        <div class="logo">
-            <h2>Admin Dashboard</h2>
-        </div>
+<div class="logo">
+        <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
+    </div>
         <ul class="menu">
             <li>
                 <a href="profil.php">
@@ -346,7 +364,6 @@ form button:hover {
             </li>
         </ul>
     </div>
-
     <div class="container">
     <div class="profile-container">
         <h1>Profil</h1>

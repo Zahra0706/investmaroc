@@ -230,14 +230,7 @@ if (!empty($images)) {
             </div>
         </div>
 
-        <div class="contact-section">
-            <h3>Contacter l'entrepreneur</h3>
-            <p><strong>Nom : </strong><?php echo htmlspecialchars($entrepreneur['name']); ?></p>
-            <p><strong>Email : </strong><a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>"><?php echo htmlspecialchars($entrepreneur['email']); ?></a></p>
-            <a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>" class="contact-btn">
-                <i class="fas fa-envelope"></i> Envoyer un message
-            </a>
-        </div>
+            <a href="invest_project.php?id=<?php echo $projectId; ?>" class="contact-btn">Investir</a>
     </div>
 </body>
 </html>

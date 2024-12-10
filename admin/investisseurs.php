@@ -41,6 +41,7 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             padding: 0;
             box-sizing: border-box;
         }
+     
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -75,6 +76,7 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .menu a:hover {
             background-color: #18B7BE;
         }
+
         .container {
             margin-left: 250px;
             padding: 20px;
@@ -127,9 +129,9 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <!-- Barre latérale -->
     <div class="sidebar">
-        <div class="logo">
-            <h2>Admin Dashboard</h2>
-        </div>
+    <div class="logo">
+        <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
+    </div>
         <ul class="menu">
             <li><a href="profil.php"><i class="fas fa-user-circle"></i> Profil</a></li>
             <li><a href="investisseurs.php"><i class="fas fa-handshake"></i> Investisseurs</a></li>
