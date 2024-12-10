@@ -1,33 +1,78 @@
 <?php
-session_start();
 include 'menu.html'; 
+session_start();
+
+// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    die("Vous devez être connecté pour accéder à cette page.");
+    die("Vous devez être connecté pour voir cette page.");
 }
 
-// Inclure la connexion à la base de données
-include '../entrepreneur/db.php';
+$investorId = $_SESSION['user_id'];
 
-// Vérifier si l'ID du projet est passé dans l'URL
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    die("ID du projet invalide.");
+// Configuration de la base de données
+$host = 'localhost';
+$dbname = 'investmaroc';
+$user = 'root';
+$pass = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connexion échouée : " . $e->getMessage());
 }
 
-$project_id = $_GET['id'];
+// Récupérer le projet
+if (!isset($_GET['id'])) {
+    die("Projet non spécifié.");
+}
+$projectId = $_GET['id'];
 
-// Récupérer les informations du projet
-$stmt = $conn->prepare("SELECT * FROM projects WHERE id = :project_id");
-$stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+// Requête pour récupérer les détails du projet
+$stmt = $pdo->prepare("SELECT * FROM projects WHERE id = :id");
+$stmt->bindParam(':id', $projectId);
 $stmt->execute();
 $project = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Si le projet n'existe pas
 if (!$project) {
-    die("Le projet demandé n'existe pas.");
+    die("Projet introuvable.");
 }
 
-// Décoder la chaîne JSON des images
-$images = json_decode($project['image'], true); // Convertir la chaîne JSON en tableau PHP
+// Vérifier si le projet est déjà enregistré
+$stmt = $pdo->prepare("SELECT * FROM saved_projects WHERE investor_id = :investor_id AND project_id = :project_id");
+$stmt->execute([':investor_id' => $investorId, ':project_id' => $projectId]);
+$isSaved = $stmt->fetch();
+
+// Récupérer les images du projet
+$query = "SELECT image FROM projects WHERE id = :id";
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':id', $projectId);
+$stmt->execute();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Vérifier si des images sont disponibles
+$images = !empty($row['image']) ? explode(",", $row['image']) : [];
+
+// Récupérer les informations de l'entrepreneur
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+$stmt->bindParam(':id', $project['entrepreneur_id']);
+$stmt->execute();
+$entrepreneur = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Traitement du formulaire (enregistrer ou désenregistrer le projet)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$isSaved) {
+        // Enregistrer le projet
+        $stmt = $pdo->prepare("INSERT INTO saved_projects (investor_id, project_id) VALUES (:investor_id, :project_id)");
+        $stmt->execute([':investor_id' => $investorId, ':project_id' => $projectId]);
+    } else {
+        // Désenregistrer le projet
+        $stmt = $pdo->prepare("DELETE FROM saved_projects WHERE investor_id = :investor_id AND project_id = :project_id");
+        $stmt->execute([':investor_id' => $investorId, ':project_id' => $projectId]);
+    }
+    header("Location: project_details.php?id=$projectId");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,158 +80,164 @@ $images = json_decode($project['image'], true); // Convertir la chaîne JSON en 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails du Projet - Investisseur</title>
+    <title>Détails du Projet</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        .main-content {
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        
+   
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-left: 300px;
+    }
+    h1 {
+        color: #072A40;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .project-details {
         display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    margin-top: -70px;
-    margin-left: 300px; /* Ajoute cette ligne */
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .project-images {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: space-between;
+    }
+    .project-images img {
+        max-width: 48%;
+        border-radius: 8px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+    .project-images img:hover {
+        transform: scale(1.05);
+    }
+    .project-info {
+        flex: 1;
+        max-width: 600px;
+    }
+    .project-info p {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.6;
+    }
+    .project-info h3 {
+        font-size: 1.5rem;
+        color: #18B7BE;
+    }
+    .contact-section {
+        margin-top: 30px;
+        background-color: #e8f5f3;
+        padding: 20px;
+        border-radius: 8px;
+    }
+    .contact-section h3 {
+        font-size: 1.2rem;
+        color: #072A40;
+    }
+    .contact-btn {
+        display: inline-block;
+        background-color: #18B7BE;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        margin-top: 15px;
+    }
+    .contact-btn:hover {
+        background-color: #16a7b8;
+    }
+    .saved-btn, .unsaved-btn {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        padding: 10px;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .saved-btn img, .unsaved-btn img {
+        width: 30px;
+        height: 30px;
+        transition: filter 0.3s ease;
+    }
+    .saved-btn:hover img {
+        filter: brightness(1.2);
+    }
+    .unsaved-btn:hover img {
+        filter: brightness(0.8);
+    }
+</style>
 
-}
-
-        .project-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .project-description {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .project-details p {
-            font-size: 16px;
-            color: #666;
-        }
-
-        .project-images {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .project-images img {
-            width: 300px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .project-images img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .project-buttons {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .project-buttons button {
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-edit {
-            background-color: #28a745;
-        }
-
-        .btn-edit:hover {
-            background-color: #218838;
-        }
-
-        .btn-invest {
-            background-color: #007bff;
-        }
-
-        .btn-invest:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-        }
-
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-
-        .btn-delete i, .btn-edit i, .btn-invest i {
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1><?php echo htmlspecialchars($project['title']); ?></h1>
+        <form method="post">
+            <button type="submit" class="<?php echo $isSaved ? 'unsaved-btn' : 'saved-btn'; ?>">
+                <img src="<?php echo $isSaved ? '../images/save-instagram (1).png' : '../images/save-instagram.png'; ?>" alt="Enregistrer" style="width: 30px; height: 30px;">
+            </button>
+        </form>
 
-    <div class="main-content">
         <div class="project-details">
-            <h1 class="project-title"><?= htmlspecialchars($project['title']) ?></h1>
-            <p><strong>Description :</strong></p>
-            <p class="project-description"><?= nl2br(htmlspecialchars($project['description'])) ?></p>
-            <p><strong>Budget nécessaire :</strong> <?= htmlspecialchars($project['capital_needed']) ?> MAD</p> <!-- Affichage du budget -->
-            <p><strong>Catégorie :</strong> <?= htmlspecialchars($project['category']) ?></p> <!-- Affichage de la catégorie -->
-            <p><strong>Date de création :</strong> <?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
-
-            <h2>Images du projet</h2>
             <div class="project-images">
-                <?php if (isset($project['image']) && !empty($project['image'])): ?>
-                    <?php if (is_array($images)): ?>
-                        <?php foreach ($images as $image): ?>
-                            <img src="../entrepreneur/<?= htmlspecialchars($image) ?>" alt="Image du projet">
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>Aucune image disponible.</p>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <p>Aucune image disponible pour ce projet.</p>
-                <?php endif; ?>
-            </div>
-            <div class="project-buttons">
-                <!-- Bouton Investir -->
-                <button class="btn-invest" onclick="window.location.href='invest_project.php?id=<?= $project_id ?>'">
-                    <i class="fas fa-money-check-alt"></i> Investir
-                </button>
+            <?php
 
-                <!-- Bouton Supprimer (optionnel selon les droits de l'investisseur) -->
-               
+// Afficher les images du projet
+if (!empty($images)) {
+    foreach ($images as $image) {
+        // Nettoyer le chemin de l'image en supprimant les crochets, guillemets et autres caractères indésirables
+        $imagePath = trim($image, ' "[]'); // Supprimer les guillemets, crochets et espaces autour du chemin
+        $imagePath = stripslashes($imagePath); // Supprimer les antislashs échappés
+
+        // Afficher le chemin complet de l'image pour vérifier
+
+        // Vérification de l'existence de l'image
+        $fullImagePath = '../entrepreneur/' . $imagePath;
+        if (file_exists($fullImagePath)) {
+            echo '<img src="' . htmlspecialchars($fullImagePath) . '" alt="Image">';
+        } else {
+            echo "L'image n'existe pas : " . $fullImagePath . "<br>"; // Afficher un message d'erreur si l'image n'existe pas
+        }
+    }
+} else {
+    echo '<p>Aucune image disponible pour ce projet.</p>';
+}
+?>
+
+
+
+
             </div>
 
+            <div class="project-info">
+                <h3>Description</h3>
+                <p><?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
+                <h3>Capital Nécessaire</h3>
+                <p><?php echo htmlspecialchars($project['capital_needed']); ?> DH</p>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h3>Contacter l'entrepreneur</h3>
+            <p><strong>Nom : </strong><?php echo htmlspecialchars($entrepreneur['name']); ?></p>
+            <p><strong>Email : </strong><a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>"><?php echo htmlspecialchars($entrepreneur['email']); ?></a></p>
+            <a href="mailto:<?php echo htmlspecialchars($entrepreneur['email']); ?>" class="contact-btn">
+                <i class="fas fa-envelope"></i> Envoyer un message
+            </a>
         </div>
     </div>
-
 </body>
 </html>

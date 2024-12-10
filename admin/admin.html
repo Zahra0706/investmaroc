@@ -6,12 +6,38 @@
   <title>Tableau de Bord Admin</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style> .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #072A40;
+    color: #ecf0f1;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    z-index: 1000; /* Toujours au-dessus du contenu principal */
+  }
+
+  .sidebar.collapsed {
+    width: 60px;
+  }
+
+  .sidebar .logo {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .sidebar .logo img {
+    width: 80%;
+    max-width: 100px;
+  }</style>
 </head>
 <body>
   <!-- Barre latérale -->
   <div class="sidebar">
     <div class="logo">
-      <h2>Admin Dashboard</h2>
+      <img src="logo.png" alt="Logo">
     </div>
     <ul class="menu">
       <li>
