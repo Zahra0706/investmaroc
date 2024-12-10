@@ -190,7 +190,6 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <thead>
                     <tr>
                         <th>Titre</th>
-                        <th>Description</th>
                         <th>Capital Nécessaire</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -200,19 +199,22 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($projects as $project): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($project['title']); ?></td>
-                            <td><?php echo htmlspecialchars($project['description']); ?></td>
                             <td><?php echo htmlspecialchars($project['capital_needed']); ?> DH</td>
                             <td><?php echo htmlspecialchars($project['status']); ?></td>
                             <td class="action-buttons">
-                            <?php if ($project['status'] == 'en attent'): ?>
-                                <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn">
-                                    <i class="fas fa-check-circle"></i> Valider
-                                </a>
-                            <?php endif; ?>
-                            <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger">
-                                <i class="fas fa-trash-alt"></i> Supprimer
-                            </a>
-                        </td>
+    <?php if ($project['status'] == 'en attent'): ?>
+        <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn">
+            <i class="fas fa-check-circle"></i> Valider
+        </a>
+    <?php endif; ?>
+    <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn">
+        <i class="fas fa-info-circle"></i> Afficher Détails
+    </a>
+    <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger">
+        <i class="fas fa-trash-alt"></i> Supprimer
+    </a>
+</td>
+
 
                         </tr>
                     <?php endforeach; ?>
