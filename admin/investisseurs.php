@@ -4,6 +4,7 @@ session_start();
 // Vérifier si l'utilisateur est administrateur
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
     die("Vous devez être connecté en tant qu'administrateur pour accéder à cette page.");
+    exit;
 }
 
 // Configuration de la base de données
@@ -13,10 +14,11 @@ $user = 'root';
 $pass = '';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Connexion à la base de données échouée : " . $e->getMessage());
+    exit;
 }
 
 // Récupérer les investisseurs
@@ -24,6 +26,7 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'investor'");
 $stmt->execute();
 $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -33,6 +36,11 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -117,45 +125,20 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-  <!-- Barre latérale -->
-  <div class="sidebar">
+    <!-- Barre latérale -->
+    <div class="sidebar">
         <div class="logo">
             <h2>Admin Dashboard</h2>
         </div>
         <ul class="menu">
-            <li>
-                <a href="profil.php">
-                    <i class="fas fa-user-circle"></i> Profil
-                </a>
-            </li>
-            <li>
-                <a href="investisseurs.php">
-                    <i class="fas fa-handshake"></i> Investisseurs
-                </a>
-            </li>
-            <li>
-                <a href="entrepreneurs.php">
-                    <i class="fas fa-briefcase"></i> Entrepreneurs
-                </a>
-            </li>
-            <li>
-                <a href="projets.php">
-                    <i class="fas fa-list"></i> Projets
-                </a>
-            </li>
-            <li>
-                <a href="collaborations.php">
-                    <i class="fas fa-users"></i> Collaborations
-                </a>
-            </li>
-            <li>
-                <a href="../deconnexion.php">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-            </li>
+            <li><a href="profil.php"><i class="fas fa-user-circle"></i> Profil</a></li>
+            <li><a href="investisseurs.php"><i class="fas fa-handshake"></i> Investisseurs</a></li>
+            <li><a href="entrepreneurs.php"><i class="fas fa-briefcase"></i> Entrepreneurs</a></li>
+            <li><a href="projets.php"><i class="fas fa-list"></i> Projets</a></li>
+            <li><a href="collaborations.php"><i class="fas fa-users"></i> Collaborations</a></li>
+            <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
         </ul>
     </div>
-
 
     <!-- Contenu principal -->
     <div class="container">
@@ -176,7 +159,7 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td>
                                 <?php if (!empty($investor['image'])): ?>
-                                    <img src="<?php echo htmlspecialchars($investor['image']); ?>" alt="Image">
+                                    <img src="<?php echo htmlspecialchars('../' . $investor['image']); ?>" alt="Image">
                                 <?php else: ?>
                                     <img src="default-avatar.png" alt="Default Avatar">
                                 <?php endif; ?>
