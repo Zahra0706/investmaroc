@@ -114,9 +114,9 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <!-- Barre latérale -->
     <div class="sidebar">
-        <div class="logo">
-            <h2>Admin Dashboard</h2>
-        </div>
+    <div class="logo">
+        <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
+    </div>
         <ul class="menu">
             <li>
                 <a href="profil.php">
