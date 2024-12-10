@@ -54,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -62,8 +61,151 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demandes d'Investissement</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Style pour la barre latérale */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #072A40;
+            color: #fff;
+            padding-top: 20px;
+            position: fixed;
+        }
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .menu li {
+            border-bottom: 1px solid #073a50;
+        }
+        .menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .menu a:hover {
+            background-color: #18B7BE;
+        }
+
+        /* Style pour le contenu principal */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #072A40;
+        }
+
+        /* Style pour le tableau */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #072A40;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Style pour les boutons */
+        button {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[name="action"][value="accept"] {
+            background-color: #18B7BE;
+            color: white;
+        }
+        button[name="action"][value="accept"]:hover {
+            background-color: #0e8c93;
+        }
+        button[name="action"][value="reject"] {
+            background-color: #e74c3c;
+            color: white;
+        }
+        button[name="action"][value="reject"]:hover {
+            background-color: #c0392b;
+        }
+
+        /* Style pour le message d'absence de demandes */
+        p {
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
+    <!-- Barre latérale -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>Admin Dashboard</h2>
+        </div>
+        <ul class="menu">
+            <li>
+                <a href="profil.php">
+                    <i class="fas fa-user-circle"></i> Profil
+                </a>
+            </li>
+            <li>
+                <a href="investisseurs.php">
+                    <i class="fas fa-handshake"></i> Investisseurs
+                </a>
+            </li>
+            <li>
+                <a href="entrepreneurs.php">
+                    <i class="fas fa-briefcase"></i> Entrepreneurs
+                </a>
+            </li>
+            <li>
+                <a href="projets.php">
+                    <i class="fas fa-list"></i> Projets
+                </a>
+            </li>
+            <li>
+                <a href="demande_investissement.php">
+                    <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
+                </a>
+            </li>
+            <li>
+                <a href="collaborations.php">
+                    <i class="fas fa-users"></i> Collaborations
+                </a>
+            </li>
+            <li>
+                <a href="../deconnexion.php">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Contenu principal -->
     <div class="main-content">
         <h1>Demandes d'Investissement</h1>
         <?php if (count($requests) > 0): ?>
