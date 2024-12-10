@@ -174,7 +174,7 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($entrepreneurs as $entrepreneur): ?>
                         <tr>
                             <td>
-                                <img src="<?php echo htmlspecialchars($entrepreneur['image']); ?>" alt="Photo de l'entrepreneur">
+                            <img src="<?php echo htmlspecialchars('../' . $entrepreneur['image']); ?>" alt="Image">
                             </td>
                             <td><?php echo htmlspecialchars($entrepreneur['name']); ?></td>
                             <td><?php echo htmlspecialchars($entrepreneur['email']); ?></td>
