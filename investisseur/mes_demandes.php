@@ -52,9 +52,17 @@ $status_mapping = [
             padding: 20px;
             margin-left:260px;
         }
+        .table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+        }
 
         .table thead {
-            background-color: #007bff;
+            background-color: #072A40;
             color: white;
         }
 
