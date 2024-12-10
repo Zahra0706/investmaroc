@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #fff;
             padding-top: 20px;
             position: fixed;
+            font-family: Arial, sans-serif;
         }
         .menu {
             list-style: none;
@@ -91,6 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .menu a:hover {
             background-color: #18B7BE;
+        }
+        .menu i{
+            padding-right:20px;
+            font-size:20px;
         }
 
         /* Style pour le contenu principal */
@@ -129,29 +134,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #f5f5f5;
         }
 
-        /* Style pour les boutons */
-        button {
-            padding: 10px 15px;
-            font-size: 0.9rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button[name="action"][value="accept"] {
-            background-color: #18B7BE;
-            color: white;
-        }
-        button[name="action"][value="accept"]:hover {
-            background-color: #0e8c93;
-        }
-        button[name="action"][value="reject"] {
-            background-color: #e74c3c;
-            color: white;
-        }
-        button[name="action"][value="reject"]:hover {
-            background-color: #c0392b;
-        }
+        /* Style amélioré pour les boutons */
+button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-right: 10px; /* Espacement entre les boutons */
+}
+button:hover {
+    transform: translateY(-2px); /* Légère élévation au survol */
+}
+button[name="action"][value="accept"] {
+    background-color: #18B7BE;
+    color: white;
+}
+button[name="action"][value="accept"]:hover {
+    background-color: #0e8c93;
+}
+button[name="action"][value="reject"] {
+    background-color: #e74c3c;
+    color: white;
+}
+button[name="action"][value="reject"]:hover {
+    background-color: #c0392b;
+}
+button[name="action"][value="details"] {
+    background-color: #007BFF;
+    color: white;
+}
+button[name="action"][value="details"]:hover {
+    background-color: #0056b3;
+}
 
         /* Style pour le message d'absence de demandes */
         p {
@@ -227,15 +243,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td><?= htmlspecialchars($request['entrepreneur_name']) ?></td>
                             <td><?= htmlspecialchars($request['created_at']) ?></td>
                             <td>
-                                <form method="POST" style="display: inline;">
+                                <form method="POST" style="display: inline;" action="details_demande.php">
                                     <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-                                    <button type="submit" name="action" value="accept">Accepter</button>
+                                    <button type="submit" name="action" value="details">
+                                        <i class="fas fa-eye"></i> Afficher les détails
+                                    </button>
                                 </form>
                                 <form method="POST" style="display: inline;">
                                     <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-                                    <button type="submit" name="action" value="reject">Annuler</button>
+                                    <button type="submit" name="action" value="accept">
+                                        <i class="fas fa-check"></i> Accepter
+                                    </button>
+                                </form>
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+                                    <button type="submit" name="action" value="reject">
+                                        <i class="fas fa-times"></i> Annuler
+                                    </button>
                                 </form>
                             </td>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

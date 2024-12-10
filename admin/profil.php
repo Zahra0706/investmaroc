@@ -300,6 +300,10 @@ form button:hover {
     background-color: #072A40;
     color: #18B7BE;
 }
+.menu i{
+            padding-right:20px;
+            font-size:20px;
+        }
 
 /* Responsive pour mobile */
 @media (max-width: 600px) {

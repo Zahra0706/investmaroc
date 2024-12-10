@@ -109,6 +109,10 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-size: 0.9rem;
             color: gray;
         }
+        .menu i{
+            padding-right:20px;
+            font-size:20px;
+        }
     </style>
 </head>
 <body>

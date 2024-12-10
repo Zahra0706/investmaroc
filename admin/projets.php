@@ -82,6 +82,10 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .menu a:hover {
             background-color: #18B7BE;
         }
+        .menu i{
+            padding-right:20px;
+            font-size:20px;
+        }
         .container {
             margin-left: 250px;
             padding: 20px;

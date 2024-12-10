@@ -124,6 +124,10 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .btn:hover {
             background-color: #16a7b8;
         }
+        .menu i{
+            padding-right:20px;
+            font-size:20px;
+        }
     </style>
 </head>
 <body>
