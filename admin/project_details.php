@@ -44,22 +44,33 @@ $images = json_decode($project['image'], true);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-             .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
+              .sidebar {
             width: 250px;
-            height: 100%;
-            color: white;
-            padding-top: 20px;
-        }
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .sidebar .logo h2 {
+            height: 100vh;
+            background-color: #072A40;
             color: #fff;
-            text-align:center ;
+            padding-top: 20px;
+            position: fixed;
+        }
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .menu li {
+            border-bottom: 1px solid #073a50;
+        }
+        .menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .menu a:hover {
+            background-color: #18B7BE;
         }
        
        
@@ -125,9 +136,9 @@ $images = json_decode($project['image'], true);
 <body>
     <!-- Barre latérale -->
     <div class="sidebar">
-        <div class="logo">
-            <h2>Admin Dashboard</h2>
-        </div>
+    <div class="logo">
+        <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
+    </div>
         <ul class="menu">
             <li><a href="profil.php"><i class="fas fa-user-circle"></i> Profil</a></li>
             <li><a href="investisseurs.php"><i class="fas fa-handshake"></i> Investisseurs</a></li>
