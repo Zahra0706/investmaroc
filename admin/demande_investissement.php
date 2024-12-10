@@ -29,19 +29,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'];
 
     if ($action === 'accept') {
-        // Accepter la demande : Ajouter à la table collaboration
-        $accept_stmt = $conn->prepare("
-            INSERT INTO collaboration (investor_id, entrepreneur_id, project_id, date_collaboration)
-            SELECT investor_id, entrepreneur_id, project_id, NOW()
-            FROM investment_requests WHERE id = :request_id
-        ");
-        $accept_stmt->bindParam(':request_id', $request_id, PDO::PARAM_INT);
-        $accept_stmt->execute();
+        try {
+            $conn->beginTransaction();
 
-        // Mettre à jour le statut de la demande
-        $update_stmt = $conn->prepare("UPDATE investment_requests SET status = 'accepted' WHERE id = :request_id");
-        $update_stmt->bindParam(':request_id', $request_id, PDO::PARAM_INT);
-        $update_stmt->execute();
+            // Ajouter à la table collaboration
+            $accept_stmt = $conn->prepare("
+                INSERT INTO collaborations (investor_id, entrepreneur_id, project_id, date_collaboration)
+                SELECT investor_id, entrepreneur_id, project_id, NOW()
+                FROM investment_requests WHERE id = :request_id
+            ");
+            $accept_stmt->bindParam(':request_id', $request_id, PDO::PARAM_INT);
+            $accept_stmt->execute();
+
+            // Mettre à jour le statut de la demande
+            $update_stmt = $conn->prepare("UPDATE investment_requests SET status = 'accepted' WHERE id = :request_id");
+            $update_stmt->bindParam(':request_id', $request_id, PDO::PARAM_INT);
+            $update_stmt->execute();
+
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollBack();
+            die("Erreur lors de l'acceptation de la demande : " . $e->getMessage());
+        }
     } elseif ($action === 'reject') {
         // Rejeter la demande
         $reject_stmt = $conn->prepare("UPDATE investment_requests SET status = 'rejected' WHERE id = :request_id");
@@ -54,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
