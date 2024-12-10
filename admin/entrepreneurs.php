@@ -144,6 +144,11 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </a>
             </li>
             <li>
+                <a href="demande_investissement.php">
+                <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
+                </a>
+            </li>
+            <li>
                 <a href="collaborations.php">
                     <i class="fas fa-users"></i> Collaborations
                 </a>

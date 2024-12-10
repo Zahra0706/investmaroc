@@ -133,6 +133,11 @@ $images = json_decode($project['image'], true);
             <li><a href="investisseurs.php"><i class="fas fa-handshake"></i> Investisseurs</a></li>
             <li><a href="entrepreneurs.php"><i class="fas fa-briefcase"></i> Entrepreneurs</a></li>
             <li><a href="projets.php"><i class="fas fa-list"></i> Projets</a></li>
+            <li>
+                <a href="demande_investissement.php">
+                <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
+                </a>
+            </li>
             <li><a href="collaborations.php"><i class="fas fa-users"></i> Collaborations</a></li>
             <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
         </ul>
