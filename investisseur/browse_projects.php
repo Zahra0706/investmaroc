@@ -16,7 +16,7 @@ try {
 }
 
 // Récupérer les projets validés
-$stmt = $pdo->prepare("SELECT * FROM projects WHERE status = 'validé'");
+$stmt = $pdo->prepare("SELECT * FROM projects WHERE status = 'validé' ORDER BY created_at DESC");
 $stmt->execute();
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>

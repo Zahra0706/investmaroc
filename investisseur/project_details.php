@@ -93,6 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         border-radius: 8px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         margin-left: 300px;
+        height:700px;
+        position: relative;
     }
     h1 {
         color: #072A40;
@@ -106,21 +108,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         gap: 20px;
     }
     .project-images {
-        flex: 1;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: space-between;
-    }
-    .project-images img {
-        max-width: 48%;
-        border-radius: 8px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
-    }
-    .project-images img:hover {
-        transform: scale(1.05);
-    }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center; /* Aligner les images au centre */
+}
+
+.project-images img {
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.project-images img:hover {
+    transform: scale(1.05);
+}
+
+/* Cas où il y a 1 image */
+.project-images.single img {
+    width: 100%; /* Prend toute la largeur */
+    max-width: 500px; /* Limiter la taille pour une meilleure lisibilité */
+}
+
+/* Cas où il y a 2 images */
+.project-images.double img {
+    width: 48%; /* Les images prennent chacune la moitié de la largeur */
+}
+
+/* Cas où il y a 3 images */
+.project-images.triple img {
+    width: 32%; /* Les images prennent chacune un tiers de la largeur */
+}
+
     .project-info {
         flex: 1;
         max-width: 600px;
@@ -160,6 +179,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .saved-btn, .unsaved-btn {
         border: none;
+        position:absolute;
+        right: 0px;
+        top: -20px;
+        margin: 0;
+        padding: 0;
         background-color: transparent;
         cursor: pointer;
         transition: color 0.3s ease;
@@ -191,36 +215,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </button>
         </form>
 
-        <div class="project-details">
-            <div class="project-images">
-            <?php
+        <div class="project-images <?php echo count($images) === 1 ? 'single' : (count($images) === 2 ? 'double' : 'triple'); ?>">
+    <?php
+    if (!empty($images)) {
+        foreach ($images as $image) {
+            $imagePath = trim($image, ' "[]');
+            $imagePath = stripslashes($imagePath);
+            $fullImagePath = '../entrepreneur/' . $imagePath;
 
-// Afficher les images du projet
-if (!empty($images)) {
-    foreach ($images as $image) {
-        // Nettoyer le chemin de l'image en supprimant les crochets, guillemets et autres caractères indésirables
-        $imagePath = trim($image, ' "[]'); // Supprimer les guillemets, crochets et espaces autour du chemin
-        $imagePath = stripslashes($imagePath); // Supprimer les antislashs échappés
-
-        // Afficher le chemin complet de l'image pour vérifier
-
-        // Vérification de l'existence de l'image
-        $fullImagePath = '../entrepreneur/' . $imagePath;
-        if (file_exists($fullImagePath)) {
-            echo '<img src="' . htmlspecialchars($fullImagePath) . '" alt="Image">';
-        } else {
-            echo "L'image n'existe pas : " . $fullImagePath . "<br>"; // Afficher un message d'erreur si l'image n'existe pas
+            if (file_exists($fullImagePath)) {
+                echo '<img src="' . htmlspecialchars($fullImagePath) . '" alt="Image du projet">';
+            } else {
+                echo '<p>L\'image n\'existe pas : ' . htmlspecialchars($fullImagePath) . '</p>';
+            }
         }
+    } else {
+        echo '<p>Aucune image disponible pour ce projet.</p>';
     }
-} else {
-    echo '<p>Aucune image disponible pour ce projet.</p>';
-}
-?>
-
-
-
-
-            </div>
+    ?>
+</div>
 
             <div class="project-info">
                 <h3>Description</h3>
@@ -228,9 +241,12 @@ if (!empty($images)) {
                 <h3>Capital Nécessaire</h3>
                 <p><?php echo htmlspecialchars($project['capital_needed']); ?> DH</p>
             </div>
+            <a href="invest_project.php?id=<?php echo $projectId; ?>" class="contact-btn">
+    <i class="fas fa-coins"></i> Investir
+</a>
+
         </div>
 
-            <a href="invest_project.php?id=<?php echo $projectId; ?>" class="contact-btn">Investir</a>
     </div>
 </body>
 </html>
