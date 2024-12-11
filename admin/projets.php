@@ -36,7 +36,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
 }
 
 // Récupérer les projets
-$stmt = $pdo->query("SELECT * FROM projects");
+$stmt = $pdo->query("SELECT * FROM projects ORDER BY created_at DESC");
+
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -141,6 +142,21 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 .btn-danger:hover {
     background-color: #c0392b;
 }
+.btn-validate {
+    background-color: #2ecc71; /* Vert */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 15px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.btn-validate:hover {
+    background-color: #27ae60; /* Vert foncé */
+}
+
 
     </style>
 </head>
@@ -212,16 +228,18 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($project['status']); ?></td>
                             <td class="action-buttons">
     <?php if ($project['status'] == 'en attent'): ?>
-        <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn">
+        <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn btn-validate">
             <i class="fas fa-check-circle"></i> Valider
         </a>
+
     <?php endif; ?>
     <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn">
         <i class="fas fa-info-circle"></i> Afficher Détails
     </a>
-    <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger">
+    <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger" onclick="confirmDeletion(event)">
         <i class="fas fa-trash-alt"></i> Supprimer
     </a>
+
 </td>
 
 
@@ -231,5 +249,14 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </table>
         </div>
     </div>
+    <script>
+    // Ajouter une confirmation pour les boutons de suppression
+    function confirmDeletion(event) {
+        if (!confirm("Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible.")) {
+            event.preventDefault(); // Annule l'action si l'utilisateur clique sur "Annuler"
+        }
+    }
+</script>
+
 </body>
 </html>

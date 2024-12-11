@@ -54,6 +54,8 @@ $images = json_decode($project['image'], true); // Convertir la chaîne JSON en 
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            margin-left:260px;
+            height:650px
         }
 
         .project-title {
@@ -114,6 +116,7 @@ $images = json_decode($project['image'], true); // Convertir la chaîne JSON en 
 
         .btn-edit {
             background-color: #28a745;
+            margin-bottom : 10px;
         }
 
         .btn-edit:hover {

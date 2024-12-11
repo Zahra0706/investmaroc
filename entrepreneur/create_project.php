@@ -192,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" id="custom-category" name="custom_category" placeholder="Saisissez la catégorie ici">
             </div>
 
-          <label for="media">Ajouter des médias (images/vidéos) :</label>
+          <label for="media">Ajouter des images (3 max):</label>
           <input type="file" id="media" name="media[]" accept="image" multiple> <!-- 🚀 Multiple fichiers -->
 
           <button type="submit" class="btn-submit" >Publier</button>

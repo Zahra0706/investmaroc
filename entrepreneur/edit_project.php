@@ -78,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -87,29 +86,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Modifier Projet</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-         /* Conteneur principal */
-         .main-content {
-            margin-left: 260px; /* Ajusté pour laisser de la place à la sidebar */
-            padding: 30px;
-            background-color: #f8f9fa; /* Fond clair */
-            min-height: 100vh;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Titre principal */
+        .main-content {
+            margin: auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
         .main-content h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #072A40;
+            text-align: center;
             margin-bottom: 20px;
         }
 
+        form label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+
+        form input[type="text"], 
+        form input[type="number"],
+        form textarea, 
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        form input[type="file"] {
+            margin-top: 10px;
+        }
+
         button {
-            margin-bottom:20px ;
-            padding: 10px 15px;
+            margin-top: 20px;
+            padding: 10px;
             background-color: #072A40;
             color: #ffffff;
             border: none;
             border-radius: 5px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             width: 100%;
         }
@@ -117,23 +153,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         button:hover {
             background-color: #073a50;
         }
+
+        #custom-category-container {
+            margin-top: 10px;
+        }
+
+        #custom-category-container label {
+            margin-top: 0;
+        }
+
+        .current-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .current-images img {
+            max-width: 80px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+
         @media screen and (max-width: 768px) {
-    .main-content {
-        margin-left: auto;
-        margin-right: auto;
-        padding: 20px;
-        width: 100%; /* Assurez-vous que l'élément utilise toute la largeur de l'écran */
-        box-sizing: border-box; /* Inclure le padding dans la largeur totale */
-    }
+            .main-content {
+                padding: 20px;
+            }
 
-    form {
-        max-width: 100%; /* Ajustez pour s'adapter à des écrans étroits */
-    }
-
-    button {
-        font-size: 1rem; /* Réduire légèrement la taille de police si nécessaire */
-    }
-}
+            button {
+                font-size: 0.9rem;
+            }
+        }
     </style>
     <script>
         function showInputField(select) {
@@ -152,13 +201,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST" enctype="multipart/form-data">
             <label for="title">Titre :</label>
             <input type="text" id="title" name="title" value="<?= htmlspecialchars($project['title']) ?>" required>
-            
+
             <label for="description">Description :</label>
             <textarea id="description" name="description" required><?= htmlspecialchars($project['description']) ?></textarea>
-            
+
             <label for="capital_needed">Budget :</label>
             <input type="number" id="capital_needed" name="capital_needed" value="<?= htmlspecialchars($project['capital_needed']) ?>" required>
-            
+
             <label for="category">Catégorie :</label>
             <select id="category" name="category" required onchange="showInputField(this)">
                 <option value="technologie" <?= $project['category'] === 'technologie' ? 'selected' : '' ?>>Technologie</option>
@@ -166,22 +215,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="éducation" <?= $project['category'] === 'éducation' ? 'selected' : '' ?>>Éducation</option>
                 <option value="autre">Autre</option>
             </select>
-            <div id="custom-category-container" style="display: none; margin-top: 10px;">
+            <div id="custom-category-container" style="display: none;">
                 <label for="custom-category">Veuillez préciser la catégorie :</label>
                 <input type="text" id="custom-category" name="custom_category" placeholder="Saisissez la catégorie ici">
             </div>
-            
+
             <label for="images">Images du projet (max 3) :</label>
             <input type="file" id="images" name="images[]" accept="image/*" multiple>
-            <p>Images actuelles :</p>
-            <?php 
-            $current_images = json_decode($project['image'], true);
-            if ($current_images) {
-                foreach ($current_images as $image) {
-                    echo "<img src='$image' alt='Image actuelle' style='max-width: 100px; margin-right: 10px;'>";
+
+            <div class="current-images">
+                <p>Images actuelles :</p>
+                <?php 
+                $current_images = json_decode($project['image'], true);
+                if ($current_images) {
+                    foreach ($current_images as $image) {
+                        echo "<img src='$image' alt='Image actuelle'>";
+                    }
                 }
-            }
-            ?>
+                ?>
+            </div>
 
             <button type="submit">Enregistrer les modifications</button>
         </form>
