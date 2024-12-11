@@ -162,14 +162,15 @@ if (!$details) {
         <div class="details">
             <div class="section">
                 <h2>Informations sur l'Investisseur</h2>
-                <img src="<?= htmlspecialchars($details['investor_image']) ?>" alt="Image de l'investisseur">
+
+                <img src="<?= '../' . htmlspecialchars($details['investor_image']) ?>" alt="Image de l'investisseur">
                 <p><strong>Nom :</strong> <?= htmlspecialchars($details['investor_name']) ?></p>
                 <p><strong>Email :</strong> <?= htmlspecialchars($details['investor_email']) ?></p>
                 <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['investor_telephone']) ?></p>
             </div>
             <div class="section">
                 <h2>Informations sur l'Entrepreneur</h2>
-                <img src="<?= htmlspecialchars($details['entrepreneur_image']) ?>" alt="Image de l'entrepreneur">
+                <img src="<?= '../' . htmlspecialchars($details['entrepreneur_image']) ?>" alt="Image de l'entrepreneur">
                 <p><strong>Nom :</strong> <?= htmlspecialchars($details['entrepreneur_name']) ?></p>
                 <p><strong>Email :</strong> <?= htmlspecialchars($details['entrepreneur_email']) ?></p>
                 <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['entrepreneur_telephone']) ?></p>
