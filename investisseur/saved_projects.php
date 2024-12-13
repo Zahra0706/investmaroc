@@ -116,7 +116,6 @@ $savedProjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($savedProjects as $project): ?>
                     <div class="col">
                         <div class="project-card">
-                            <img src="images/<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>">
                             <div class="p-3">
                                 <h3><?php echo htmlspecialchars($project['title']); ?></h3>
                                 <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn-project">Voir Détails</a>

@@ -182,7 +182,6 @@ a.retour:hover {
             <p>Aucune collaboration trouvée.</p>
         <?php endif; ?>
 
-        <a href="dashboard.php" class="retour">Retour au tableau de bord</a>
     </main>
 </body>
 </html>
