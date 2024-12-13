@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Latéral</title>
+  <title>Entrepreneur</title>
 
   <!-- Lien vers Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -54,6 +54,11 @@
       transition: background-color 0.3s ease;
     }
 
+    .menu a.active {
+      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+      color: white !important; /* Texte en blanc */
+    }
+
     .menu a:hover {
       background-color: #18B7BE;
     }
@@ -67,17 +72,14 @@
       transition: opacity 0.3s ease;
     }
 
-    /* Masquer les textes lorsque la sidebar est réduite */
     .sidebar.collapsed .menu span {
       display: none;
     }
 
-    /* Centrer les icônes lorsque la sidebar est réduite */
     .sidebar.collapsed .menu a {
       justify-content: center;
     }
 
-    /* Bouton de bascule (toggle) */
     .toggle-btn {
       position: fixed;
       top: 20px;
@@ -103,7 +105,6 @@
       transform: rotate(180deg);
     }
 
-    /* Styles pour mobile */
     @media (max-width: 768px) {
       .sidebar {
         width: 100%;
@@ -146,16 +147,13 @@
         <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
         <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
         <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
-        <li><a href="entrepreneur_projects.php"><i class="fas fa-briefcase"></i> Projets Validés à Investir</a></li> 
-
+        <li><a href="entrepreneur_projects.php"><i class="fas fa-briefcase"></i> <span>Projets Validés à Investir</span></a></li>
         <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
       </ul>
     </div>
 
     <!-- Bouton de bascule (toggle) -->
     <button class="toggle-btn" id="toggle-btn"><i class="fas fa-bars"></i></button>
-
-    
   </div>
 
   <!-- Lien vers Bootstrap Bundle (inclut Popper.js) -->
@@ -167,11 +165,9 @@
     const toggleBtn = document.getElementById('toggle-btn');
     const icon = toggleBtn.querySelector('i');
 
-    // Ajouter un événement au bouton
+    // Basculer la sidebar
     toggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('collapsed');
-      
-      // Basculer l'icône entre "bars" et "arrow-right"
       if (sidebar.classList.contains('collapsed')) {
         icon.classList.remove('fa-bars');
         icon.classList.add('fa-arrow-right');
@@ -180,6 +176,26 @@
         icon.classList.add('fa-bars');
       }
     });
+
+    // Récupérer tous les liens du menu
+    const menuLinks = document.querySelectorAll('.menu a');
+
+    // Fonction pour vérifier l'URL actuelle
+    function setActiveLink() {
+      const currentPath = window.location.pathname;
+      menuLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Exécuter la fonction lors du chargement de la page
+    window.addEventListener('load', setActiveLink);
   </script>
+
 </body>
 </html>

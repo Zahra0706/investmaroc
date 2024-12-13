@@ -102,15 +102,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .btn-submit{
         margin-bottom: 20px;
     }
-    .content {
-    max-width: 800px;
-    height: 830px;
-    margin: 20px auto;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+    
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Hauteur de la fenêtre visible */
+  margin: 0; /* Retirer les marges par défaut */
+  background-color: #f4f4f9; /* Couleur de fond pour plus de contraste */
+}
+
+.content {
+  max-width: 800px;
+  width: 100%; /* Pour les petits écrans, occupe tout l'espace */
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 120px;
+  margin-left: 120px;
+}
+
 
   h1 {
     text-align: center;
@@ -136,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   button {
-    background-color: #18B7BE;
+    background-color: #072A40;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -146,13 +158,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     transition: background-color 0.3s ease;
   }
 
-  button:hover {
-    background-color: #149DA1;
+  .btn-submit:hover {
+    background-color: #031926;
   }
 
   .btn-submit {
     display: block;
     margin: 0 auto;
+    background-color: #072A40;
+    width: 110px;
+
   }
   </style>
 </head>
