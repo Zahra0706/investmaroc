@@ -16,7 +16,9 @@ $stmt = $conn->prepare("SELECT ir.*, p.title AS project_title, p.category, p.cap
                         FROM investment_requests ir
                         JOIN projects p ON ir.project_id = p.id
                         JOIN users u ON ir.entrepreneur_id = u.id
-                        WHERE ir.investor_id = :investor_id");
+                        WHERE ir.investor_id = :investor_id
+                            ORDER BY ir.created_at DESC
+");
 $stmt->bindParam(':investor_id', $investor_id, PDO::PARAM_INT);
 $stmt->execute();
 

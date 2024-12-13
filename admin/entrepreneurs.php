@@ -21,7 +21,7 @@ try {
 
 // Récupérer les entrepreneurs avec recherche
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'entrepreneur' AND name LIKE :search");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'entrepreneur' AND name LIKE :search ORDER BY id DESC");
 $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
 $stmt->execute();
 $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);

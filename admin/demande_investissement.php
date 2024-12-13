@@ -7,7 +7,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
     die("Accès refusé. Cette page est réservée aux administrateurs.");
 }
 
-// Récupérer les demandes en attente
 $stmt = $conn->prepare("
     SELECT ir.id AS request_id, 
            inv.name AS investor_name, 
@@ -19,6 +18,7 @@ $stmt = $conn->prepare("
     JOIN users ent ON ir.entrepreneur_id = ent.id
     JOIN projects p ON ir.project_id = p.id
     WHERE ir.status = 'pending'
+    ORDER BY ir.created_at DESC
 ");
 $stmt->execute();
 $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
