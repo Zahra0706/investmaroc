@@ -57,7 +57,7 @@ $status_mapping = [
         }
 
         .card-header {
-            background-color: #007bff; /* Couleur d'en-tête */
+            background-color: #468FAF; /* Couleur d'en-tête */
             color: white; /* Texte blanc */
             font-weight: bold; /* Texte en gras */
         }
