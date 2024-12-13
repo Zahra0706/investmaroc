@@ -248,7 +248,24 @@ form button:hover {
         font-size: 14px;
     }
 }
+@media (max-width: 768px) {
+    .container {
+        margin-left: 0; /* Supprimer le margin-left en mode téléphone */
+    }
 
+    .profile-container {
+        padding: 20px;
+        width: 100%;  /* Rendre le profil réactif sur mobile */
+        max-width: none; /* Supprimer la limite de 900px */
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="file"],
+    form button {
+        font-size: 14px;
+    }
+}
 
 
 

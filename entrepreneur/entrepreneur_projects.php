@@ -97,6 +97,16 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: #555;
             margin-top: 20px;
         }
+        @media (max-width: 768px) {
+    .container {
+        margin-left: 0; /* Supprimer le margin-left en mode téléphone */
+    }
+   thead,tbody{
+        margin-right: 120px;
+    }
+
+   
+}
     </style>
 </head>
 <body>

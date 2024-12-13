@@ -134,6 +134,14 @@ $images = json_decode($project['image'], true); // Convertir la chaîne JSON en 
         .btn-delete i, .btn-edit i {
             font-size: 18px;
         }
+
+        @media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* Supprimer le margin-left en mode téléphone */
+    }
+
+   
+}
     </style>
 </head>
 <body>

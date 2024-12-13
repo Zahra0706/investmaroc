@@ -169,6 +169,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     width: 110px;
 
   }
+  @media (max-width: 768px) {
+    .content {
+        margin-left: 0; /* Supprimer le margin-left en mode téléphone */
+    }
+
+   
+}
   </style>
 </head>
 <body>
