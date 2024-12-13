@@ -303,5 +303,7 @@ form button:hover {
         document.getElementById("edit-form-container").style.display = "block";  // Afficher le formulaire de modification
     }
 </script>
+<script src="sidebar.js"></script>
+
 </body>
 </html>

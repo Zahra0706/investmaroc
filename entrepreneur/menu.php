@@ -21,12 +21,12 @@
       background-color: #072A40;
       color: #ecf0f1;
       overflow-y: auto;
-      transition: width 0.3s ease;
-      z-index: 1000; /* Toujours au-dessus du contenu principal */
+      transition: width 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
     }
 
     .sidebar.collapsed {
-      width: 60px;
+      transform: translateX(-100%);
     }
 
     .sidebar .logo {
@@ -55,8 +55,8 @@
     }
 
     .menu a.active {
-      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
-      color: white !important; /* Texte en blanc */
+      background-color: #18B7BE;
+      color: white;
     }
 
     .menu a:hover {
@@ -72,18 +72,10 @@
       transition: opacity 0.3s ease;
     }
 
-    .sidebar.collapsed .menu span {
-      display: none;
-    }
-
-    .sidebar.collapsed .menu a {
-      justify-content: center;
-    }
-
     .toggle-btn {
       position: fixed;
       top: 20px;
-      left: 230px;
+      left: 10px;
       z-index: 1100;
       background-color: #18B7BE;
       color: white;
@@ -97,23 +89,15 @@
       transition: left 0.3s ease;
     }
 
-    .sidebar.collapsed + .toggle-btn {
-      left: 70px;
-    }
-
-    .toggle-btn:hover {
-      transform: rotate(180deg);
-    }
-
     @media (max-width: 768px) {
       .sidebar {
         width: 100%;
-        height: auto;
-        position: relative;
+        height: 100%;
+        position: fixed;
       }
 
       .sidebar.collapsed {
-        width: 100%;
+        transform: translateY(-100%);
       }
 
       .toggle-btn {
@@ -128,10 +112,6 @@
 
       .menu span {
         display: inline-block;
-      }
-
-      .sidebar.collapsed .menu span {
-        display: none;
       }
     }
   </style>
@@ -159,43 +139,7 @@
   <!-- Lien vers Bootstrap Bundle (inclut Popper.js) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    // Récupérer les éléments
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggle-btn');
-    const icon = toggleBtn.querySelector('i');
-
-    // Basculer la sidebar
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-arrow-right');
-      } else {
-        icon.classList.remove('fa-arrow-right');
-        icon.classList.add('fa-bars');
-      }
-    });
-
-    // Récupérer tous les liens du menu
-    const menuLinks = document.querySelectorAll('.menu a');
-
-    // Fonction pour vérifier l'URL actuelle
-    function setActiveLink() {
-      const currentPath = window.location.pathname;
-      menuLinks.forEach(link => {
-        const linkPath = new URL(link.href).pathname;
-        if (currentPath === linkPath) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    }
-
-    // Exécuter la fonction lors du chargement de la page
-    window.addEventListener('load', setActiveLink);
-  </script>
-
+  <!-- Inclusion du fichier sidebar.js -->
+  <script src="sidebar.js"></script>
 </body>
 </html>
