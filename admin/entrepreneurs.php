@@ -142,6 +142,10 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             display: flex;
             gap: 10px;
         }
+        .menu a.active {
+      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+      color: white !important; /* Texte en blanc */
+    }
         .btn {
             padding: 8px 15px;
             background-color: #18B7BE;
@@ -234,6 +238,13 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><?php echo htmlspecialchars($entrepreneur['name']); ?></td>
             <td><?php echo htmlspecialchars($entrepreneur['email']); ?></td>
             <td><?php echo htmlspecialchars($entrepreneur['telephone']); ?></td>
+            <td>
+    <div class="action-buttons">
+        <a href="details_entrepreneur.php?id=<?= $entrepreneur['id'] ?>" class="btn">
+            <i class="fas fa-info-circle"></i> Afficher les détails
+        </a>
+    </div>
+</td>
         </tr>
     <?php endforeach; ?>
 </tbody>
@@ -256,5 +267,25 @@ function searchEntrepreneurs() {
     xhr.send();
 }
 </script>
+<script>
+    // Récupérer tous les liens du menu
+    const menuLinks = document.querySelectorAll('.menu a');
+
+    // Fonction pour vérifier l'URL actuelle
+    function setActiveLink() {
+      const currentPath = window.location.pathname;
+      menuLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Exécuter la fonction lors du chargement de la page
+    window.addEventListener('load', setActiveLink);
+  </script>
 </body>
 </html>

@@ -124,6 +124,7 @@ h1{
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
+            text-decoration:none;
         }
         .btn:hover {
             background-color: #16a7b8;
@@ -168,6 +169,14 @@ h1{
     color: #888; /* Couleur de l'icône */
     font-size: 18px; /* Taille de l'icône */
     pointer-events: none; /* Ignorer les clics sur l'icône */
+}
+.action-buttons .btn {
+    display: flex;
+    align-items: center;
+}
+
+.action-buttons .btn i {
+    margin-right: 5px; /* Espace entre l'icône et le texte */
 }
         
     </style>
@@ -223,6 +232,13 @@ h1{
             <td><?php echo htmlspecialchars($investor['name']); ?></td>
             <td><?php echo htmlspecialchars($investor['email']); ?></td>
             <td><?php echo htmlspecialchars($investor['telephone']); ?></td>
+            <td>
+    <div class="action-buttons">
+        <a href="details_investor.php?id=<?= $investor['id'] ?>" class="btn">
+            <i class="fas fa-info-circle"></i> Afficher les détails
+        </a>
+    </div>
+</td>
         </tr>
     <?php endforeach; ?>
 </tbody>
