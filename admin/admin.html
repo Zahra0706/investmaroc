@@ -31,7 +31,11 @@
   .sidebar .logo img {
     width: 80%;
     max-width: 100px;
-  }</style>
+  }
+  .menu a.active {
+      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+      color: white !important; /* Texte en blanc */
+    }</style>
 </head>
 <body>
   <!-- Barre latérale -->
@@ -78,5 +82,27 @@
     <h1>Bienvenue Administrateur</h1>
     <p>Utilisez le menu à gauche pour gérer les différentes sections.</p>
   </div>
+  
+  <script>
+     // Récupérer tous les liens du menu
+     const menuLinks = document.querySelectorAll('.menu a');
+
+// Fonction pour vérifier l'URL actuelle
+function setActiveLink() {
+  const currentPath = window.location.pathname;
+  menuLinks.forEach(link => {
+    const linkPath = new URL(link.href).pathname;
+    if (currentPath === linkPath) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+}
+
+// Exécuter la fonction lors du chargement de la page
+window.addEventListener('load', setActiveLink);
+</script>
+
 </body>
 </html>

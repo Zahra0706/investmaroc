@@ -138,6 +138,10 @@ if (!$details) {
         .project_informations{
             margin-top:20px
         }
+        .menu a.active {
+      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+      color: white !important; /* Texte en blanc */
+    }
     </style>
 </head>
 <body>
@@ -162,23 +166,15 @@ if (!$details) {
         <div class="details">
             <div class="section">
                 <h2>Informations sur l'Investisseur</h2>
-<<<<<<< HEAD
 
                 <img src="<?= '../' . htmlspecialchars($details['investor_image']) ?>" alt="Image de l'investisseur">
-=======
-                <img src="<?='../' . htmlspecialchars($details['investor_image']) ?>" alt="Image de l'investisseur">
->>>>>>> a962a123a4dc06d8103278a26dcee60d20495f54
                 <p><strong>Nom :</strong> <?= htmlspecialchars($details['investor_name']) ?></p>
                 <p><strong>Email :</strong> <?= htmlspecialchars($details['investor_email']) ?></p>
                 <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['investor_telephone']) ?></p>
             </div>
             <div class="section">
                 <h2>Informations sur l'Entrepreneur</h2>
-<<<<<<< HEAD
                 <img src="<?= '../' . htmlspecialchars($details['entrepreneur_image']) ?>" alt="Image de l'entrepreneur">
-=======
-                <img src="<?= '../' .htmlspecialchars($details['entrepreneur_image']) ?>" alt="Image de l'entrepreneur">
->>>>>>> a962a123a4dc06d8103278a26dcee60d20495f54
                 <p><strong>Nom :</strong> <?= htmlspecialchars($details['entrepreneur_name']) ?></p>
                 <p><strong>Email :</strong> <?= htmlspecialchars($details['entrepreneur_email']) ?></p>
                 <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['entrepreneur_telephone']) ?></p>
@@ -224,5 +220,26 @@ if (!empty($images)) {
         </div>
         <a href="demande_investissement.php" class="back-btn">Retour</a>
     </div>
+
+    <script>
+    // Récupérer tous les liens du menu
+    const menuLinks = document.querySelectorAll('.menu a');
+
+    // Fonction pour vérifier l'URL actuelle
+    function setActiveLink() {
+      const currentPath = window.location.pathname;
+      menuLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Exécuter la fonction lors du chargement de la page
+    window.addEventListener('load', setActiveLink);
+  </script>
 </body>
 </html>
