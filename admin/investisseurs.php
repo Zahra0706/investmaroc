@@ -22,7 +22,7 @@ try {
 }
 
 // Récupérer les investisseurs
-$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'investor'");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'investor' ORDER BY id DESC");
 $stmt->execute();
 $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
