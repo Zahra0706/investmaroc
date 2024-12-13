@@ -134,6 +134,10 @@ $images = json_decode($project['image'], true);
             padding-right:20px;
             font-size:20px;
         }
+        .menu a.active {
+      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+      color: white !important; /* Texte en blanc */
+    }
     </style>
 </head>
 <body>
@@ -183,5 +187,25 @@ $images = json_decode($project['image'], true);
             </div>
         </div>
     </div>
+    <script>
+    // Récupérer tous les liens du menu
+    const menuLinks = document.querySelectorAll('.menu a');
+
+    // Fonction pour vérifier l'URL actuelle
+    function setActiveLink() {
+      const currentPath = window.location.pathname;
+      menuLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Exécuter la fonction lors du chargement de la page
+    window.addEventListener('load', setActiveLink);
+  </script>
 </body>
 </html>

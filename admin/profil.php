@@ -139,6 +139,10 @@ body {
         .menu a:hover {
             background-color: #18B7BE;
         }
+        .menu a.active {
+      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+      color: white !important; /* Texte en blanc */
+    }
 
         
 .container {
@@ -427,7 +431,25 @@ form button:hover {
         document.getElementById("edit-btn").style.display = "none";  // Masquer le bouton Modifier
         document.getElementById("edit-form-container").style.display = "block";  // Afficher le formulaire de modification
     }
-</script>
 
+    // Récupérer tous les liens du menu
+    const menuLinks = document.querySelectorAll('.menu a');
+
+    // Fonction pour vérifier l'URL actuelle
+    function setActiveLink() {
+      const currentPath = window.location.pathname;
+      menuLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Exécuter la fonction lors du chargement de la page
+    window.addEventListener('load', setActiveLink);
+  </script>
 </body>
 </html>
