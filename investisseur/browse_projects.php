@@ -63,16 +63,16 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Style personnalisé -->
     <style>
         .container {
-            display: block; /* Change de flex à block pour que les éléments soient empilés */
+            display: block;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            margin-left: 250px; /* Ajoute cette ligne */
+            margin-left: 250px;
         }
 
         .header {
             display: flex;
-            flex-direction: column; /* Alignement vertical */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 30px 0;
@@ -95,20 +95,19 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .left-align i {
-            margin-right: 10px; /* Espace entre l'icône et le texte */
+            margin-right: 10px;
         }
 
         .left-align:hover {
             border: 1px solid #072A40;
         }
 
-        /* ======== Style des cartes des projets ======== */
         .project-card {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
-            margin: 20px 0; /* Espacement entre les cartes */
+            margin: 20px 0;
         }
 
         .project-card:hover {
@@ -128,7 +127,6 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             text-align: center;
         }
 
-        /* ======== Style des boutons des projets ======== */
         .btn-project {
             display: block;
             text-align: center;
@@ -148,7 +146,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         @media (max-width: 600px) {
             .container {
-                margin-left: 0px; /* Ajoute un léger margin-left en mode téléphone */
+                margin-left: 0px;
             }
         }
     </style>
@@ -165,10 +163,13 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <select name="category" class="form-select me-2" id="categorySelect">
                 <option value="">Toutes les catégories</option>
                 <?php foreach ($categories as $category): ?>
-                    <option value="<?php echo htmlspecialchars($category); ?>" <?php echo $category_filter == $category ? 'selected' : ''; ?>><?php echo htmlspecialchars($category); ?></option>
+                    <option value="<?php echo htmlspecialchars($category); ?>" <?php echo $category_filter == $category ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($category); ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
             <input type="text" name="search" class="form-control me-2" placeholder="Rechercher un projet" id="searchInput" value="<?php echo htmlspecialchars($search_query); ?>">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
         </form>
 
         <a href="saved_projects.php" class="btn left-align">
@@ -182,12 +183,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="col">
                 <div class="project-card">
                     <div class="p-3">
-                        <!-- Affichage du titre du projet -->
                         <h3><?php echo htmlspecialchars($project['title']); ?></h3>
-
-                        <!-- Affichage de la date de création -->
                         <p class="text-muted">Créé le : <?php echo date('d-m-Y', strtotime($project['created_at'])); ?></p>
-
                         <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn-project">Voir Détails</a>
                     </div>
                 </div>
@@ -200,29 +197,25 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Fonction pour mettre à jour les projets affichés
-    function updateProjects() {
-        const form = document.getElementById('filterForm');
-        const formData = new FormData(form);
+    // Fonction pour mettre à jour les projets affichés via AJAX
+    document.getElementById('filterForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+
+        const formData = new FormData(this);
         const queryString = new URLSearchParams(formData).toString();
 
-        fetch('projects.php?' + queryString)
-    .then(response => {
-        console.log(response);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    })
-    .then(data => {
-        document.getElementById('projectList').innerHTML = data;
-    })
-    .catch(error => console.error('Erreur:', error));
-    }
-
-    // Écoutez les changements sur le select et le champ de recherche
-    document.getElementById('categorySelect').addEventListener('change', updateProjects);
-    document.getElementById('searchInput').addEventListener('input', updateProjects);
+        fetch('filter.php?' + queryString)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('projectList').innerHTML = data;
+        })
+        .catch(error => console.error('Erreur:', error));
+    });
 </script>
 
 </body>
