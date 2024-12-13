@@ -39,6 +39,13 @@ if (!$user) {
     die("Utilisateur introuvable.");
 }
 
+// Récupérer la date de naissance de l'utilisateur
+$dateNaissance = $user['date_naissance'];
+
+// Calculer l'âge
+$datetimeNaissance = new DateTime($dateNaissance);
+$today = new DateTime();
+$age = $today->diff($datetimeNaissance)->y;
 // Gestion de la mise à jour des informations de l'utilisateur
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
@@ -378,11 +385,15 @@ form button:hover {
         </div>
 
         <!-- Affichage des informations -->
-        <div class="profile-info" id="info-view">
-            <p><strong>Nom:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
-        </div>
+<div class="profile-info" id="info-view">
+    <p><strong>Nom:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
+    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+    <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
+    <p><strong>Genre:</strong> <?php echo htmlspecialchars($user['genre']); ?></p>
+    <p><strong>Date de Naissance:</strong> <?php echo htmlspecialchars($user['date_naissance']); ?></p>
+    <p><strong>Âge:</strong> <?php echo $age; ?> ans</p>
+    <p><strong>Rôle:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
+</div>
 
         <!-- Bouton Modifier pour afficher le formulaire -->
         <button id="edit-btn" onclick="showEditForm()">

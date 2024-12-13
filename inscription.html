@@ -9,30 +9,22 @@
     <style>
         /* Style général pour le fond avec image floue */
         body {
-            background-image: url('images/investissement_maroc.png'); /* Remplacez par le chemin de votre image */
-            background-size: cover; /* Ajuste l'image pour couvrir toute la page */
-            background-position: center; /* Centrer l'image */
-            position: relative;
-            height: 100vh; /* Assurez-vous que le body prend toute la hauteur */
-            overflow: hidden; /* Pour éviter les barres de défilement */
-        }
+    background-image: url('images/investissement_maroc.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 100vh; /* Remplace height par min-height */
+    margin: 0; /* Évite les marges supplémentaires */
+    overflow: auto; /* Autorise le défilement si nécessaire */
+}
 
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);  /* Couleur sombre semi-transparente */
-            z-index: 1; /* Place la couleur au-dessus de l'image mais en dessous du contenu */
-            filter: blur(5px); /* Floute l'image en arrière-plan */
-        }
+.container {
+    position: relative;
+    z-index: 2;
+    max-height: 100vh; /* Limite la hauteur à celle de l'écran */
+    padding: 2rem;
+}
 
-        .container {
-            position: relative;
-            z-index: 2; /* Place le contenu par-dessus l'image floue */
-        }
 
         /* Style pour les champs de formulaire */
         .form-control , .form-select{
@@ -120,23 +112,23 @@
     </style>
 </head>
 <body>
-    <div class="container my-5">
+    <div class="container  my-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-sm-12">
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
-                        
+    
                         <h1 class="text-center mb-4"><b>Créer un compte</b></h1>
                         <!-- Message de confirmation -->
                         <div id="success-message" class="alert alert-success text-center" style="display: none;">
                             Inscription réussie ! Vous allez être redirigé vers la page de connexion.
                         </div>
-
+    
                         <!-- Message d'erreur -->
                         <div id="error-message" class="alert alert-danger text-center" style="display: none;">
                             Une erreur est survenue. Veuillez réessayer.
                         </div>
-
+    
                         <form action="inscription.php" method="POST" id="signup-form" class="signup-form">
                             <div class="row mb-3">
                                 <!-- Nom -->
@@ -150,7 +142,7 @@
                                     <input type="email" id="email" name="email" class="form-control" placeholder="Entrez votre email" required>
                                 </div>
                             </div>
-
+    
                             <div class="row mb-3">
                                 <!-- Téléphone -->
                                 <div class="col-md-6">
@@ -166,7 +158,24 @@
                                     </select>
                                 </div>
                             </div>
-
+    
+                            <div class="row mb-3">
+                                <!-- Genre -->
+                                <div class="col-md-6">
+                                    <label for="genre" class="form-label"><b>Genre</b></label>
+                                    <select id="genre" name="genre" class="form-select" required>
+                                        <option value="">-- Sélectionnez votre genre --</option>
+                                        <option value="homme">Homme</option>
+                                        <option value="femme">Femme</option>
+                                    </select>
+                                </div>
+                                <!-- Date de naissance -->
+                                <div class="col-md-6">
+                                    <label for="date_naissance" class="form-label"><b>Date de naissance</b></label>
+                                    <input type="date" id="date_naissance" name="date_naissance" class="form-control" required>
+                                </div>
+                            </div>
+    
                             <div class="row mb-3">
                                  <!-- Mot de passe -->
                                 <div class="col-md-6">
@@ -179,38 +188,37 @@
                                     <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirmez votre mot de passe" required>
                                 </div>
                             </div>
-
+    
                             <!-- Message d'erreur -->
                             <p id="error-message" class="text-danger text-center" style="display:none;">Les mots de passe ne correspondent pas.</p>
-
+    
                             <!-- Bouton d'inscription -->
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
                             </div>
-                                                       
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Vérification des paramètres dans l'URL
         const params = new URLSearchParams(window.location.search);
-
+    
         // Affiche un message de succès si l'inscription a réussi
         if (params.get('success') === 'registered') {
             const successMessage = document.getElementById('success-message');
             successMessage.style.display = 'block';
-
+    
             // Redirige après 3 secondes
             setTimeout(() => {
                 window.location.href = 'connexion.php'; // Remplacez par la page de connexion
             }, 3000);
         }
-
+    
         // Affiche un message d'erreur si une erreur s'est produite
         if (params.get('error') === 'email_taken') {
             const errorMessage = document.getElementById('error-message');
@@ -221,47 +229,43 @@
             errorMessage.innerText = "Erreur : Impossible de s'inscrire. Veuillez réessayer.";
             errorMessage.style.display = 'block';
         }
-
+    
         document.addEventListener("DOMContentLoaded", function () {
-    // Références des éléments du formulaire
-    const form = document.getElementById("signup-form"); // Formulaire d'inscription
-    const password = document.getElementById("password"); // Champ mot de passe
-    const confirmPassword = document.getElementById("confirmPassword"); // Champ confirmation mot de passe
-    const errorMessage = document.getElementById("error-message"); // Message d'erreur
-
-    // Fonction pour valider le mot de passe
-    function validatePassword(password) {
-        const minLength = 8;
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-        if (password.length < minLength) {
-            return "Le mot de passe doit contenir au moins 8 caractères.";
-        }
-        if (!regex.test(password)) {
-            return "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
-        }
-        return null; // Aucun problème
-    }
-
-    // Ajout d'un écouteur pour la soumission du formulaire
-    form.addEventListener("submit", function (event) {
-        const passwordError = validatePassword(password.value.trim());
-        if (passwordError) {
-            errorMessage.textContent = passwordError; // Affiche l'erreur de validation du mot de passe
-            errorMessage.style.display = "block";
-            event.preventDefault(); // Empêche l'envoi du formulaire
-        } else if (password.value.trim() !== confirmPassword.value.trim()) {
-            errorMessage.textContent = "Les mots de passe ne correspondent pas."; // Message d'erreur clair
-            errorMessage.style.display = "block"; // Affiche le message d'erreur
-            event.preventDefault(); // Empêche l'envoi du formulaire
-        } else {
-            errorMessage.style.display = "none"; // Cache le message d'erreur
-        }
-    });
-});
-
-
+            // Références des éléments du formulaire
+            const form = document.getElementById("signup-form");
+            const password = document.getElementById("password");
+            const confirmPassword = document.getElementById("confirmPassword");
+            const errorMessage = document.getElementById("error-message");
+    
+            // Fonction pour valider le mot de passe
+            function validatePassword(password) {
+                const minLength = 8;
+                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    
+                if (password.length < minLength) {
+                    return "Le mot de passe doit contenir au moins 8 caractères.";
+                }
+                if (!regex.test(password)) {
+                    return "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
+                }
+                return null; // Aucun problème
+            }
+    
+            // Ajout d'un écouteur pour la soumission du formulaire
+            form.addEventListener("submit", function (event) {
+                const passwordError = validatePassword(password.value.trim());
+                if (passwordError) {
+                    errorMessage.textContent = passwordError;
+                    errorMessage.style.display = "block";
+                    event.preventDefault();
+                } else if (password.value.trim() !== confirmPassword.value.trim()) {
+                    errorMessage.textContent = "Les mots de passe ne correspondent pas.";
+                    errorMessage.style.display = "block";
+                    event.preventDefault();
+                } else {
+                    errorMessage.style.display = "none";
+                }
+            });
+        });
     </script>
-
-</body>
-</html>
+    

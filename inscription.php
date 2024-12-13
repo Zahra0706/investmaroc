@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephone = htmlspecialchars($_POST['telephone']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hachage du mot de passe
     $role = htmlspecialchars($_POST['role']);
+    $genre = htmlspecialchars($_POST['genre']);
+    $dateNaissance = htmlspecialchars($_POST['date_naissance']);
     $defaultImage = '../images/profil.jpg'; // Chemin par défaut pour l'image
 
     // Vérifier si l'email existe déjà
@@ -33,13 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Insérer dans la base de données avec une image par défaut
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, telephone, password, role, image) VALUES (:name, :email, :telephone, :password, :role, :image)");
+    // Insérer dans la base de données avec les nouveaux champs
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, telephone, password, role, genre, date_naissance, image) VALUES (:name, :email, :telephone, :password, :role, :genre, :date_naissance, :image)");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':telephone', $telephone);
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':role', $role);
+    $stmt->bindParam(':genre', $genre);
+    $stmt->bindParam(':date_naissance', $dateNaissance);
     $stmt->bindParam(':image', $defaultImage);
 
     if ($stmt->execute()) {
@@ -52,7 +56,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
-
 ?>
-
-
