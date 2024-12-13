@@ -1,11 +1,11 @@
 <?php
- 
+ob_start(); // Commence la mise en mémoire tampon
 session_start();
-include 'menu.html';
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour voir cette page.");
 }
+include 'menu.html';
 
 $investorId = $_SESSION['user_id'];
 
@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     header("Location: project_details.php?id=$projectId");
     exit;
+    ob_end_flush(); // Envoie le contenu tamponné
 }
 ?>
 
