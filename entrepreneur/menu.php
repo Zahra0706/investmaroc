@@ -17,16 +17,16 @@
       top: 0;
       left: 0;
       height: 100%;
-      width: 250px;
+      width: 250px; /* Largeur en mode PC */
       background-color: #072A40;
       color: #ecf0f1;
       overflow-y: auto;
-      transition: width 0.3s ease, transform 0.3s ease;
+      transition: transform 0.3s ease;
       z-index: 1000;
     }
 
     .sidebar.collapsed {
-      transform: translateX(-100%);
+      transform: translateY(-100%); /* Masquer vers le haut */
     }
 
     .sidebar .logo {
@@ -68,10 +68,6 @@
       font-size: 1.2rem;
     }
 
-    .menu span {
-      transition: opacity 0.3s ease;
-    }
-
     .toggle-btn {
       position: fixed;
       top: 20px;
@@ -82,36 +78,23 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      display: flex;
+      display: none; /* Masquer par défaut */
       justify-content: center;
       align-items: center;
-      cursor: pointer;
-      transition: left 0.3s ease;
     }
 
     @media (max-width: 768px) {
       .sidebar {
-        width: 100%;
-        height: 100%;
-        position: fixed;
+        width: 100%; /* Largeur pleine sur mobile */
+        transform: translateY(-100%); /* Masquer par défaut */
       }
 
-      .sidebar.collapsed {
-        transform: translateY(-100%);
+      .sidebar.active {
+        transform: translateY(0); /* Afficher en descendant */
       }
 
       .toggle-btn {
-        top: 10px;
-        left: auto;
-        right: 10px;
-      }
-
-      .menu a {
-        justify-content: flex-start;
-      }
-
-      .menu span {
-        display: inline-block;
+        display: flex; /* Afficher sur mobile */
       }
     }
   </style>
@@ -124,22 +107,36 @@
         <img src="logo.png" alt="Logo">
       </div>
       <ul class="menu">
-        <li><a href="profil.php"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
-        <li><a href="create_project.php"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
-        <li><a href="list_projects.php"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
-        <li><a href="entrepreneur_projects.php"><i class="fas fa-briefcase"></i> <span>Projets Validés à Investir</span></a></li>
-        <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
+        <li><a href="profil.php" onclick="hideSidebar()"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
+        <li><a href="create_project.php" onclick="hideSidebar()"><i class="fas fa-plus-circle"></i> <span>Créer un Projet</span></a></li>
+        <li><a href="list_projects.php" onclick="hideSidebar()"><i class="fas fa-list"></i> <span>Mes Projets</span></a></li>
+        <li><a href="entrepreneur_projects.php" onclick="hideSidebar()"><i class="fas fa-briefcase"></i> <span>Projets Validés à Investir</span></a></li>
+        <li><a href="../deconnexion.php" onclick="hideSidebar()"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
       </ul>
     </div>
 
     <!-- Bouton de bascule (toggle) -->
-    <button class="toggle-btn" id="toggle-btn"><i class="fas fa-bars"></i></button>
+    <button class="toggle-btn" id="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
   </div>
 
   <!-- Lien vers Bootstrap Bundle (inclut Popper.js) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Inclusion du fichier sidebar.js -->
-  <script src="sidebar.js"></script>
+  <script>
+    const sidebar = document.getElementById('sidebar');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('active');
+    }
+
+    function hideSidebar() {
+      sidebar.classList.remove('active');
+    }
+
+    // Afficher le bouton de toggle seulement sur mobile
+    if (window.innerWidth <= 768) {
+      document.getElementById('toggle-btn').style.display = 'flex';
+    }
+  </script>
 </body>
 </html>
