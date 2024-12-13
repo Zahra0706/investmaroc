@@ -227,9 +227,44 @@ button[name="action"][value="details"]:hover {
             font-size: 1rem;
             color: #555;
         }
+        #menu-toggle {
+        display: none; /* Masqué par défaut */
+        position: fixed; /* Fixé à l'écran */
+        top: 20px; /* Ajustez la position verticale */
+        left: 20px; /* Positionné à gauche */
+        width: 50px; /* Largeur du bouton */
+        height: 50px; /* Hauteur du bouton */
+        background-color: #18B7BE; /* Couleur de fond */
+        color: white; /* Couleur de l'icône */
+        border: none; /* Pas de bordure */
+        border-radius: 50%; /* Forme circulaire */
+        cursor: pointer; /* Curseur en forme de main */
+        display: flex; /* Flex pour centrer l'icône */
+        justify-content: center; /* Centrer horizontalement */
+        align-items: center; /* Centrer verticalement */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
+        z-index: 1000; /* Pour s'assurer qu'il est au-dessus des autres éléments */
+    }
+        @media (max-width: 600px) {
+    .sidebar {
+        display: none; /* Masquer la sidebar par défaut */
+    }
+    .sidebar.active {
+        display: block; /* Afficher la sidebar quand active */
+    }
+    .main-content {
+        margin:0;
+        width:700px;
+    }
+    h1{
+        text-align:center;
+    }
+}
     </style>
 </head>
 <body>
+<button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+
     <!-- Barre latérale -->
     <div class="sidebar">
     <div class="logo">
@@ -372,5 +407,16 @@ button[name="action"][value="details"]:hover {
     xhr.send();
 }
   </script>
+  <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active'); 
+            if (sidebar.style.display === 'block') {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

@@ -46,7 +46,7 @@ $age = $aujourdhui->diff($date_naissance)->y;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails de l'Investisseur</title>
+    <title>Détails de l'entrepreneur</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -132,9 +132,43 @@ $age = $aujourdhui->diff($date_naissance)->y;
         .back-link:hover {
             background-color: #16a7b8;
         }
+        #menu-toggle {
+        display: none; /* Masqué par défaut */
+        position: fixed; /* Fixé à l'écran */
+        top: 20px; /* Ajustez la position verticale */
+        left: 20px; /* Positionné à gauche */
+        width: 50px; /* Largeur du bouton */
+        height: 50px; /* Hauteur du bouton */
+        background-color: #18B7BE; /* Couleur de fond */
+        color: white; /* Couleur de l'icône */
+        border: none; /* Pas de bordure */
+        border-radius: 50%; /* Forme circulaire */
+        cursor: pointer; /* Curseur en forme de main */
+        display: flex; /* Flex pour centrer l'icône */
+        justify-content: center; /* Centrer horizontalement */
+        align-items: center; /* Centrer verticalement */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
+        z-index: 1000; /* Pour s'assurer qu'il est au-dessus des autres éléments */
+    }
+        @media (max-width: 600px) {
+    .sidebar {
+        display: none; /* Masquer la sidebar par défaut */
+    }
+    .sidebar.active {
+        display: block; /* Afficher la sidebar quand active */
+    }
+    h1{
+        text-align:center;
+        margin-top:55px;
+    }
+    
+}
+
     </style>
 </head>
 <body>
+<button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+
    <!-- Barre latérale -->
    <div class="sidebar">
     <div class="logo">
@@ -155,7 +189,7 @@ $age = $aujourdhui->diff($date_naissance)->y;
         </ul>
     </div>
 
-    <h1>Détails de l'Investisseur</h1>
+    <h1>Détails de l'entrepreneur</h1>
     <div class="details-container">
     <?php if (!empty($investor['image'])): ?>
             <img src="<?= htmlspecialchars('../' . $investor['image']) ?>" alt="Image" style="width: 100px; height: 100px;">
@@ -168,7 +202,18 @@ $age = $aujourdhui->diff($date_naissance)->y;
         <p><strong>Genre :</strong> <?= htmlspecialchars($investor['genre']) ?></p>
         <p><strong>Âge :</strong> <?= $age ?> ans</p>
         
-        <a href="investisseurs.php" class="back-link">Retour à la liste des investisseurs</a>
+        <a href="entrepreneurs.php" class="back-link">Retour à la liste des entrepreneurs</a>
     </div>
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active'); 
+            if (sidebar.style.display === 'block') {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

@@ -117,9 +117,66 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
       background-color: #18B7BE !important; /* Bleu pour l'élément actif */
       color: white !important; /* Texte en blanc */
     }
+    .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #072A40; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+    text-decoration: none; /* Supprime le soulignement */
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 1rem; /* Taille de la police */
+    transition: background-color 0.3s, transform 0.2s; /* Animation au survol */
+}
+
+.btn:hover {
+    background-color: #18B7BE; /* Couleur au survol */
+    transform: translateY(-2px); /* Effet d'élévation */
+}
+
+.btn i {
+    margin-right: 8px; /* Espace entre l'icône et le texte */
+    font-size: 1.2rem; /* Taille de l'icône */
+}
+
+    #menu-toggle {
+        display: none; /* Masqué par défaut */
+        position: fixed; /* Fixé à l'écran */
+        top: 20px; /* Ajustez la position verticale */
+        left: 20px; /* Positionné à gauche */
+        width: 50px; /* Largeur du bouton */
+        height: 50px; /* Hauteur du bouton */
+        background-color: #18B7BE; /* Couleur de fond */
+        color: white; /* Couleur de l'icône */
+        border: none; /* Pas de bordure */
+        border-radius: 50%; /* Forme circulaire */
+        cursor: pointer; /* Curseur en forme de main */
+        display: flex; /* Flex pour centrer l'icône */
+        justify-content: center; /* Centrer horizontalement */
+        align-items: center; /* Centrer verticalement */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
+        z-index: 1000; /* Pour s'assurer qu'il est au-dessus des autres éléments */
+    }
+        @media (max-width: 600px) {
+    .sidebar {
+        display: none; /* Masquer la sidebar par défaut */
+    }
+    .sidebar.active {
+        display: block; /* Afficher la sidebar quand active */
+    }
+    .container {
+        margin:0;
+        width:700px
+    }
+    h1{
+        text-align:center;
+    }
+}
     </style>
 </head>
 <body>
+<button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+
     <!-- Barre latérale -->
     <div class="sidebar">
     <div class="logo">
@@ -169,28 +226,35 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h1>Liste des Collaborations</h1>
 
         <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nom de l'Investisseur</th>
-                        <th>Nom de l'Entrepreneur</th>
-                        <th>Projet</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($collaborations as $collab): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($collab['investor_name']); ?></td>
-                            <td><?php echo htmlspecialchars($collab['entrepreneur_name']); ?></td>
-                            <td><?php echo htmlspecialchars($collab['project_title']); ?></td>
-                            <td class="date"><?php echo htmlspecialchars($collab['date_collaboration']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom de l'Investisseur</th>
+                <th>Nom de l'Entrepreneur</th>
+                <th>Projet</th>
+                <th>Date</th>
+                <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($collaborations as $collab): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($collab['investor_name']); ?></td>
+                    <td><?php echo htmlspecialchars($collab['entrepreneur_name']); ?></td>
+                    <td><?php echo htmlspecialchars($collab['project_title']); ?></td>
+                    <td class="date"><?php echo htmlspecialchars($collab['date_collaboration']); ?></td>
+                    <td>
+                        <a href="details_collaboration.php?id=<?php echo $collab['collaboration_id']; ?>" class="btn">
+                            <i class="fas fa-info-circle"></i> Afficher les détails
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+</div>
 
     <script>
     // Récupérer tous les liens du menu
@@ -212,5 +276,16 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     // Exécuter la fonction lors du chargement de la page
     window.addEventListener('load', setActiveLink);
   </script>
+  <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active'); 
+            if (sidebar.style.display === 'block') {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

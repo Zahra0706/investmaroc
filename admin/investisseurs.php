@@ -36,17 +36,6 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @media (min-width: 768px) {
-    .sidebar {
-        transform: translateX(0); /* Afficher la barre latérale en mode desktop */
-    }
-    .container {
-        margin-left: 0px; /* Espace pour la barre latérale */
-    }
-    .toggle-btn {
-        display: none; /* Masquer le bouton en mode desktop */
-    }
-}
         * {
             margin: 0;
             padding: 0;
@@ -55,13 +44,10 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             display: flex;
         }
 
         .sidebar {
-            display: none; /* Masquer par défaut */
             width: 250px;
             height: 100vh;
             background-color: #072A40;
@@ -69,10 +55,6 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             padding-top: 20px;
             position: fixed;
             transition: transform 0.3s ease;
-        }
-
-        .sidebar.active {
-            display: block; /* Afficher lorsque actif */
         }
 
         .menu {
@@ -109,11 +91,6 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             width: calc(100% - 250px);
             background-color: #f9f9f9;
             transition: margin-left 0.3s ease;
-        }
-
-        .container.expanded {
-            margin-left: 0;
-            width: 100%;
         }
 
         .table-container {
@@ -209,48 +186,49 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             pointer-events: none;
         }
 
-        .action-buttons .btn {
-            display: flex;
-            align-items: center;
+        #menu-toggle {
+            display: none; /* Masqué par défaut sur PC */
+            position: fixed; /* Fixé à l'écran */
+            top: 20px; /* Ajustez la position verticale */
+            left: 20px; /* Positionné à gauche */
+            width: 50px; /* Largeur du bouton */
+            height: 50px; /* Hauteur du bouton */
+            background-color: #18B7BE; /* Couleur de fond */
+            color: white; /* Couleur de l'icône */
+            border: none; /* Pas de bordure */
+            border-radius: 50%; /* Forme circulaire */
+            cursor: pointer; /* Curseur en forme de main */
+            display: flex; /* Flex pour centrer l'icône */
+            justify-content: center; /* Centrer horizontalement */
+            align-items: center; /* Centrer verticalement */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
+            z-index: 1000; /* Pour s'assurer qu'il est au-dessus des autres éléments */
         }
 
-        .action-buttons .btn i {
-            margin-right: 5px;
-        }
-
-        .toggle-btn {
-            display: block; /* Afficher le bouton en mode mobile */
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #18B7BE;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        @media (min-width: 768px) {
+        @media (max-width: 600px) {
             .sidebar {
-                display: block; /* Afficher la barre latérale en mode desktop */
+                display: none; /* Masquer la sidebar par défaut sur mobile */
+            }
+            .sidebar.active {
+                display: block; /* Afficher la sidebar quand active */
             }
             .container {
-                width: calc(100% - 250px);
+                margin-left: 0; /* Pas de marge lorsque la sidebar est masquée */
+                width: 700px; /* Largeur complète */
             }
-            .toggle-btn {
-                display: none; /* Masquer le bouton en mode desktop */
+            h1 {
+                text-align: center; /* Centrer le titre */
+            }
+            #menu-toggle {
+                display: flex; /* Afficher le bouton sur mobile */
             }
         }
     </style>
 </head>
 <body>
     <!-- Bouton de basculement -->
-    <button class="toggle-btn" id="menu-toggle" onclick="toggleMenu()">
-        <i class="fas fa-bars"></i>
-    </button>
-
+    <button id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+  
     <!-- Barre latérale -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
@@ -261,11 +239,7 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="investisseurs.php"><i class="fas fa-handshake"></i> Investisseurs</a></li>
             <li><a href="entrepreneurs.php"><i class="fas fa-briefcase"></i> Entrepreneurs</a></li>
             <li><a href="projets.php"><i class="fas fa-list"></i> Projets</a></li>
-            <li>
-                <a href="demande_investissement.php">
-                <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
-                </a>
-            </li>
+            <li><a href="demande_investissement.php"><i class="fas fa-clipboard-list"></i> Demandes d'Investissement</a></li>
             <li><a href="collaborations.php"><i class="fas fa-users"></i> Collaborations</a></li>
             <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
         </ul>
@@ -317,6 +291,28 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script>
+        // Fonction pour basculer le menu
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active'); // Ajoute ou enlève la classe active
+        }
+
+        // Fonction pour rechercher les investisseurs
+        function searchInvestors() {
+            const searchTerm = document.getElementById('search').value;
+
+            // Créer une requête AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'search_investors.php?search=' + encodeURIComponent(searchTerm), true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Mettre à jour le tableau avec les résultats
+                    document.getElementById('results').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+
         // Récupérer tous les liens du menu
         const menuLinks = document.querySelectorAll('.menu a');
 
@@ -335,28 +331,6 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Exécuter la fonction lors du chargement de la page
         window.addEventListener('load', setActiveLink);
-
-        // Fonction pour rechercher les investisseurs
-        function searchInvestors() {
-            const searchTerm = document.getElementById('search').value;
-
-            // Créer une requête AJAX
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'search_investors.php?search=' + encodeURIComponent(searchTerm), true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Mettre à jour le tableau avec les résultats
-                    document.getElementById('results').innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send();
-        }
-
-        // Fonction pour basculer le menu
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active'); // Ajoute ou enlève la classe active
-        }
     </script>
 </body>
 </html>
