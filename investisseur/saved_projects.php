@@ -100,13 +100,17 @@ $savedProjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .container{
             margin-left:270px;
         }
+        @media (max-width: 600px) {
+            .container {
+                margin-left: 0px; /* Ajoute un léger margin-left en mode téléphone */
+            }}
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1><b>Projets Enregistrés</b></h1>
+            <h1><b>Projets Enregistrés</b></h1><br>
             <a href="browse_projects.php" class="btn">Retour aux projets</a>
         </div>
 

@@ -117,7 +117,10 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 .btn-project:hover {
     background-color: #16a7b8;
 }
-
+@media (max-width: 600px) {
+            .container {
+                margin-left: 0px; /* Ajoute un léger margin-left en mode téléphone */
+            }}
     </style>
 </head>
 <body>

@@ -1,5 +1,5 @@
 <?php
-// Activer l'affichage des erreurs (important pour voir les erreurs de chemin ou de téléchargement)
+// Activer l'affichage des erreurs
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Vérification et validation des champs
     if (!empty($_FILES['profile_image']['name'])) {
-        // Nom unique pour l'image (pour éviter les conflits de noms)
         $imageName = time() . '_' . basename($_FILES['profile_image']['name']);
         $targetDirectory = '../entrepreneur/uploads/';
         $targetFilePath = $targetDirectory . $imageName;
@@ -60,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (in_array(strtolower($fileType), $allowedTypes)) {
             // Déplacer l'image dans le dossier "uploads"
             if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFilePath)) {
-                // Enregistrer uniquement le chemin relatif à la base de données
                 $imagePath = 'entrepreneur/uploads/' . $imageName;
             } else {
                 $error = "Erreur lors du téléchargement de l'image.";
@@ -93,164 +91,120 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Profil Utilisateur</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-       .edit-form-container {
+        .edit-form-container {
             display: none;
-       }
+        }
 
-  
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin-top: -150px;
+            margin-left: 300px; /* Pour les écrans plus grands */
+        }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    margin-top: -150px;
-    margin-left: 300px; /* Ajoute cette ligne */
+        .profile-container {
+            border-radius: 12px;
+            padding: 40px;
+            transition: all 0.3s ease-in-out;
+            width: 1000px;
+        }
 
-}
+        .profile-container h1 {
+            font-size: 30px;
+            color: #072A40;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
 
-.profile-container {
-    border-radius: 12px;
-    padding: 40px;
-    transition: all 0.3s ease-in-out;
-    width: 1000px;
-}
+        .profile-photo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-.profile-container h1 {
-    font-size: 30px;
-    color: #072A40;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: bold;
-}
+        .profile-photo img {
+            border-radius: 50%;
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border: 4px solid #072A40;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.profile-photo {
-    text-align: center;
-    margin-bottom: 25px;
-}
+        .profile-info {
+            margin-bottom: 30px;
+        }
 
-.profile-photo img {
-    border-radius: 50%;
-    width: 160px;
-    height: 160px;
-    object-fit: cover;
-    border: 4px solid #072A40;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .profile-info p {
+            font-size: 16px;
+            color: #072A40;
+            margin-bottom: 15px;
+        }
 
-.profile-info {
-    margin-bottom: 30px;
-}
+        button {
+            background-color: #072A40;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-.profile-info p {
-    font-size: 16px;
-    color: #072A40;
-    margin-bottom: 15px;
-}
+        button:hover {
+            background-color: #072A40;
+        }
 
-button {
-    background-color: #072A40;
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="file"] {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
 
-button:hover {
-    background-color: #072A40;
-}
+        form input[type="text"]:focus,
+        form input[type="email"]:focus {
+            border-color: #007bff;
+            background-color: #ffffff;
+        }
 
-.edit-form-container {
-    display: none;
-    margin-top: -30px;
-}
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+        }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="file"] {
-    width: 100%;
-    padding: 14px 18px;
-    margin: 8px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
-}
+        @media (max-width: 600px) {
+            .container {
+                margin-left: 0px; /* Ajoute un léger margin-left en mode téléphone */
+            }
 
-form input[type="text"]:focus,
-form input[type="email"]:focus {
-    border-color: #007bff;
-    background-color: #ffffff;
-}
+            .profile-container {
+                width: 100%; /* Rendre le profil réactif sur mobile */
+                max-width: none; /* Supprimer la limite de largeur */
+            }
 
-form button {
-    background-color: #072A40;
-    border-radius: 8px;
-    width: 100%;
-    padding: 14px;
-    margin-top: 20px;
-    color: #18B7BE;
-}
-
-form button:hover {
-    background-color: #18B7BE;
-    color: #072A40;
-}
-
-.error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 15px;
-}
-
-#edit-btn {
-    margin-top: 25px;
-    background-color:  #18B7BE;
-    color:#072A40;
-    border-radius: 8px;
-    width: 100%;
-    padding: 12px 0;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-#edit-btn i {
-    margin-right: 10px;  /* Espacement entre l'icône et le texte */
-    font-size: 18px;
-}
-
-#edit-btn:hover {
-    background-color: #072A40;
-    color: #18B7BE;
-}
-
-/* Responsive pour mobile */
-@media (max-width: 600px) {
-    .profile-container {
-        padding: 20px;
-        width: 100%;  /* Rendre le profil réactif sur mobile */
-        max-width: none; /* Supprimer la limite de 900px */
-    }
-
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="file"],
-    form button {
-        font-size: 14px;
-    }
-}
-
-
-</style>
-
+            form input[type="text"],
+            form input[type="email"],
+            form input[type="file"],
+            form button {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -271,12 +225,11 @@ form button:hover {
 
         <!-- Bouton Modifier pour afficher le formulaire -->
         <button id="edit-btn" onclick="showEditForm()">
-    <i class="fas fa-edit"></i> Modifier
-</button>
+            <i class="fas fa-edit"></i> Modifier
+        </button>
 
         <!-- Formulaire de modification -->
         <div class="edit-form-container" id="edit-form-container">
-       
             <form id="edit-form" method="POST" enctype="multipart/form-data">
                 <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
                 <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
