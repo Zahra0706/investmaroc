@@ -30,14 +30,15 @@
     }
 
     .sidebar .logo {
-      text-align: center;
-      padding: 20px 0;
-    }
+    text-align: center;
+    padding: 20px 0;
+}
 
-    .sidebar .logo img {
-      width: 80%;
-      max-width: 100px;
-    }
+.sidebar .logo img {
+    width: 100%; /* Ajustez à 100% ou à la taille fixe souhaitée */
+    max-width: none; /* Supprime la limite de largeur maximale */
+    height: auto; /* Conserve le ratio de l'image */
+}
 
     .menu {
       list-style: none;
