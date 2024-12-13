@@ -63,6 +63,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Invest Maroc</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Ajout de Font Awesome -->
     <style>
         div .form-control {
             padding: 0.8rem;
@@ -72,100 +73,91 @@ $conn->close();
             outline: none;
             transition: 0.3s ease;
         }
-        /* Bouton modernisé avec animation */
-button[type="submit"] {
-    background-color: #072A40; /* Couleur principale */
-    color: white;
-    border: none;
-    border-radius: 25px; /* Coins arrondis */
-    padding: 0.8rem 1.5rem; /* Espace intérieur */
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.3s ease; /* Transition pour les animations */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre */
-}
 
-/* Effet au survol */
-button[type="submit"]:hover {
-    background-color: #073a50; /* Couleur plus claire au survol */
-    transform: translateY(-3px); /* Légère élévation */
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Accentuer l'ombre */
-}
+        button[type="submit"] {
+            background-color: #072A40; 
+            color: white;
+            border: none;
+            border-radius: 25px; 
+            padding: 0.8rem 1.5rem; 
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease; 
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+        }
 
-/* Effet d'appui */
-button[type="submit"]:active {
-    background-color: #2b365e; /* Couleur plus foncée à l'appui */
-    transform: translateY(1px); /* Réduction d'élévation */
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
-}
+        button[type="submit"]:hover {
+            background-color: #073a50; 
+            transform: translateY(-3px); 
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); 
+        }
 
-body {
-    background-image: url('images/investissement_maroc.png'); /* Remplacez par le chemin de votre image */
-    background-size: cover; /* Ajuste l'image pour couvrir toute la page */
-    background-position: center; /* Centrer l'image */
-    position: relative;
-    height: 100vh; /* Assurez-vous que le body prend toute la hauteur */
-    overflow: hidden; /* Pour éviter les barres de défilement */
-}
+        button[type="submit"]:active {
+            background-color: #2b365e; 
+            transform: translateY(1px); 
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2); 
+        }
 
-body::before {
-    content: "";
+
+        body {
+            background-image: url('images/investissement_maroc.png'); 
+            background-size: cover; 
+            background-position: center; 
+            position: relative;
+            height: 100vh; 
+            overflow: hidden; 
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1; 
+        }
+
+        .container {
+            position: relative;
+            z-index: 2; 
+        }
+
+        @media (max-width: 768px) {
+            button[type="submit"] {
+                font-size: 1rem; 
+                padding: 0.6rem 1.2rem; 
+            }
+
+            div .form-control {
+                padding: 0.6rem;
+                font-size: 0.9rem; 
+            }
+        }
+
+        @media (max-width: 576px) {
+            button[type="submit"] {
+                font-size: 0.9rem; 
+                padding: 0.5rem 1rem; 
+            }
+
+            div .form-control {
+                padding: 0.5rem;
+                font-size: 0.8rem; 
+            }
+
+            .container {
+                padding: 0.5rem; 
+            }
+        }
+
+        .toggle-password {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /*background: rgba(0, 0, 0, 0.5);  Ajoute une couleur sombre semi-transparente */
-    z-index: 1; /* Place la couleur au-dessus de l'image mais en dessous du contenu */
-}
-
-
-.container {
-    position: relative;
-    z-index: 2; /* Place le contenu par-dessus l'image floue */
-}
-
-
-/* Pour les écrans de 768px (tablettes) ou moins */
-@media (max-width: 768px) {
-    button[type="submit"] {
-        font-size: 1rem; /* Réduction de la taille du texte */
-        padding: 0.6rem 1.2rem; /* Moins de padding pour les petits écrans */
-    }
-
-    div .form-control {
-        padding: 0.6rem;
-        font-size: 0.9rem; /* Réduction de la taille de la police */
-    }
-
-    body {
-        background-size: cover; 
-        background-position: center; 
-    }
-}
-
-/* Pour les écrans de 576px (mobiles) ou moins */
-@media (max-width: 576px) {
-    button[type="submit"] {
-        font-size: 0.9rem; /* Réduction de la taille du texte */
-        padding: 0.5rem 1rem; /* Réduction des marges intérieures */
-    }
-
-    div .form-control {
-        padding: 0.5rem;
-        font-size: 0.8rem; /* Police encore plus petite */
-    }
-
-    .container {
-        padding: 0.5rem; /* Plus d'espace autour du contenu */
-    }
-
-    body {
-        background-size: cover; 
-        background-position: center; 
-    }
+    right: 20px;
+    top: 45px; /* Ajustez cette valeur selon la hauteur de votre champ */
+    cursor: pointer;
+    color: #073a50; /* Couleur de l'icône */
 }
     </style>
 </head>
@@ -177,20 +169,19 @@ body::before {
                     <div class="card-body p-4">
                         <h2 class="text-center mb-4"><b>Se connecter</b></h2>
 
-                        
-
                         <form action="connexion.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label"><b>Adresse email</b></label>
                                 <input type="email" id="email" name="email" class="form-control" placeholder="Entrez votre email" required>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 position-relative">
                                 <label for="password" class="form-label"><b>Mot de passe</b></label>
                                 <input type="password" id="password" name="password" class="form-control" placeholder="Entrez votre mot de passe" required>
+                                <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i> <!-- Icône pour afficher/masquer -->
                             </div>
-                                <!-- Affichage du message d'erreur -->
-                        <?php if (isset($_GET['error']) && !empty($_GET['error'])): ?>
-                            <p class="text-danger text-center"><b><?= htmlspecialchars($_GET['error']); ?></b></p>
+
+                            <?php if (isset($_GET['error']) && !empty($_GET['error'])): ?>
+                                <p class="text-danger text-center"><b><?= htmlspecialchars($_GET['error']); ?></b></p>
                             <?php endif; ?>
 
                             <div class="text-center">
@@ -206,6 +197,22 @@ body::before {
             </div>
         </div>
     </div>
+    <script>
+        function togglePassword(inputId) {
+            const inputField = document.getElementById(inputId);
+            const icon = event.currentTarget;
+
+            if (inputField.type === "password") {
+                inputField.type = "text"; 
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                inputField.type = "password"; 
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
