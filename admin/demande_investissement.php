@@ -183,6 +183,40 @@ button[name="action"][value="details"]:hover {
     background-color:white;
     margin-bottom:10px;
 }
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+    max-width: 700px;
+}
+
+#search {
+    padding: 10px 40px 10px 40px; /* Ajuster le padding pour laisser de la place à l'icône */
+    width: 100%; /* Utiliser toute la largeur */
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 4px; /* Coins arrondis */
+    font-size: 16px; /* Taille de police */
+    transition: border-color 0.3s; /* Transition pour l'effet au focus */
+}
+
+#search:focus {
+    border-color: #18B7BE; /* Couleur de la bordure au focus */
+    outline: none; /* Supprimer la bordure par défaut au focus */
+}
+
+#search::placeholder {
+    color: #888; /* Couleur du texte du placeholder */
+    opacity: 1; /* S'assurer que le texte est opaque */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px; /* Positionner l'icône à gauche */
+    top: 50%; /* Centrer verticalement */
+    transform: translateY(-50%); /* Ajuster pour centrer parfaitement */
+    color: #888; /* Couleur de l'icône */
+    font-size: 18px; /* Taille de l'icône */
+    pointer-events: none; /* Ignorer les clics sur l'icône */
+}
 .menu a.active {
       background-color: #18B7BE !important; /* Bleu pour l'élément actif */
       color: white !important; /* Texte en blanc */
@@ -243,6 +277,10 @@ button[name="action"][value="details"]:hover {
     <!-- Contenu principal -->
     <div class="main-content">
         <h1>Demandes d'Investissement</h1>
+        <div class="search-container">
+    <input type="text" id="search" placeholder="Rechercher par investisseur, entrepreneur ou projet" oninput="searchRequests()">
+    <i class="fas fa-search search-icon"></i>
+</div>
         <div class="text-end">
         <form method="GET" action="historique_demandes.php">
             <button type="submit" class="btnn">
@@ -261,38 +299,38 @@ button[name="action"][value="details"]:hover {
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($requests as $request): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($request['investor_name']) ?></td>
-                            <td><?= htmlspecialchars($request['project_title']) ?></td>
-                            <td><?= htmlspecialchars($request['entrepreneur_name']) ?></td>
-                            <td><?= htmlspecialchars($request['created_at']) ?></td>
-                            <td>
-    <div style="display: flex; gap: 10px; justify-content: flex-start;">
-        <form method="POST" action="details_demande.php">
-            <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-            <button type="submit" name="action" value="details">
-                <i class="fas fa-eye"></i> Afficher les détails
-            </button>
-        </form>
-        <form method="POST">
-            <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-            <button type="submit" name="action" value="accept">
-                <i class="fas fa-check"></i> Accepter
-            </button>
-        </form>
-        <form method="POST">
-            <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-            <button type="submit" name="action" value="reject">
-                <i class="fas fa-times"></i> Annuler
-            </button>
-        </form>
-    </div>
-</td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                <tbody id="results">
+    <?php foreach ($requests as $request): ?>
+        <tr>
+            <td><?= htmlspecialchars($request['investor_name']) ?></td>
+            <td><?= htmlspecialchars($request['project_title']) ?></td>
+            <td><?= htmlspecialchars($request['entrepreneur_name']) ?></td>
+            <td><?= htmlspecialchars($request['created_at']) ?></td>
+            <td>
+                <div style="display: flex; gap: 10px; justify-content: flex-start;">
+                    <form method="POST" action="details_demande.php">
+                        <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+                        <button type="submit" name="action" value="details">
+                            <i class="fas fa-eye"></i> Afficher les détails
+                        </button>
+                    </form>
+                    <form method="POST">
+                        <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+                        <button type="submit" name="action" value="accept">
+                            <i class="fas fa-check"></i> Accepter
+                        </button>
+                    </form>
+                    <form method="POST">
+                        <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+                        <button type="submit" name="action" value="reject">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
             </table>
         <?php else: ?>
             <p>Aucune demande en attente.</p>
@@ -317,6 +355,22 @@ button[name="action"][value="details"]:hover {
 
     // Exécuter la fonction lors du chargement de la page
     window.addEventListener('load', setActiveLink);
+  </script>
+  <script>
+    function searchRequests() {
+    const searchTerm = document.getElementById('search').value;
+
+    // Créer une requête AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'search_investment_requests.php?search=' + encodeURIComponent(searchTerm), true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Mettre à jour le tableau avec les résultats
+            document.getElementById('results').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+}
   </script>
 </body>
 </html>

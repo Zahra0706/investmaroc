@@ -120,6 +120,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
+            text-decoration: none;
+
         }
         .btn:hover {
             background-color: #16a7b8;
@@ -137,6 +139,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s;
+    text-decoration: none;
+
 }
 
 .btn-danger:hover {
@@ -151,6 +155,8 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     padding: 8px 15px;
     text-align: center;
     transition: background-color 0.3s;
+    text-decoration: none;
+
 }
 
 .btn-validate:hover {
@@ -160,7 +166,39 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
       background-color: #18B7BE !important; /* Bleu pour l'élément actif */
       color: white !important; /* Texte en blanc */
     }
+    .search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
 
+#search {
+    padding: 10px 40px 10px 40px; /* Ajuster le padding pour laisser de la place à l'icône */
+    width: 250px;
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 4px; /* Coins arrondis */
+    font-size: 16px; /* Taille de police */
+    transition: border-color 0.3s; /* Transition pour l'effet au focus */
+}
+
+#search:focus {
+    border-color: #18B7BE; /* Couleur de la bordure au focus */
+    outline: none; /* Supprimer la bordure par défaut au focus */
+}
+
+#search::placeholder {
+    color: #888; /* Couleur du texte du placeholder */
+    opacity: 1; /* S'assurer que le texte est opaque */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px; /* Positionner l'icône à gauche */
+    top: 50%; /* Centrer verticalement */
+    transform: translateY(-50%); /* Ajuster pour centrer parfaitement */
+    color: #888; /* Couleur de l'icône */
+    font-size: 18px; /* Taille de l'icône */
+    pointer-events: none; /* Ignorer les clics sur l'icône */
+}
 
     </style>
 </head>
@@ -213,7 +251,10 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Contenu principal -->
     <div class="container">
         <h1>Gestion des Projets</h1>
-
+        <div class="search-container">
+    <input type="text" id="search" placeholder="Rechercher par titre" oninput="searchProjects()">
+    <i class="fas fa-search search-icon"></i>
+</div>
         <div class="table-container">
             <table>
                 <thead>
@@ -224,32 +265,28 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($projects as $project): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($project['title']); ?></td>
-                            <td><?php echo htmlspecialchars($project['capital_needed']); ?> DH</td>
-                            <td><?php echo htmlspecialchars($project['status']); ?></td>
-                            <td class="action-buttons">
-    <?php if ($project['status'] == 'en attent'): ?>
-        <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn btn-validate">
-            <i class="fas fa-check-circle"></i> Valider
-        </a>
-
-    <?php endif; ?>
-    <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn">
-        <i class="fas fa-info-circle"></i> Afficher Détails
-    </a>
-    <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger" onclick="confirmDeletion(event)">
-        <i class="fas fa-trash-alt"></i> Supprimer
-    </a>
-
-</td>
-
-
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                <tbody id="results">
+    <?php foreach ($projects as $project): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($project['title']); ?></td>
+            <td><?php echo htmlspecialchars($project['capital_needed']); ?> DH</td>
+            <td><?php echo htmlspecialchars($project['status']); ?></td>
+            <td class="action-buttons">
+                <?php if ($project['status'] == 'en attent'): ?>
+                    <a href="?action=change_status&id=<?php echo $project['id']; ?>" class="btn btn-validate">
+                        <i class="fas fa-check-circle"></i> Valider
+                    </a>
+                <?php endif; ?>
+                <a href="project_details.php?id=<?php echo $project['id']; ?>" class="btn">
+                    <i class="fas fa-info-circle"></i> Afficher Détails
+                </a>
+                <a href="?action=delete&id=<?php echo $project['id']; ?>" class="btn btn-danger" onclick="confirmDeletion(event)">
+                    <i class="fas fa-trash-alt"></i> Supprimer
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
             </table>
         </div>
     </div>
@@ -279,6 +316,22 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Exécuter la fonction lors du chargement de la page
     window.addEventListener('load', setActiveLink);
+  </script>
+  <script>
+    function searchProjects() {
+    const searchTerm = document.getElementById('search').value;
+
+    // Créer une requête AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'search_projects.php?search=' + encodeURIComponent(searchTerm), true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Mettre à jour le tableau avec les résultats
+            document.getElementById('results').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+}
   </script>
 </body>
 </html>

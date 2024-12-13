@@ -1,0 +1,38 @@
+<?php
+session_start();
+
+// Vérifier si l'utilisateur est administrateur
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
+    die("Vous devez être connecté en tant qu'administrateur pour accéder à cette page.");
+}
+
+// Configuration de la base de données
+$host = 'localhost';
+$dbname = 'investmaroc';
+$user = 'root';
+$pass = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connexion à la base de données échouée : " . $e->getMessage());
+}
+
+// Récupérer les entrepreneurs avec recherche
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'entrepreneur' AND name LIKE :search");
+$stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+$stmt->execute();
+$entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Générer le tableau des résultats
+foreach ($entrepreneurs as $entrepreneur) {
+    echo '<tr>';
+    echo '<td><img src="' . htmlspecialchars('../' . $entrepreneur['image']) . '" alt="Image"></td>';
+    echo '<td>' . htmlspecialchars($entrepreneur['name']) . '</td>';
+    echo '<td>' . htmlspecialchars($entrepreneur['email']) . '</td>';
+    echo '<td>' . htmlspecialchars($entrepreneur['telephone']) . '</td>';
+    echo '</tr>';
+}
+?>

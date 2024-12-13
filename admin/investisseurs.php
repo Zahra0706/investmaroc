@@ -76,6 +76,10 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .menu a:hover {
             background-color: #18B7BE;
         }
+    
+h1{
+    margin:20px 0;
+}
 
         .container {
             margin-left: 250px;
@@ -132,6 +136,39 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
       background-color: #18B7BE !important; /* Bleu pour l'élément actif */
       color: white !important; /* Texte en blanc */
     }
+    .search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#search {
+    padding: 10px 40px 10px 40px; /* Ajuster le padding pour laisser de la place à l'icône */
+    width: 250px;
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 4px; /* Coins arrondis */
+    font-size: 16px; /* Taille de police */
+    transition: border-color 0.3s; /* Transition pour l'effet au focus */
+}
+
+#search:focus {
+    border-color: #18B7BE; /* Couleur de la bordure au focus */
+    outline: none; /* Supprimer la bordure par défaut au focus */
+}
+
+#search::placeholder {
+    color: #888; /* Couleur du texte du placeholder */
+    opacity: 1; /* S'assurer que le texte est opaque */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px; /* Positionner l'icône à gauche */
+    top: 50%; /* Centrer verticalement */
+    transform: translateY(-50%); /* Ajuster pour centrer parfaitement */
+    color: #888; /* Couleur de l'icône */
+    font-size: 18px; /* Taille de l'icône */
+    pointer-events: none; /* Ignorer les clics sur l'icône */
+}
         
     </style>
 </head>
@@ -159,7 +196,10 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Contenu principal -->
     <div class="container">
         <h1>Liste des Investisseurs</h1>
-
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Rechercher par nom" oninput="searchInvestors()">
+            <i class="fas fa-search search-icon"></i>
+        </div>
         <div class="table-container">
             <table>
                 <thead>
@@ -170,22 +210,22 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Téléphone</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($investors as $investor): ?>
-                        <tr>
-                            <td>
-                                <?php if (!empty($investor['image'])): ?>
-                                    <img src="<?php echo htmlspecialchars('../' . $investor['image']); ?>" alt="Image">
-                                <?php else: ?>
-                                    <img src="default-avatar.png" alt="Default Avatar">
-                                <?php endif; ?>
-                            </td>
-                            <td><?php echo htmlspecialchars($investor['name']); ?></td>
-                            <td><?php echo htmlspecialchars($investor['email']); ?></td>
-                            <td><?php echo htmlspecialchars($investor['telephone']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                <tbody id="results">
+    <?php foreach ($investors as $investor): ?>
+        <tr>
+            <td>
+                <?php if (!empty($investor['image'])): ?>
+                    <img src="<?php echo htmlspecialchars('../' . $investor['image']); ?>" alt="Image">
+                <?php else: ?>
+                    <img src="default-avatar.png" alt="Default Avatar">
+                <?php endif; ?>
+            </td>
+            <td><?php echo htmlspecialchars($investor['name']); ?></td>
+            <td><?php echo htmlspecialchars($investor['email']); ?></td>
+            <td><?php echo htmlspecialchars($investor['telephone']); ?></td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
             </table>
         </div>
     </div>
@@ -209,5 +249,19 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     // Exécuter la fonction lors du chargement de la page
     window.addEventListener('load', setActiveLink);
   </script>
+  <script>function searchInvestors() {
+    const searchTerm = document.getElementById('search').value;
+
+    // Créer une requête AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'search_investors.php?search=' + encodeURIComponent(searchTerm), true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Mettre à jour le tableau avec les résultats
+            document.getElementById('results').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+}</script>
 </body>
 </html>

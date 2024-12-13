@@ -19,8 +19,10 @@ try {
     die("Connexion à la base de données échouée : " . $e->getMessage());
 }
 
-// Récupérer les entrepreneurs
-$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'entrepreneur'");
+// Récupérer les entrepreneurs avec recherche
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$stmt = $pdo->prepare("SELECT * FROM users WHERE role = 'entrepreneur' AND name LIKE :search");
+$stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
 $stmt->execute();
 $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -71,6 +73,40 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             padding-right:20px;
             font-size:20px;
         }
+
+        .search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#search {
+    padding: 10px 40px 10px 40px; /* Ajuster le padding pour laisser de la place à l'icône */
+    width: 250px;
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 4px; /* Coins arrondis */
+    font-size: 16px; /* Taille de police */
+    transition: border-color 0.3s; /* Transition pour l'effet au focus */
+}
+
+#search:focus {
+    border-color: #18B7BE; /* Couleur de la bordure au focus */
+    outline: none; /* Supprimer la bordure par défaut au focus */
+}
+
+#search::placeholder {
+    color: #888; /* Couleur du texte du placeholder */
+    opacity: 1; /* S'assurer que le texte est opaque */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px; /* Positionner l'icône à gauche */
+    top: 50%; /* Centrer verticalement */
+    transform: translateY(-50%); /* Ajuster pour centrer parfaitement */
+    color: #888; /* Couleur de l'icône */
+    font-size: 18px; /* Taille de l'icône */
+    pointer-events: none; /* Ignorer les clics sur l'icône */
+}
         .container {
             margin-left: 250px;
             padding: 20px;
@@ -120,17 +156,17 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .menu a.active {
-      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
-      color: white !important; /* Texte en blanc */
-    }
+            background-color: #18B7BE !important; /* Bleu pour l'élément actif */
+            color: white !important; /* Texte en blanc */
+        }
     </style>
 </head>
 <body>
     <!-- Barre latérale -->
     <div class="sidebar">
-    <div class="logo">
-        <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
-    </div>
+        <div class="logo">
+            <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
+        </div>
         <ul class="menu">
             <li>
                 <a href="profil.php">
@@ -154,7 +190,7 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </li>
             <li>
                 <a href="demande_investissement.php">
-                <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
+                    <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
                 </a>
             </li>
             <li>
@@ -174,6 +210,11 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <h1>Liste des Entrepreneurs</h1>
 
+<!-- Formulaire de recherche -->
+<div class="search-container">
+    <input type="text" id="search" placeholder="Rechercher par nom" oninput="searchEntrepreneurs()">
+    <i class="fas fa-search search-icon"></i>
+</div>
         <div class="table-container">
             <table>
                 <thead>
@@ -184,40 +225,36 @@ $entrepreneurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Téléphone</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($entrepreneurs as $entrepreneur): ?>
-                        <tr>
-                            <td>
-                            <img src="<?php echo htmlspecialchars('../' . $entrepreneur['image']); ?>" alt="Image">
-                            </td>
-                            <td><?php echo htmlspecialchars($entrepreneur['name']); ?></td>
-                            <td><?php echo htmlspecialchars($entrepreneur['email']); ?></td>
-                            <td><?php echo htmlspecialchars($entrepreneur['telephone']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                <tbody id="results">
+    <?php foreach ($entrepreneurs as $entrepreneur): ?>
+        <tr>
+            <td>
+                <img src="<?php echo htmlspecialchars('../' . $entrepreneur['image']); ?>" alt="Image">
+            </td>
+            <td><?php echo htmlspecialchars($entrepreneur['name']); ?></td>
+            <td><?php echo htmlspecialchars($entrepreneur['email']); ?></td>
+            <td><?php echo htmlspecialchars($entrepreneur['telephone']); ?></td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
             </table>
         </div>
     </div>
     <script>
-    // Récupérer tous les liens du menu
-    const menuLinks = document.querySelectorAll('.menu a');
+function searchEntrepreneurs() {
+    const searchTerm = document.getElementById('search').value;
 
-    // Fonction pour vérifier l'URL actuelle
-    function setActiveLink() {
-      const currentPath = window.location.pathname;
-      menuLinks.forEach(link => {
-        const linkPath = new URL(link.href).pathname;
-        if (currentPath === linkPath) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
+    // Créer une requête AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'search.php?search=' + encodeURIComponent(searchTerm), true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Mettre à jour le tableau avec les résultats
+            document.getElementById('results').innerHTML = xhr.responseText;
         }
-      });
-    }
-
-    // Exécuter la fonction lors du chargement de la page
-    window.addEventListener('load', setActiveLink);
-  </script>
+    };
+    xhr.send();
+}
+</script>
 </body>
 </html>
