@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .contact-btn {
         display: inline-block;
-        background-color: #18B7BE;
+        background-color: #072A40;
         color: white;
         padding: 12px 24px;
         border-radius: 4px;
@@ -173,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         font-size: 1rem;
         transition: background-color 0.3s ease;
         margin-top: 15px;
+        margin-bottom:20px ;
     }
     .contact-btn:hover {
         background-color: #16a7b8;
