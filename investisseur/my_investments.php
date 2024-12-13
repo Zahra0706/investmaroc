@@ -107,22 +107,6 @@ a.retour {
 a.retour:hover {
     background-color: #073a50;
 }
-.sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #072A40;
-            color: #fff;
-            padding-top: 20px;
-            position: fixed;
-        }
-        .menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .menu li {
-            border-bottom: 1px solid #073a50;
-        }
         .menu a {
             display: flex;
             align-items: center;

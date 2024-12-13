@@ -39,85 +39,76 @@ $status_mapping = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            padding-top: 80px; /* Ajustez si nécessaire pour le menu fixe */
+            background-color: #f0f2f5; /* Couleur de fond douce */
+            padding-top: 80px; /* Ajustement pour le menu fixe */
         }
 
-        .table-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-left:260px;
-        }
-        .table{
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-
+        .container {
+            max-width: 1000px; /* Largeur maximale pour centrer */
+            margin: 0 auto; /* Centrer le conteneur */
+            padding: 30px; /* Espacement interne */
+            margin-left:240px;
         }
 
-        .table thead {
-            background-color: #072A40;
-            color: white;
+        .card {
+            margin-bottom: 20px; /* Espacement entre les cartes */
+            border: 1px solid #dee2e6; /* Bordure douce */
+            border-radius: 10px; /* Coins arrondis */
+        }
+
+        .card-header {
+            background-color: #007bff; /* Couleur d'en-tête */
+            color: white; /* Texte blanc */
+            font-weight: bold; /* Texte en gras */
         }
 
         .status-accepted {
-            color: #28a745;
+            color: #28a745; /* Vert pour accepté */
             font-weight: bold;
         }
 
         .status-pending {
-            color: #ffc107;
+            color: #ffc107; /* Jaune pour en attente */
             font-weight: bold;
         }
 
         .status-rejected {
-            color: #dc3545;
+            color: #dc3545; /* Rouge pour rejeté */
             font-weight: bold;
         }
+        @media (max-width: 600px) {
+            .container {
+          
+            margin-left:0px;
+        }
+}
     </style>
 </head>
 <body>
-    <div class="container table-container">
+    <div class="container">
         <h1 class="text-center mb-4">Suivi de mes Demandes d'Investissement</h1>
         <?php if (count($requests) > 0): ?>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Projet</th>
-                            <th>Catégorie</th>
-                            <th>Budget Nécessaire</th>
-                            <th>Statut</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($requests as $request): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($request['project_title']) ?></td>
-                                <td><?= htmlspecialchars($request['category']) ?></td>
-                                <td><?= htmlspecialchars($request['capital_needed']) ?> MAD</td>
-                                <td class="<?= 'status-' . strtolower($request['status']) ?>">
-                                    <?= htmlspecialchars($status_mapping[strtolower($request['status'])]) ?>
-                                </td>
-                                <td><?= date('d/m/Y', strtotime($request['created_at'])) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+            <?php foreach ($requests as $request): ?>
+                <div class="card">
+                    <div class="card-header">
+                        <?= htmlspecialchars($request['project_title']) ?>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($request['category']) ?></h5>
+                        <p class="card-text">Budget Nécessaire: <?= htmlspecialchars($request['capital_needed']) ?> MAD</p>
+                        <p class="card-text status-<?= strtolower($request['status']) ?>">
+                            Statut: <?= htmlspecialchars($status_mapping[strtolower($request['status'])]) ?>
+                        </p>
+                        <p class="card-text">Date de Soumission: <?= date('d/m/Y', strtotime($request['created_at'])) ?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php else: ?>
             <p class="text-center text-muted">Vous n'avez soumis aucune demande d'investissement pour le moment.</p>
         <?php endif; ?>
     </div>
     
-    <!-- Bootstrap JS (Optionnel si vous utilisez des composants interactifs comme des dropdowns) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

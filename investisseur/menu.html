@@ -3,160 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Investisseur</title>
-  <link rel="stylesheet" href="styles.css">
-  <!-- Lien vers Font Awesome pour les icônes -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-     /* Styles généraux */
+  <title>Investisseur</title>
 
-  
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    height: 100vh;
-  }
-  
-  .sidebar {
-    width: 250px;
-    background-color: #072A40;
-    color: #ecf0f1;
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Hauteur de 100% de la fenêtre du navigateur */
-    position: fixed; /* Fixe la barre latérale sur la gauche */
-    top: 0;
-    left: 0;
-    height: 100vh; /* Prend toute la haut*/
-  }
-  
-  .logo {
-    text-align: center;
-    padding: 20px 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-    background-color: #072A40;
-  }
-  
-  .menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-grow: 1;
-  }
-  
-  .menu li {
-    border-bottom: 1px solid #072A40;
-  }
-  
-  .menu a {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    text-decoration: none;
-    color: #ecf0f1;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-  }
-  
-  .menu a:hover {
-    background-color: #18B7BE;
-  }
-  
-  .menu a i {
-    margin-right: 15px;
-    font-size: 1.2rem;
-  }
-  
-  .content {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  p {
-    color: #555;
-  }
-  .logo {
+  <!-- Lien vers Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Lien vers Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* Styles de la sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 250px; /* Largeur en mode PC */
+      background-color: #072A40;
+      color: #ecf0f1;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar.collapsed {
+      transform: translateY(-100%); /* Masquer vers le haut */
+    }
+
+    .sidebar .logo {
       text-align: center;
       padding: 20px 0;
-      background-color: #072A40;
     }
 
-    .logo img {
-      width: 100%;
-      height: 100%;
-      
+    .sidebar .logo img {
+      width: 100%; /* Ajustez à 100% ou à la taille fixe souhaitée */
+      height: auto; /* Conserve le ratio de l'image */
     }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      text-decoration: none;
+      color: #ecf0f1;
+      transition: background-color 0.3s ease;
+    }
+
     .menu a.active {
-      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
-      color: white !important; /* Texte en blanc */
+      background-color: #18B7BE;
+      color: white;
     }
 
-  
+    .menu a:hover {
+      background-color: #18B7BE;
+    }
 
+    .menu a i {
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 10px;
+      z-index: 1100;
+      background-color: #18B7BE;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: none; /* Masquer par défaut */
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%; /* Largeur pleine sur mobile */
+        transform: translateY(-100%); /* Masquer par défaut */
+      }
+
+      .sidebar.active {
+        transform: translateY(0); /* Afficher en descendant */
+      }
+
+      .toggle-btn {
+        display: flex; /* Afficher sur mobile */
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div class="logo">
-      <!-- Remplace l'URL de l'image par le chemin de ton logo -->
-      <img src="logo.png" alt="Logo">
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="logo">
+        <img src="logo.png" alt="Logo">
+      </div>
+      <ul class="menu">
+        <li><a href="profil.php" onclick="hideSidebar()"><i class="fas fa-user"></i> <span>Mon Profil</span></a></li>
+        <li><a href="browse_projects.php" onclick="hideSidebar()"><i class="fas fa-hand-holding-usd"></i> <span>Investir dans un Projet</span></a></li>
+        <li><a href="mes_demandes.php" onclick="hideSidebar()"><i class="fas fa-file-signature"></i> <span>Mes demandes d'investissement</span></a></li>
+        <li><a href="my_investments.php" onclick="hideSidebar()"><i class="fas fa-chart-line"></i> <span>Mes Investissements</span></a></li>
+        <li><a href="../deconnexion.php" onclick="hideSidebar()"><i class="fas fa-sign-out-alt"></i> <span>Déconnexion</span></a></li>
+      </ul>
     </div>
-    <ul class="menu">
-      <li>
-        <a href="profil.php">
-          <i class="fas fa-user"></i> Mon Profil
-        </a>
-      </li>
-      <li>
-        <a href="browse_projects.php">
-          <i class="fas fa-hand-holding-usd"></i> Investir dans un Projet
-        </a>
-      </li>
-     
-      <li>
-        <a href="mes_demandes.php">
-          <i class="fas fa-file-signature"></i>
-             Mes demandes d'investissemant
-        </a>
-      </li>
-      <li>
-        <a href="my_investments.php">
-          <i class="fas fa-chart-line"></i> Mes Investissements
-        </a>
-      </li>
-     
-      <li>
-        <a href="../deconnexion.php">
-          <i class="fas fa-sign-out-alt"></i> Déconnexion
-        </a>
-      </li>
-    </ul>
-  </div>
-  <script> // Récupérer tous les liens du menu
-    const menuLinks = document.querySelectorAll('.menu a');
 
-    // Fonction pour vérifier l'URL actuelle
-    function setActiveLink() {
-      const currentPath = window.location.pathname;
-      menuLinks.forEach(link => {
-        const linkPath = new URL(link.href).pathname;
-        if (currentPath === linkPath) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
+    <!-- Bouton de bascule (toggle) -->
+    <button class="toggle-btn" id="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+    <!-- Contenu principal -->
+  
+
+  <!-- Lien vers Bootstrap Bundle (inclut Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('active');
     }
 
-    // Exécuter la fonction lors du chargement de la page
-    window.addEventListener('load', setActiveLink);
+    function hideSidebar() {
+      sidebar.classList.remove('active');
+    }
+
+    // Afficher le bouton de toggle seulement sur mobile
+    if (window.innerWidth <= 768) {
+      document.getElementById('toggle-btn').style.display = 'flex';
+    }
   </script>
 </body>
 </html>

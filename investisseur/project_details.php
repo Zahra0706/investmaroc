@@ -1,7 +1,7 @@
 <?php
-include 'menu.html'; 
+ 
 session_start();
-
+include 'menu.html';
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     die("Vous devez être connecté pour voir cette page.");
@@ -203,6 +203,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .unsaved-btn:hover img {
         filter: brightness(0.8);
     }
+    @media (max-width: 600px) {
+            .container {
+                margin-left: 0px; /* Ajoute un léger margin-left en mode téléphone */
+            }}
 </style>
 
     </style>
