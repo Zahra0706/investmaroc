@@ -124,8 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .menu li {
             border-bottom: 1px solid #073a50;
         }
-        .menu i{ padding-right:20px;
-        font-size: 20px;}
         .menu a {
             display: flex;
             align-items: center;
@@ -140,6 +138,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .menu a.active {
             background-color: #18B7BE !important;
             color: white !important;
+        }
+        .menu i{
+            padding-right: 10px;
+            font-size: 20px;
         }
         .container {
             margin-left: 250px;
@@ -255,6 +257,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             form button {
                 font-size: 14px;
             }
+
+
             #menu-toggle {
                 display: block;
                 position: absolute;
@@ -286,22 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
     z-index: 1000; /* Pour s'assurer qu'il est au-dessus des autres éléments */
 }
-.sidebar {
-    display: none; /* Masqué par défaut */
-    position: fixed; /* Fixé à l'écran */
-    top: -100%; /* Positionné en dehors de l'écran */
-    left: 0;
-    width: 100%; /* Largeur complète */
-    height: 100%; /* Hauteur complète */
-    background-color: #072A40; /* Couleur de fond */
-    transition: top 0.3s ease; /* Transition pour l'animation */
-    z-index: 999; /* Au-dessus du contenu */
-}
 
-.sidebar.active {
-    display: block; /* Afficher le menu */
-    top: 0; /* Remise à la position visible */
-}
         @media (max-width: 600px) {
             .sidebar {
                 display: none; /* Masquer le menu par défaut */
