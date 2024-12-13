@@ -51,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';
     $telephone = $_POST['telephone'] ?? '';
+    $genre = $_POST['genre'] ?? '';
+    $date_naissance = $_POST['date_naissance'] ?? '';
     $imagePath = $user['image']; // Par défaut, garder l'image actuelle
 
     // Vérification et validation des champs
@@ -77,13 +79,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Mettre à jour les informations dans la base de données
-    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, telephone = :telephone, image = :image WHERE id = :id");
+    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, telephone = :telephone, genre = :genre, date_naissance = :date_naissance, image = :image WHERE id = :id");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':telephone', $telephone);
+    $stmt->bindParam(':genre', $genre);
+    $stmt->bindParam(':date_naissance', $date_naissance);
     $stmt->bindParam(':image', $imagePath);
     $stmt->bindParam(':id', $userId);
-
     if ($stmt->execute()) {
         header("Location: profil.php");
         exit;
@@ -252,6 +255,8 @@ button:hover {
 
 form input[type="text"],
 form input[type="email"],
+form select,
+form input[type="date"],
 form input[type="file"] {
     width: 100%;
     padding: 14px 18px;
@@ -327,6 +332,8 @@ form button:hover {
     form input[type="text"],
     form input[type="email"],
     form input[type="file"],
+    form input[type="date"],
+    form select,
     form button {
         font-size: 14px;
     }
@@ -406,16 +413,27 @@ form button:hover {
 
         <!-- Formulaire de modification -->
         <div class="edit-form-container" id="edit-form-container">
-       
-            <form id="edit-form" method="POST" enctype="multipart/form-data">
-                <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
-                <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required>
-                <h3>Modifier la photo de profil</h3>
-                <input type="file" name="profile_image" accept="image/*">
-                <button type="submit">Enregistrer les modifications</button>
-            </form>
-        </div>
+    <form id="edit-form" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+        <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+        <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required>
+
+        <!-- Champ pour le genre -->
+        <select name="genre" required>
+            <option value="" disabled <?= empty($user['genre']) ? 'selected' : '' ?>>Sélectionnez votre genre</option>
+            <option value="Homme" <?= $user['genre'] === 'Homme' ? 'selected' : '' ?>>Homme</option>
+            <option value="Femme" <?= $user['genre'] === 'Femme' ? 'selected' : '' ?>>Femme</option>
+        </select>
+
+        <!-- Champ pour la date de naissance -->
+        <input type="date" name="date_naissance" placeholder="Date de Naissance" value="<?php echo htmlspecialchars($user['date_naissance']); ?>" required>
+
+        <h3>Modifier la photo de profil</h3>
+        <input type="file" name="profile_image" accept="image/*">
+        <button type="submit">Enregistrer les modifications</button>
+    </form>
+</div>       
+           
 
         <!-- Affiche les erreurs -->
         <?php if (isset($error)) : ?>
