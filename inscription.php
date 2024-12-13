@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $role = htmlspecialchars($_POST['role']);
     $genre = htmlspecialchars($_POST['genre']);
     $dateNaissance = htmlspecialchars($_POST['date_naissance']);
-    $defaultImage = '../images/profil.jpg'; // Chemin par défaut pour l'image
+    $defaultImage = 'images/profil.jpg'; // Chemin par défaut pour l'image
 
     // Vérifier si l'email existe déjà
     $checkEmail = $pdo->prepare("SELECT * FROM users WHERE email = :email");
