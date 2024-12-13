@@ -1,5 +1,5 @@
 <?php
-// Activer l'affichage des erreurs (important pour voir les erreurs de chemin ou de téléchargement)
+// Activer l'affichage des erreurs
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -46,6 +46,7 @@ $dateNaissance = $user['date_naissance'];
 $datetimeNaissance = new DateTime($dateNaissance);
 $today = new DateTime();
 $age = $today->diff($datetimeNaissance)->y;
+
 // Gestion de la mise à jour des informations de l'utilisateur
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
@@ -53,11 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephone = $_POST['telephone'] ?? '';
     $genre = $_POST['genre'] ?? '';
     $date_naissance = $_POST['date_naissance'] ?? '';
-    $imagePath = $user['image']; // Par défaut, garder l'image actuelle
+    $imagePath = $user['image']; // Conserver l'image actuelle par défaut
 
     // Vérification et validation des champs
     if (!empty($_FILES['profile_image']['name'])) {
-        // Nom unique pour l'image (pour éviter les conflits de noms)
         $imageName = time() . '_' . basename($_FILES['profile_image']['name']);
         $targetDirectory = '../entrepreneur/uploads/';
         $targetFilePath = $targetDirectory . $imageName;
@@ -68,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (in_array(strtolower($fileType), $allowedTypes)) {
             // Déplacer l'image dans le dossier "uploads"
             if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFilePath)) {
-                // Enregistrer uniquement le chemin relatif à la base de données
-                $imagePath = 'entrepreneur/uploads/' . $imageName;
+                $imagePath = 'entrepreneur/uploads/' . $imageName; // Chemin relatif
             } else {
                 $error = "Erreur lors du téléchargement de l'image.";
             }
@@ -102,16 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Utilisateur</title>
     <link rel="stylesheet" href="styles.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-/* Container pour le contenu */
-
-     
-body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
             display: flex;
         }
         .sidebar {
@@ -130,344 +124,281 @@ body {
         .menu li {
             border-bottom: 1px solid #073a50;
         }
+        .menu i{ padding-right:20px;
+        font-size: 20px;}
         .menu a {
             display: flex;
             align-items: center;
             padding: 15px 20px;
             color: #ecf0f1;
             text-decoration: none;
-            font-size: 1rem;
             transition: background-color 0.3s;
         }
         .menu a:hover {
             background-color: #18B7BE;
         }
         .menu a.active {
-      background-color: #18B7BE !important; /* Bleu pour l'élément actif */
-      color: white !important; /* Texte en blanc */
-    }
-
-        
-.container {
-    margin-left: 250px; /* Laisse de l'espace pour la barre latérale */
-    width: calc(100% - 250px); /* Prend toute la largeur sauf celle de la barre latérale */
-    height: 100vh; /* Prend toute la hauteur de l'écran */
-    display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    background: #f9f9f9; /* Couleur d'arrière-plan */
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-
-
-
-/* Si vous voulez forcer l'élément de profil à être au centre, vous pouvez ajouter un conteneur supplémentaire */
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centrer les éléments à l'intérieur */
-    text-align: center; /* Centre le texte */
-    background: #fff; /* Couleur de fond du profil */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Ombre douce autour du profil */
-    width: 100%;
-    max-width: 600px; /* Limite la largeur pour que le profil ne soit pas trop large */
-}
-
-
-
-       
-  
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    margin-top: -70px;
-    margin-left: 300px; /* Ajoute cette ligne */
-
-}
-
-.profile-container {
-    border-radius: 12px;
-    padding: 40px;
-    transition: all 0.3s ease-in-out;
-    width: 1000px;
-}
-
-.profile-container h1 {
-    font-size: 30px;
-    color: #072A40;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: bold;
-}
-
-.profile-photo {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.profile-photo img {
-    border-radius: 50%;
-    width: 160px;
-    height: 160px;
-    object-fit: cover;
-    border: 4px solid #072A40;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-info {
-    margin-bottom: 30px;
-}
-
-.profile-info p {
-    font-size: 16px;
-    color: #072A40;
-    margin-bottom: 15px;
-}
-
-button {
-    background-color: #072A40;
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #072A40;
-}
-
-.edit-form-container {
-    display: none;
-    margin-top: -30px;
-}
-
-form input[type="text"],
-form input[type="email"],
-form select,
-form input[type="date"],
-form input[type="file"] {
-    width: 100%;
-    padding: 14px 18px;
-    margin: 8px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
-}
-
-form input[type="text"]:focus,
-form input[type="email"]:focus {
-    border-color: #007bff;
-    background-color: #ffffff;
-}
-
-form button {
-    background-color: #072A40;
-    border-radius: 8px;
-    width: 100%;
-    padding: 14px;
-    margin-top: 20px;
-    color: #18B7BE;
-}
-
-form button:hover {
-    background-color: #18B7BE;
-    color: #072A40;
-}
-
-.error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 15px;
-}
-
-#edit-btn {
-    margin-top: 25px;
-    background-color:  #18B7BE;
-    color:#072A40;
-    border-radius: 8px;
-    width: 100%;
-    padding: 12px 0;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-#edit-btn i {
-    margin-right: 10px;  /* Espacement entre l'icône et le texte */
-    font-size: 18px;
-}
-
-#edit-btn:hover {
-    background-color: #072A40;
-    color: #18B7BE;
-}
-.menu i{
-            padding-right:20px;
-            font-size:20px;
+            background-color: #18B7BE !important;
+            color: white !important;
         }
-
-/* Responsive pour mobile */
-@media (max-width: 600px) {
-    .profile-container {
-        padding: 20px;
-        width: 100%;  /* Rendre le profil réactif sur mobile */
-        max-width: none; /* Supprimer la limite de 900px */
-    }
-
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="file"],
-    form input[type="date"],
-    form select,
-    form button {
-        font-size: 14px;
-    }
+        .container {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 20px;
+        }
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .profile-photo img {
+            border-radius: 50%;
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border: 4px solid #072A40;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-info p {
+            font-size: 16px;
+            color: #072A40;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #072A40;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #18B7BE;
+        }
+        .edit-form-container {
+            display: none;
+            margin-top: -30px;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form select,
+        form input[type="date"],
+        form input[type="file"] {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+        form button {
+            background-color: #072A40;
+            border-radius: 8px;
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            color: #18B7BE;
+        }
+        form button:hover {
+            background-color: #18B7BE;
+            color: #072A40;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        #edit-btn {
+            background-color: #18B7BE;
+            color: #072A40;
+        }
+        #edit-btn:hover {
+            background-color: #072A40;
+            color: #18B7BE;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .sidebar {
+                display: none;
+            }
+            .container {
+                margin-left: 0;
+                width: 100%;
+            }
+            .profile-container {
+                padding: 20px;
+                max-width: none;
+            }
+            form input[type="text"],
+            form input[type="email"],
+            form input[type="file"],
+            form input[type="date"],
+            form select,
+            form button {
+                font-size: 14px;
+            }
+            #menu-toggle {
+                display: block;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #18B7BE;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+        #menu-toggle {
+    display: none; /* Masqué par défaut */
+    position: fixed; /* Fixé à l'écran */
+    top: 20px; /* Ajustez la position verticale */
+    left: 20px; /* Positionné à gauche */
+    width: 50px; /* Largeur du bouton */
+    height: 50px; /* Hauteur du bouton */
+    background-color: #18B7BE; /* Couleur de fond */
+    color: white; /* Couleur de l'icône */
+    border: none; /* Pas de bordure */
+    border-radius: 50%; /* Forme circulaire */
+    cursor: pointer; /* Curseur en forme de main */
+    display: flex; /* Flex pour centrer l'icône */
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
+    z-index: 1000; /* Pour s'assurer qu'il est au-dessus des autres éléments */
+}
+.sidebar {
+    display: none; /* Masqué par défaut */
+    position: fixed; /* Fixé à l'écran */
+    top: -100%; /* Positionné en dehors de l'écran */
+    left: 0;
+    width: 100%; /* Largeur complète */
+    height: 100%; /* Hauteur complète */
+    background-color: #072A40; /* Couleur de fond */
+    transition: top 0.3s ease; /* Transition pour l'animation */
+    z-index: 999; /* Au-dessus du contenu */
 }
 
-
+.sidebar.active {
+    display: block; /* Afficher le menu */
+    top: 0; /* Remise à la position visible */
+}
+        @media (max-width: 600px) {
+            .sidebar {
+                display: none; /* Masquer le menu par défaut */
+            }
+            #menu-toggle {
+                display: block; /* Afficher le bouton sur mobile */
+            } #menu-toggle {
+        display: flex; /* Afficher le bouton sur mobile */
+    }
+            
+        }
     </style>
 </head>
 <body>
-    <!-- Barre latérale -->
-    <div class="sidebar">
-<div class="logo">
-        <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
-    </div>
+<button class="toggle-btn" id="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+
+<div class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Logo" style="width: 100%; height: auto;">
+        </div>
         <ul class="menu">
-            <li>
-                <a href="profil.php">
-                    <i class="fas fa-user-circle"></i> Profil
-                </a>
-            </li>
-            <li>
-                <a href="investisseurs.php">
-                    <i class="fas fa-handshake"></i> Investisseurs
-                </a>
-            </li>
-            <li>
-                <a href="entrepreneurs.php">
-                    <i class="fas fa-briefcase"></i> Entrepreneurs
-                </a>
-            </li>
-            <li>
-                <a href="projets.php">
-                    <i class="fas fa-list"></i> Projets
-                </a>
-            </li>
-            <li>
-                <a href="demande_investissement.php">
-                <i class="fas fa-clipboard-list"></i> Demandes d'Investissement
-                </a>
-            </li>
-            <li>
-                <a href="collaborations.php">
-                    <i class="fas fa-users"></i> Collaborations
-                </a>
-            </li>
-            <li>
-                <a href="../deconnexion.php">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-            </li>
+            <li><a href="profil.php"><i class="fas fa-user-circle"></i> Profil</a></li>
+            <li><a href="investisseurs.php"><i class="fas fa-handshake"></i> Investisseurs</a></li>
+            <li><a href="entrepreneurs.php"><i class="fas fa-briefcase"></i> Entrepreneurs</a></li>
+            <li><a href="projets.php"><i class="fas fa-list"></i> Projets</a></li>
+            <li><a href="demande_investissement.php"><i class="fas fa-clipboard-list"></i> Demandes d'Investissement</a></li>
+            <li><a href="collaborations.php"><i class="fas fa-users"></i> Collaborations</a></li>
+            <li><a href="../deconnexion.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
         </ul>
     </div>
     <div class="container">
-    <div class="profile-container">
-        <h1>Profil</h1>
-
-        <!-- Affiche l'image de profil -->
-        <div class="profile-photo">
-            <img src="<?php echo !empty($user['image']) ? '../' . htmlspecialchars($user['image']) : 'default-profile.png'; ?>" alt="Photo de profil" width="150" height="150">
+        <div class="profile-container">
+            <h1>Profil</h1>
+            <div class="profile-photo">
+                <img src="<?php echo !empty($user['image']) ? '../' . htmlspecialchars($user['image']) : 'default-profile.png'; ?>" alt="Photo de profil">
+            </div>
+            <div class="profile-info" id="info-view">
+                <p><strong>Nom:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
+                <p><strong>Genre:</strong> <?php echo htmlspecialchars($user['genre']); ?></p>
+                <p><strong>Date de Naissance:</strong> <?php echo htmlspecialchars($user['date_naissance']); ?></p>
+                <p><strong>Âge:</strong> <?php echo $age; ?> ans</p>
+                <p><strong>Rôle:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
+            </div>
+            <button id="edit-btn" onclick="showEditForm()">
+                <i class="fas fa-edit"></i> Modifier
+            </button>
+            <div class="edit-form-container" id="edit-form-container">
+                <form id="edit-form" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                    <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                    <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required>
+                    <select name="genre" required>
+                        <option value="" disabled <?= empty($user['genre']) ? 'selected' : '' ?>>Sélectionnez votre genre</option>
+                        <option value="Homme" <?= $user['genre'] === 'Homme' ? 'selected' : '' ?>>Homme</option>
+                        <option value="Femme" <?= $user['genre'] === 'Femme' ? 'selected' : '' ?>>Femme</option>
+                    </select>
+                    <input type="date" name="date_naissance" placeholder="Date de Naissance" value="<?php echo htmlspecialchars($user['date_naissance']); ?>" required>
+                    <h3>Modifier la photo de profil</h3>
+                    <input type="file" name="profile_image" accept="image/*">
+                    <button type="submit">Enregistrer les modifications</button>
+                </form>
+            </div>
+            <?php if (isset($error)): ?>
+                <p class="error"><?php echo $error; ?></p>
+            <?php endif; ?>
         </div>
-
-        <!-- Affichage des informations -->
-<div class="profile-info" id="info-view">
-    <p><strong>Nom:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-    <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
-    <p><strong>Genre:</strong> <?php echo htmlspecialchars($user['genre']); ?></p>
-    <p><strong>Date de Naissance:</strong> <?php echo htmlspecialchars($user['date_naissance']); ?></p>
-    <p><strong>Âge:</strong> <?php echo $age; ?> ans</p>
-    <p><strong>Rôle:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
-</div>
-
-        <!-- Bouton Modifier pour afficher le formulaire -->
-        <button id="edit-btn" onclick="showEditForm()">
-    <i class="fas fa-edit"></i> Modifier
-</button>
-
-        <!-- Formulaire de modification -->
-        <div class="edit-form-container" id="edit-form-container">
-    <form id="edit-form" method="POST" enctype="multipart/form-data">
-        <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
-        <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-        <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required>
-
-        <!-- Champ pour le genre -->
-        <select name="genre" required>
-            <option value="" disabled <?= empty($user['genre']) ? 'selected' : '' ?>>Sélectionnez votre genre</option>
-            <option value="Homme" <?= $user['genre'] === 'Homme' ? 'selected' : '' ?>>Homme</option>
-            <option value="Femme" <?= $user['genre'] === 'Femme' ? 'selected' : '' ?>>Femme</option>
-        </select>
-
-        <!-- Champ pour la date de naissance -->
-        <input type="date" name="date_naissance" placeholder="Date de Naissance" value="<?php echo htmlspecialchars($user['date_naissance']); ?>" required>
-
-        <h3>Modifier la photo de profil</h3>
-        <input type="file" name="profile_image" accept="image/*">
-        <button type="submit">Enregistrer les modifications</button>
-    </form>
-</div>       
-           
-
-        <!-- Affiche les erreurs -->
-        <?php if (isset($error)) : ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
     </div>
-</div>
 
-<script>
-    // Fonction pour afficher le formulaire de modification
-    function showEditForm() {
-        document.getElementById("info-view").style.display = "none";  // Masquer les informations actuelles
-        document.getElementById("edit-btn").style.display = "none";  // Masquer le bouton Modifier
-        document.getElementById("edit-form-container").style.display = "block";  // Afficher le formulaire de modification
-    }
-
-    // Récupérer tous les liens du menu
-    const menuLinks = document.querySelectorAll('.menu a');
-
-    // Fonction pour vérifier l'URL actuelle
-    function setActiveLink() {
-      const currentPath = window.location.pathname;
-      menuLinks.forEach(link => {
-        const linkPath = new URL(link.href).pathname;
-        if (currentPath === linkPath) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
+    <script>
+        function showEditForm() {
+            document.getElementById("info-view").style.display = "none";
+            document.getElementById("edit-btn").style.display = "none";
+            document.getElementById("edit-form-container").style.display = "block";
         }
-      });
-    }
 
-    // Exécuter la fonction lors du chargement de la page
-    window.addEventListener('load', setActiveLink);
-  </script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active'); // Toggle la classe active pour afficher/masquer le menu
+            sidebar.style.display = sidebar.style.display === 'none' || !sidebar.style.display ? 'block' : 'none'; // Affiche ou masque la sidebar
+        }
+
+        const menuLinks = document.querySelectorAll('.menu a');
+        function setActiveLink() {
+            const currentPath = window.location.pathname;
+            menuLinks.forEach(link => {
+                const linkPath = new URL(link.href).pathname;
+                if (currentPath === linkPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        window.addEventListener('load', setActiveLink);
+    </script>
 </body>
 </html>

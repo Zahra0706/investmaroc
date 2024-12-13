@@ -17,8 +17,10 @@ $request_id = $_POST['request_id'];
 // Récupérer les détails de la demande
 $stmt = $conn->prepare("
     SELECT ir.id AS request_id, 
-           inv.id AS investor_id, inv.name AS investor_name, inv.email AS investor_email, inv.telephone AS investor_telephone, inv.image AS investor_image,
-           ent.id AS entrepreneur_id, ent.name AS entrepreneur_name, ent.email AS entrepreneur_email, ent.telephone AS entrepreneur_telephone, ent.image AS entrepreneur_image,
+           inv.id AS investor_id, inv.name AS investor_name, inv.email AS investor_email, inv.telephone AS investor_telephone, inv.image AS investor_image, 
+           inv.date_naissance AS investor_birthdate, inv.genre AS investor_genre,
+           ent.id AS entrepreneur_id, ent.name AS entrepreneur_name, ent.email AS entrepreneur_email, ent.telephone AS entrepreneur_telephone, ent.image AS entrepreneur_image, 
+           ent.date_naissance AS entrepreneur_birthdate, ent.genre AS entrepreneur_genre,
            p.id AS project_id, p.title AS project_title, p.description AS project_description, p.category AS project_category, p.capital_needed, p.status AS project_status, p.image AS project_image, p.created_at AS project_created_at
     FROM investment_requests ir
     JOIN users inv ON ir.investor_id = inv.id
@@ -34,6 +36,12 @@ $images = !empty($details['project_image']) ? explode(",", $details['project_ima
 // Vérifier si les détails existent
 if (!$details) {
     die("Détails introuvables pour cette demande.");
+}
+function calculateAge($birthdate) {
+    $birthDate = new DateTime($birthdate);
+    $today = new DateTime();
+    $age = $today->diff($birthDate)->y;
+    return $age;
 }
 ?>
 <!DOCTYPE html>
@@ -164,22 +172,24 @@ if (!$details) {
     <div class="details-container">
         <h1>Détails de la Demande</h1>
         <div class="details">
-            <div class="section">
-                <h2>Informations sur l'Investisseur</h2>
-
-                <img src="<?= '../' . htmlspecialchars($details['investor_image']) ?>" alt="Image de l'investisseur">
-                <p><strong>Nom :</strong> <?= htmlspecialchars($details['investor_name']) ?></p>
-                <p><strong>Email :</strong> <?= htmlspecialchars($details['investor_email']) ?></p>
-                <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['investor_telephone']) ?></p>
-            </div>
-            <div class="section">
-                <h2>Informations sur l'Entrepreneur</h2>
-                <img src="<?= '../' . htmlspecialchars($details['entrepreneur_image']) ?>" alt="Image de l'entrepreneur">
-                <p><strong>Nom :</strong> <?= htmlspecialchars($details['entrepreneur_name']) ?></p>
-                <p><strong>Email :</strong> <?= htmlspecialchars($details['entrepreneur_email']) ?></p>
-                <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['entrepreneur_telephone']) ?></p>
-            </div>
-        </div>
+        <div class="section">
+    <h2>Informations sur l'Investisseur</h2>
+    <img src="<?= '../' . htmlspecialchars($details['investor_image']) ?>" alt="Image de l'investisseur">
+    <p><strong>Nom :</strong> <?= htmlspecialchars($details['investor_name']) ?></p>
+    <p><strong>Email :</strong> <?= htmlspecialchars($details['investor_email']) ?></p>
+    <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['investor_telephone']) ?></p>
+    <p><strong>Genre :</strong> <?= htmlspecialchars($details['investor_genre']) ?></p>
+    <p><strong>Âge :</strong> <?= calculateAge($details['investor_birthdate']) ?> ans</p>
+</div>
+<div class="section">
+    <h2>Informations sur l'Entrepreneur</h2>
+    <img src="<?= '../' . htmlspecialchars($details['entrepreneur_image']) ?>" alt="Image de l'entrepreneur">
+    <p><strong>Nom :</strong> <?= htmlspecialchars($details['entrepreneur_name']) ?></p>
+    <p><strong>Email :</strong> <?= htmlspecialchars($details['entrepreneur_email']) ?></p>
+    <p><strong>Téléphone :</strong> <?= htmlspecialchars($details['entrepreneur_telephone']) ?></p>
+    <p><strong>Genre :</strong> <?= htmlspecialchars($details['entrepreneur_genre']) ?></p>
+    <p><strong>Âge :</strong> <?= calculateAge($details['entrepreneur_birthdate']) ?> ans</p>
+</div>
         <div class="section project_informations">
             <h2>Informations sur le Projet</h2>
             <div class="project-details">
