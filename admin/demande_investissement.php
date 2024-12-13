@@ -178,6 +178,11 @@ button[name="action"][value="details"] {
 button[name="action"][value="details"]:hover {
     background-color: #0056b3;
 }
+.btnn{
+    border:1px solid #072A40;
+    background-color:white;
+    margin-bottom:10px;
+}
 .menu a.active {
       background-color: #18B7BE !important; /* Bleu pour l'élément actif */
       color: white !important; /* Texte en blanc */
@@ -238,6 +243,13 @@ button[name="action"][value="details"]:hover {
     <!-- Contenu principal -->
     <div class="main-content">
         <h1>Demandes d'Investissement</h1>
+        <div class="text-end">
+        <form method="GET" action="historique_demandes.php">
+            <button type="submit" class="btnn">
+                <i class="fas fa-history"></i> Afficher l'historique des demandes
+            </button>
+        </form>
+    </div>
         <?php if (count($requests) > 0): ?>
             <table>
                 <thead>
@@ -257,26 +269,27 @@ button[name="action"][value="details"]:hover {
                             <td><?= htmlspecialchars($request['entrepreneur_name']) ?></td>
                             <td><?= htmlspecialchars($request['created_at']) ?></td>
                             <td>
-                                <form method="POST" style="display: inline;" action="details_demande.php">
-                                    <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-                                    <button type="submit" name="action" value="details">
-                                        <i class="fas fa-eye"></i> Afficher les détails
-                                    </button>
-                                </form>
-                                <form method="POST" style="display: inline;">
-                                    <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-                                    <button type="submit" name="action" value="accept">
-                                        <i class="fas fa-check"></i> Accepter
-                                    </button>
-                                </form>
-                                <form method="POST" style="display: inline;">
-                                    <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
-                                    <button type="submit" name="action" value="reject">
-                                        <i class="fas fa-times"></i> Annuler
-                                    </button>
-                                </form>
-                            </td>
-
+    <div style="display: flex; gap: 10px; justify-content: flex-start;">
+        <form method="POST" action="details_demande.php">
+            <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+            <button type="submit" name="action" value="details">
+                <i class="fas fa-eye"></i> Afficher les détails
+            </button>
+        </form>
+        <form method="POST">
+            <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+            <button type="submit" name="action" value="accept">
+                <i class="fas fa-check"></i> Accepter
+            </button>
+        </form>
+        <form method="POST">
+            <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
+            <button type="submit" name="action" value="reject">
+                <i class="fas fa-times"></i> Annuler
+            </button>
+        </form>
+    </div>
+</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
