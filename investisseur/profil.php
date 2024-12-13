@@ -2,10 +2,10 @@
 // Activer l'affichage des erreurs
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ob_start(); // Commence la mise en tampon de sortie
 
-// Démarrage de la session
-session_start();
 include 'menu.html'; 
+session_start();
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
@@ -45,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';
     $telephone = $_POST['telephone'] ?? '';
+    $genre = $_POST['genre'] ?? '';
+    $date_naissance = $_POST['date_naissance'] ?? '';
     $imagePath = $user['image']; // Par défaut, garder l'image actuelle
 
     // Vérification et validation des champs
@@ -69,10 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Mettre à jour les informations dans la base de données
-    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, telephone = :telephone, image = :image WHERE id = :id");
+    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, telephone = :telephone, genre = :genre, date_naissance = :date_naissance, image = :image WHERE id = :id");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':telephone', $telephone);
+    $stmt->bindParam(':genre', $genre);
+    $stmt->bindParam(':date_naissance', $date_naissance);
     $stmt->bindParam(':image', $imagePath);
     $stmt->bindParam(':id', $userId);
 
@@ -101,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            margin-top: -150px;
-            margin-left: 300px; /* Pour les écrans plus grands */
+            margin-top: -10px;
+            margin-left: 350px; /* Pour les écrans plus grands */
         }
 
         .profile-container {
@@ -162,7 +166,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         form input[type="text"],
         form input[type="email"],
-        form input[type="file"] {
+        form input[type="file"],
+        form select,
+        form input[type="date"] {
             width: 100%;
             padding: 14px 18px;
             margin: 8px 0;
@@ -175,7 +181,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         form input[type="text"]:focus,
-        form input[type="email"]:focus {
+        form input[type="email"]:focus,
+        form select:focus,
+        form input[type="date"]:focus {
             border-color: #007bff;
             background-color: #ffffff;
         }
@@ -200,6 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             form input[type="text"],
             form input[type="email"],
             form input[type="file"],
+            form select,
+            form input[type="date"],
             form button {
                 font-size: 14px;
             }
@@ -221,6 +231,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><strong>Nom:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
             <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
             <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($user['telephone']); ?></p>
+            <p><strong>Genre:</strong> <?php echo htmlspecialchars($user['genre']); ?></p>
+            <p><strong>Date de Naissance:</strong> <?php echo htmlspecialchars($user['date_naissance']); ?></p>
         </div>
 
         <!-- Bouton Modifier pour afficher le formulaire -->
@@ -234,6 +246,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" name="name" placeholder="Nom" value="<?php echo htmlspecialchars($user['name']); ?>" required>
                 <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                 <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required>
+                <select name="genre" required>
+                    <option value="" disabled <?= empty($user['genre']) ? 'selected' : '' ?>>Sélectionnez votre genre</option>
+                    <option value="Homme" <?= $user['genre'] === 'Homme' ? 'selected' : '' ?>>Homme</option>
+                    <option value="Femme" <?= $user['genre'] === 'Femme' ? 'selected' : '' ?>>Femme</option>
+                </select>
+                <input type="date" name="date_naissance" placeholder="Date de Naissance" value="<?php echo htmlspecialchars($user['date_naissance']); ?>" required>
                 <h3>Modifier la photo de profil</h3>
                 <input type="file" name="profile_image" accept="image/*">
                 <button type="submit">Enregistrer les modifications</button>
