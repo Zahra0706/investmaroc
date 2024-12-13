@@ -97,15 +97,28 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: #555;
             margin-top: 20px;
         }
-        @media (max-width: 768px) {
+      @media (max-width: 768px) {
     .container {
         margin-left: 0; /* Supprimer le margin-left en mode téléphone */
-    }
-   thead,tbody{
-        margin-right: 120px;
+        padding: 10px; /* Réduire le padding */
     }
 
-   
+    h1 {
+        font-size: 24px; /* Taille de police plus petite pour le titre */
+    }
+
+    table th, table td {
+        padding: 10px; /* Réduire le padding des cellules */
+    }
+
+    .btn-view-details {
+        padding: 8px 15px; /* Ajuster le padding des boutons */
+        font-size: 14px; /* Réduire la taille de police des boutons */
+    }
+
+    .no-projects {
+        font-size: 16px; /* Ajuster la taille de police pour le message */
+    }
 }
     </style>
 </head>
