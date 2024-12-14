@@ -12,7 +12,7 @@ include '../entrepreneur/db.php';
 $investor_id = $_SESSION['user_id'];
 
 // Récupérer toutes les demandes de l'investisseur
-$stmt = $conn->prepare("SELECT ir.*, p.title AS project_title, p.category, p.capital_needed, u.name AS entrepreneur_name
+$stmt = $conn->prepare("SELECT ir.*, p.id ,p.title AS project_title, p.category, p.capital_needed, u.name AS entrepreneur_name
                         FROM investment_requests ir
                         JOIN projects p ON ir.project_id = p.id
                         JOIN users u ON ir.entrepreneur_id = u.id
@@ -78,6 +78,20 @@ $status_mapping = [
             color: #dc3545; /* Rouge pour rejeté */
             font-weight: bold;
         }
+        .btn-project {
+    display: inline-block;
+    background-color: #073a50; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    padding: 10px 20px; /* Espacement interne */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Coins arrondis */
+    text-decoration: none; /* Pas de soulignement */
+    font-weight: bold; /* Texte en gras */
+    transition: background-color 0.3s ease; /* Transition pour effet de survol */
+}
+.btn-project:hover {
+    background-color: #357a9c; /* Couleur au survol */
+}
         @media (max-width: 600px) {
             .container {
           
@@ -92,18 +106,21 @@ $status_mapping = [
         <?php if (count($requests) > 0): ?>
             <?php foreach ($requests as $request): ?>
                 <div class="card">
-                    <div class="card-header">
-                        <?= htmlspecialchars($request['project_title']) ?>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><?= htmlspecialchars($request['category']) ?></h5>
-                        <p class="card-text">Budget Nécessaire: <?= htmlspecialchars($request['capital_needed']) ?> DHS</p>
-                        <p class="card-text status-<?= strtolower($request['status']) ?>">
-                            Statut: <?= htmlspecialchars($status_mapping[strtolower($request['status'])]) ?>
-                        </p>
-                        <p class="card-text">Date de Soumission: <?= date('d/m/Y', strtotime($request['created_at'])) ?></p>
-                    </div>
-                </div>
+    <div class="card-header">
+        <?= htmlspecialchars($request['project_title']) ?>
+    </div>
+    <div class="card-body">
+        
+        <h5 class="card-title"><?= htmlspecialchars($request['category']) ?></h5>
+        <p class="card-text">Budget Nécessaire: <?= htmlspecialchars($request['capital_needed']) ?> DHS</p>
+        <p class="card-text status-<?= strtolower($request['status']) ?>">
+            Statut: <?= htmlspecialchars($status_mapping[strtolower($request['status'])]) ?>
+        </p>
+        <p class="card-text">Date de Soumission: <?= date('d/m/Y', strtotime($request['created_at'])) ?></p>
+        <a href="details_projets_demande.php?id=<?php echo $request['id']; ?>" class="btn-project">                                    <i class="fas fa-eye toggle-password" ></i>
+        </a>
+    </div>
+</div>
             <?php endforeach; ?>
         <?php else: ?>
             <p class="text-center text-muted">Vous n'avez soumis aucune demande d'investissement pour le moment.</p>
