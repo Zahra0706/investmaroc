@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -34,30 +35,35 @@ $checkStmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
 $checkStmt->execute();
 
 if ($checkStmt->rowCount() > 0) {
-    die("Vous avez déjà soumis une demande pour ce projet. Veuillez patienter pour la réponse.");
-}
-
-// Insérer une nouvelle demande d'investissement
-$insertStmt = $conn->prepare("INSERT INTO investment_requests (investor_id, entrepreneur_id, project_id, status, created_at) 
-                              VALUES (:investor_id, :entrepreneur_id, :project_id, 'pending', NOW())");
-$insertStmt->bindParam(':investor_id', $investor_id, PDO::PARAM_INT);
-$insertStmt->bindParam(':entrepreneur_id', $project['entrepreneur_id'], PDO::PARAM_INT); // ID de l'entrepreneur associé au projet
-$insertStmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
-
-if ($insertStmt->execute()) {
-  echo '<div class="alert success" role="alert">
-          <span class="icon">✔️</span> Votre demande d\'investissement a été soumise avec succès.
-        </div>';
-  echo '<script>
-          setTimeout(function() {
-              window.location.href = "browse_projects.php";
-          }, 2000); // Redirige après 2 secondes
-        </script>';
+    echo '<div class="alert error" role="alert">
+    <span class="icon">❌</span> Vous avez déjà soumis une demande pour ce projet. Veuillez patienter pour la réponse.
+    </div>';
 } else {
-  echo '<div class="alert error" role="alert">
-          <span class="icon">❌</span> Une erreur s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.
+    // Insérer une nouvelle demande d'investissement
+    $insertStmt = $conn->prepare("INSERT INTO investment_requests (investor_id, entrepreneur_id, project_id, status, created_at)
+    VALUES (:investor_id, :entrepreneur_id, :project_id, 'pending', NOW())");
+    
+    $insertStmt->bindParam(':investor_id', $investor_id, PDO::PARAM_INT);
+    $insertStmt->bindParam(':entrepreneur_id', $project['entrepreneur_id'], PDO::PARAM_INT); // ID de l'entrepreneur associé au projet
+    $insertStmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+    
+    if ($insertStmt->execute()) {
+        echo '<div class="alert success" role="alert">
+        <span class="icon">✔️</span> Votre demande d\'investissement a été soumise avec succès.
         </div>';
+        
+        echo '<script>
+        setTimeout(function() {
+            window.location.href = "browse_projects.php";
+        }, 3000); // Redirige après 3 secondes
+        </script>';
+    } else {
+        echo '<div class="alert error" role="alert">
+        <span class="icon">❌</span> Une erreur s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.
+        </div>';
+    }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -83,6 +89,9 @@ if ($insertStmt->execute()) {
   gap: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease;
+  margin-left: 500px;
+  width: 600px;
+  height:100px;
 }
 
 /* Animation d'apparition */
@@ -102,6 +111,7 @@ if ($insertStmt->execute()) {
   color: #155724;
   background-color: #d4edda;
   border: 1px solid #c3e6cb;
+
 }
 
 /* Erreur */
