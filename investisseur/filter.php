@@ -17,7 +17,12 @@ $category_filter = isset($_GET['category']) ? $_GET['category'] : '';
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Construction de la requête SQL
-$sql = "SELECT * FROM projects WHERE status = 'validé'";
+$sql = "SELECT p.* FROM projects p
+        LEFT JOIN investment_requests ir ON p.id = ir.project_id AND ir.status IN ('pending', 'accepted')
+        LEFT JOIN collaborations c ON p.id = c.project_id
+        WHERE p.status = 'validé' 
+        AND ir.project_id IS NULL 
+        AND c.project_id IS NULL";
 if ($category_filter) {
     $sql .= " AND category = :category";
 }
