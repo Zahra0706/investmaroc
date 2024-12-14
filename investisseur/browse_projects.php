@@ -68,6 +68,9 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Style personnalisé -->
     <style>
+        body{
+            background-color:white;
+        }
         .container {
             display: block;
             justify-content: center;

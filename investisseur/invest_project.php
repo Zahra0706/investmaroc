@@ -130,8 +130,11 @@ if ($checkStmt->rowCount() > 0) {
       margin: 0;
       font-family: Arial, sans-serif;
       display: flex;
-      height: 100vh;
+      height: 100vh;    
+       background-color:white;
+
     }
+   
 
     .sidebar {
       width: 250px;

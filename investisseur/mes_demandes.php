@@ -41,7 +41,7 @@ $status_mapping = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5; /* Couleur de fond douce */
+            background-color: white; /* Couleur de fond douce */
             padding-top: 80px; /* Ajustement pour le menu fixe */
         }
 
