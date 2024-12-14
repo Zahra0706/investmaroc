@@ -26,7 +26,7 @@ $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Construction de la requête SQL
 $sql = "SELECT p.* FROM projects p
-        LEFT JOIN investment_requests ir ON p.id = ir.project_id AND ir.status IN ('pending', 'rejected')
+        LEFT JOIN investment_requests ir ON p.id = ir.project_id AND ir.status IN ('pending', 'accepted')
         LEFT JOIN collaborations c ON p.id = c.project_id
         WHERE p.status = 'validé' 
         AND ir.project_id IS NULL 
