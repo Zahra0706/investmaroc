@@ -95,6 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Profil Utilisateur</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+         body{
+            background-color:white;
+        }
         .edit-form-container {
             display: none;
         }

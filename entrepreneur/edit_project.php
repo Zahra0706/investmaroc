@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e9ecef;
+            background-color: white;
             color: #343a40;
             margin: 0;
             padding: 0;

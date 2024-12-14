@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   align-items: center;
   min-height: 100vh; /* Hauteur de la fenêtre visible */
   margin: 0; /* Retirer les marges par défaut */
-  background-color: #f4f4f9; /* Couleur de fond pour plus de contraste */
+  background-color:white; /* Couleur de fond pour plus de contraste */
 }
 
 .content {

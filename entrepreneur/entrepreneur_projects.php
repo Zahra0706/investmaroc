@@ -47,7 +47,7 @@ $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: white;
         }
         .container {
             max-width: 1000px;
