@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         border-radius: 8px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         margin-left: 300px;
-        height:700px;
+        height:1000px;
         position: relative;
     }
     h1 {
