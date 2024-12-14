@@ -25,14 +25,20 @@ $category_filter = isset($_GET['category']) ? $_GET['category'] : '';
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Construction de la requête SQL
-$sql = "SELECT * FROM projects WHERE status = 'validé'";
+$sql = "SELECT p.* FROM projects p
+        LEFT JOIN investment_requests ir ON p.id = ir.project_id AND ir.status IN ('pending', 'rejected')
+        LEFT JOIN collaborations c ON p.id = c.project_id
+        WHERE p.status = 'validé' 
+        AND ir.project_id IS NULL 
+        AND c.project_id IS NULL";
+
 if ($category_filter) {
-    $sql .= " AND category = :category";
+    $sql .= " AND p.category = :category";
 }
 if ($search_query) {
-    $sql .= " AND title LIKE :search";
+    $sql .= " AND p.title LIKE :search";
 }
-$sql .= " ORDER BY created_at DESC";
+$sql .= " ORDER BY p.created_at DESC";
 
 $stmt = $pdo->prepare($sql);
 

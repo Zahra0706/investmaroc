@@ -223,29 +223,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="project-images <?php echo count($images) === 1 ? 'single' : (count($images) === 2 ? 'double' : 'triple'); ?>">
     <?php
-    if (!empty($images)) {
-        foreach ($images as $image) {
-            $imagePath = trim($image, ' "[]');
-            $imagePath = stripslashes($imagePath);
-            $fullImagePath = '../entrepreneur/' . $imagePath;
-
-            if (file_exists($fullImagePath)) {
-                echo '<img src="' . htmlspecialchars($fullImagePath) . '" alt="Image du projet">';
-            } else {
-                echo '<p>L\'image n\'existe pas : ' . htmlspecialchars($fullImagePath) . '</p>';
-            }
-        }
+    // Vérifiez si le champ image est null ou un tableau vide
+    if ($row['image'] === null || $row['image'] === '[]') {
+        echo '<p>Le projet n\'a pas d\'images.</p>';
     } else {
-        echo '<p>Aucune image disponible pour ce projet.</p>';
+        // Vérifiez si des images sont disponibles
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                // Nettoyez l'image pour éviter les erreurs
+                $imagePath = trim($image, ' "[]');
+                $imagePath = stripslashes($imagePath);
+                $fullImagePath = '../entrepreneur/' . $imagePath;
+
+                // Vérifiez si le fichier image existe
+                if (file_exists($fullImagePath)) {
+                    echo '<img src="' . htmlspecialchars($fullImagePath) . '" alt="Image du projet">';
+                } else {
+                    echo '<p>L\'image n\'existe pas : ' . htmlspecialchars($fullImagePath) . '</p>';
+                }
+            }
+        } else {
+            echo '<p>Le projet n\'a pas d\'images.</p>';
+        }
     }
     ?>
 </div>
-
             <div class="project-info">
-                <h3>Description</h3>
+                <h3><strong>Description :</strong></h3>
                 <p><?php echo nl2br(htmlspecialchars($project['description'])); ?></p>
-                <h3>Capital Nécessaire</h3>
+                <h3><strong> Capital Nécessaire :</strong></h3>
                 <p><?php echo htmlspecialchars($project['capital_needed']); ?> DH</p>
+                <h3><strong>Catégorie :</strong></h3>
+                <p> <?= htmlspecialchars($project['category']) ?></p>
+
             </div>
             <a href="invest_project.php?id=<?php echo $projectId; ?>" class="contact-btn">
     <i class="fas fa-coins"></i> Investir

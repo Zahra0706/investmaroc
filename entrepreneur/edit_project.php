@@ -224,16 +224,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="file" id="images" name="images[]" accept="image/*" multiple>
 
             <div class="current-images">
-                <p>Images actuelles :</p>
-                <?php 
-                $current_images = json_decode($project['image'], true);
-                if ($current_images) {
-                    foreach ($current_images as $image) {
-                        echo "<img src='$image' alt='Image actuelle'>";
-                    }
-                }
-                ?>
-            </div>
+    <?php 
+    $current_images = json_decode($project['image'], true);
+    
+    // Vérifiez si le tableau d'images n'est pas vide
+    if ($current_images && count($current_images) > 0): ?>
+        <p>Images actuelles :</p>
+        <?php foreach ($current_images as $image): ?>
+            <img src="<?= htmlspecialchars($image) ?>" alt="Image actuelle">
+        <?php endforeach; ?>
+    <?php else: ?>
+        <!-- Si aucune image n'est disponible, ne rien afficher -->
+    <?php endif; ?>
+</div>
 
             <button type="submit">Enregistrer les modifications</button>
         </form>

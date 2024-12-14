@@ -231,7 +231,7 @@ function calculateAge($birthdate) {
                     <p><strong>Titre :</strong> <?= htmlspecialchars($details['project_title']) ?></p>
                     <p><strong>Description :</strong> <?= nl2br(htmlspecialchars($details['project_description'])) ?></p>
                     <p><strong>Catégorie :</strong> <?= htmlspecialchars($details['project_category']) ?></p>
-                    <p><strong>Capital Requis :</strong> <?= htmlspecialchars($details['capital_needed']) ?> €</p>
+                    <p><strong>Capital Requis :</strong> <?= htmlspecialchars($details['capital_needed']) ?> DHS</p>
                     <p><strong>Status :</strong> <?= htmlspecialchars($details['project_status']) ?></p>
                     <p><strong>Date de Création :</strong> <?= htmlspecialchars($details['project_created_at']) ?></p>
                 </div>

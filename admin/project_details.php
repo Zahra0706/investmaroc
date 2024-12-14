@@ -198,7 +198,8 @@ $images = json_decode($project['image'], true);
             <h1 class="project-title"><?= htmlspecialchars($project['title']) ?></h1>
             <p><strong>Description :</strong></p>
             <p class="project-description"><?= nl2br(htmlspecialchars($project['description'])) ?></p>
-            <p><strong>Budget :</strong> <?= htmlspecialchars($project['capital_needed']) ?> MAD</p>
+            <p><strong>Budget :</strong> <?= htmlspecialchars($project['capital_needed']) ?> DHS</p>
+            <p><strong>Status :</strong> <?= htmlspecialchars($project['status']) ?></p> <!-- Affichage du budget -->
             <p><strong>Catégorie :</strong> <?= htmlspecialchars($project['category']) ?></p>
             <p><strong>Entrepreneur :</strong> <?= htmlspecialchars($project['entrepreneur_name']) ?></p> <!-- Affichage du nom -->
             <p><strong>Date de création :</strong> <?= date('d/m/Y', strtotime($project['created_at'])) ?></p>

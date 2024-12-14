@@ -97,7 +97,7 @@ $status_mapping = [
                     </div>
                     <div class="card-body">
                         <h5 class="card-title"><?= htmlspecialchars($request['category']) ?></h5>
-                        <p class="card-text">Budget Nécessaire: <?= htmlspecialchars($request['capital_needed']) ?> MAD</p>
+                        <p class="card-text">Budget Nécessaire: <?= htmlspecialchars($request['capital_needed']) ?> DHS</p>
                         <p class="card-text status-<?= strtolower($request['status']) ?>">
                             Statut: <?= htmlspecialchars($status_mapping[strtolower($request['status'])]) ?>
                         </p>

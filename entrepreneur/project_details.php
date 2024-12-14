@@ -151,24 +151,21 @@ $images = json_decode($project['image'], true); // Convertir la chaîne JSON en 
             <h1 class="project-title"><?= htmlspecialchars($project['title']) ?></h1>
             <p><strong>Description :</strong></p>
             <p class="project-description"><?= nl2br(htmlspecialchars($project['description'])) ?></p>
-            <p><strong>Budget :</strong> <?= htmlspecialchars($project['capital_needed']) ?> MAD</p> <!-- Affichage du budget -->
+            <p><strong>Budget :</strong> <?= htmlspecialchars($project['capital_needed']) ?> DHS</p> <!-- Affichage du budget -->
+            <p><strong>Status :</strong> <?= htmlspecialchars($project['status']) ?></p> <!-- Affichage du budget -->
             <p><strong>Catégorie :</strong> <?= htmlspecialchars($project['category']) ?></p> <!-- Affichage de la catégorie -->
             <p><strong>Date de création:</strong> <?= date('d/m/Y', strtotime($project['created_at'])) ?></p>
 
-            <h2>Images du projet</h2>
-            <div class="project-images">
-                <?php if (isset($project['image']) && !empty($project['image'])): ?>
-                    <?php if (is_array($images)): ?>
-                        <?php foreach ($images as $image): ?>
-                            <img src="<?= htmlspecialchars($image) ?>" alt="Image du projet">
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>Aucune image disponible.</p>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <p>Aucune image disponible pour ce projet.</p>
-                <?php endif; ?>
-            </div>
+            <?php if (isset($project['image']) && !empty($project['image']) && is_array($images) && count($images) > 0): ?>
+                <h2>Images du projet</h2>
+                <div class="project-images">
+                    <?php foreach ($images as $image): ?>
+                        <img src="<?= htmlspecialchars($image) ?>" alt="Image du projet">
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <!-- Si aucune image n'est disponible, ne rien afficher -->
+            <?php endif; ?>
 
             <div class="project-buttons">
                 <!-- Bouton Modifier -->
