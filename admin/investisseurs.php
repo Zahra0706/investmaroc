@@ -45,6 +45,8 @@ $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         body {
             font-family: Arial, sans-serif;
             display: flex;
+      
+            background-color:white;
         }
 
         .sidebar {

@@ -76,7 +76,7 @@ $images = json_decode($project['image'], true);
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: white;
             margin: 0;
             padding: 0;
         }

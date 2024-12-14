@@ -51,6 +51,9 @@ $collaborations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             margin: 0;
             padding: 0;
             display: flex;
+          
+            background-color:white;
+        
         }
         .sidebar {
             width: 250px;
