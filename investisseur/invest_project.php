@@ -45,9 +45,18 @@ $insertStmt->bindParam(':entrepreneur_id', $project['entrepreneur_id'], PDO::PAR
 $insertStmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
 
 if ($insertStmt->execute()) {
-    echo "<p>Votre demande d'investissement a été soumise avec succès. Vous pouvez suivre son statut depuis votre tableau de bord.</p>";
+  echo '<div class="alert success" role="alert">
+          <span class="icon">✔️</span> Votre demande d\'investissement a été soumise avec succès.
+        </div>';
+  echo '<script>
+          setTimeout(function() {
+              window.location.href = "browse_projects.php";
+          }, 2000); // Redirige après 2 secondes
+        </script>';
 } else {
-    echo "<p>Une erreur s'est produite lors de l'envoi de votre demande. Veuillez réessayer plus tard.</p>";
+  echo '<div class="alert error" role="alert">
+          <span class="icon">❌</span> Une erreur s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.
+        </div>';
 }
 ?>
 
@@ -61,6 +70,52 @@ if ($insertStmt->execute()) {
   <!-- Lien vers Font Awesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+
+.alert {
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Succès */
+.alert.success {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+/* Erreur */
+.alert.error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+/* Icônes */
+.alert .icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -179,9 +234,6 @@ if ($insertStmt->execute()) {
   </div>
 
   <!-- Contenu principal -->
-  <div class="content">
-    <h1>Demande d'investissement</h1>
-    <p>Votre demande d'investissement a été soumise avec succès. Vous pouvez suivre son statut depuis votre tableau de bord.</p>
-  </div>
+ 
 </body>
 </html>
