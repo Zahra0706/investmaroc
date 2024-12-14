@@ -30,14 +30,46 @@ if (isset($_GET['action']) && $_GET['action'] == 'change_status' && isset($_GET[
 // Gérer la suppression d'un projet
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
     $projectId = $_GET['id'];
-    $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
-    $stmt->bindParam(':id', $projectId);
-    $stmt->execute();
+
+    try {
+        // Démarrer une transaction
+        $pdo->beginTransaction();
+
+        // 1. Supprimer les enregistrements liés dans la table collaborations
+        $stmt = $pdo->prepare("DELETE FROM collaborations WHERE project_id = :project_id");
+        $stmt->bindParam(':project_id', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 2. Supprimer les enregistrements liés dans la table investment_requests
+        $stmt = $pdo->prepare("DELETE FROM investment_requests WHERE project_id = :project_id");
+        $stmt->bindParam(':project_id', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 3. Supprimer les enregistrements liés dans la table saved_projects
+        $stmt = $pdo->prepare("DELETE FROM saved_projects WHERE project_id = :project_id");
+        $stmt->bindParam(':project_id', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 4. Supprimer le projet de la table projects
+        $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
+        $stmt->bindParam(':id', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Valider la transaction
+        $pdo->commit();
+
+        // Redirection après suppression
+        header("Location: projets.php");
+        exit;
+    } catch (Exception $e) {
+        // Annuler la transaction en cas d'erreur
+        $pdo->rollBack();
+        echo "Une erreur est survenue lors de la suppression : " . $e->getMessage();
+    }
 }
 
 // Récupérer les projets
 $stmt = $pdo->query("SELECT * FROM projects ORDER BY created_at DESC");
-
 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
