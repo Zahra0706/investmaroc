@@ -355,7 +355,7 @@ button[name="action"][value="details"]:hover {
                             <i class="fas fa-check"></i> Accepter
                         </button>
                     </form>
-                    <form method="POST">
+                    <form method="POST" onsubmit="return confirmCancel();">
                         <input type="hidden" name="request_id" value="<?= $request['request_id'] ?>">
                         <button type="submit" name="action" value="reject">
                             <i class="fas fa-times"></i> Annuler
@@ -418,5 +418,10 @@ button[name="action"][value="details"]:hover {
             }
         }
     </script>
+    <script>
+    function confirmCancel() {
+        return confirm("Êtes-vous sûr de vouloir annuler cette demande ?");
+    }
+</script>
 </body>
 </html>
