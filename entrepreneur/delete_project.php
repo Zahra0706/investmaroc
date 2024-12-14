@@ -1,5 +1,5 @@
 <?php
-ob_start(); // Démarre la mise en mémoire tampon de sortie
+ob_start();
 
 session_start();
 include 'menu.php';
@@ -18,21 +18,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $project_id = $_POST['id'];
 
-    // Supprimer le projet de la base de données
-    $stmt = $conn->prepare("DELETE FROM projects WHERE id = :project_id");
-    $stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+    try {
+        // Démarrer une transaction
+        $conn->beginTransaction();
 
-    // Essayer d'exécuter la suppression
-    if ($stmt->execute()) {
+        // 1. Supprimer les enregistrements liés dans la table collaborations
+        $stmt = $conn->prepare("DELETE FROM collaborations WHERE project_id = :project_id");
+        $stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 2. Supprimer les enregistrements liés dans la table investment_requests
+        $stmt = $conn->prepare("DELETE FROM investment_requests WHERE project_id = :project_id");
+        $stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 3. Supprimer les enregistrements liés dans la table saved_projects
+        $stmt = $conn->prepare("DELETE FROM saved_projects WHERE project_id = :project_id");
+        $stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 4. Supprimer le projet de la table projects
+        $stmt = $conn->prepare("DELETE FROM projects WHERE id = :project_id");
+        $stmt->bindParam(':project_id', $project_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Valider la transaction
+        $conn->commit();
+
         // Redirection après suppression
-        header("Location: list_projects.php"); // Redirige vers la liste des projets après suppression
-        exit; // Toujours inclure un `exit` après `header()` pour éviter l'exécution du reste du script
-    } else {
-        echo "Une erreur est survenue lors de la suppression du projet.";
+        header("Location: list_projects.php");
+        exit;
+    } catch (Exception $e) {
+        // Annuler la transaction en cas d'erreur
+        $conn->rollBack();
+        echo "Une erreur est survenue lors de la suppression : " . $e->getMessage();
     }
 } else {
     die("Requête invalide.");
 }
 
-ob_end_flush(); // Vide et arrête la mise en mémoire tampon de sortie
+ob_end_flush();
 ?>
