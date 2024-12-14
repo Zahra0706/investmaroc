@@ -57,7 +57,7 @@ function translateStatus($status) {
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
+            background-color: white;
             margin: 0;
             padding: 0;
         }

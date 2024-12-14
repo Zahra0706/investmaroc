@@ -259,7 +259,9 @@ button[name="action"][value="details"]:hover {
     h1{
         text-align:center;
     }
-}
+} body{
+            background-color:white;
+        }
     </style>
 </head>
 <body>

@@ -107,6 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-family: Arial, sans-serif;
             margin: 0;
             display: flex;
+     
+            background-color:white;
         }
         .sidebar {
             width: 250px;
